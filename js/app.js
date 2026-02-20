@@ -437,7 +437,7 @@ const app = {
 
         // Mobile menu
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            this.toggleSidebar(true);
+            this.toggleSidebar();
         });
 
         document.getElementById('sidebar-overlay').addEventListener('click', () => {
@@ -455,7 +455,10 @@ const app = {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
 
-        if (show) {
+        const isCurrentlyOpen = !sidebar.classList.contains('-translate-x-full');
+        const shouldShow = show !== undefined ? show : !isCurrentlyOpen;
+
+        if (shouldShow) {
             sidebar.classList.remove('-translate-x-full');
             overlay.classList.remove('hidden');
         } else {
