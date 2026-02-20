@@ -95,6 +95,20 @@ const api = {
         });
     },
 
+    async saveApiSettings(data) {
+        return this.request('settings.php?section=api', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async testSmtp(data) {
+        return this.request('settings.php?section=test-smtp', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+
 
     async getMe() {
         return this.request('auth.php?action=me');

@@ -9,7 +9,13 @@ switch ($method) {
         $rows = $stmt->fetchAll();
         $settings = [];
         foreach ($rows as $row) {
-            $settings[$row['setting_key']] = $row['setting_value'];
+            // Mask SMTP password
+            if ($row['setting_key'] === 'smtp_pass' && !empty($row['setting_value'])) {
+                $settings[$row['setting_key']] = '••••••••';
+            }
+            else {
+                $settings[$row['setting_key']] = $row['setting_value'];
+            }
         }
         jsonResponse($settings);
         break;
@@ -18,7 +24,59 @@ switch ($method) {
         getAuthUser();
 
         $contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+        $section = isset($_GET['section']) ? $_GET['section'] : '';
 
+        // === JSON POST for API/SMTP settings ===
+        if ($section === 'api') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (!$data) {
+                jsonResponse(['error' => 'Invalid JSON'], 400);
+            }
+
+            $allowedKeys = ['google_client_id', 'smtp_host', 'smtp_port', 'smtp_user', 'smtp_pass', 'smtp_from_email', 'smtp_from_name'];
+
+            foreach ($allowedKeys as $key) {
+                if (isset($data[$key])) {
+                    $value = trim($data[$key]);
+                    // Don't overwrite password with masked placeholder
+                    if ($key === 'smtp_pass' && $value === '••••••••')
+                        continue;
+
+                    $existing = $pdo->prepare("SELECT id FROM site_settings WHERE setting_key = ?");
+                    $existing->execute([$key]);
+                    if ($existing->fetch()) {
+                        $stmt = $pdo->prepare("UPDATE site_settings SET setting_value = ? WHERE setting_key = ?");
+                        $stmt->execute([$value, $key]);
+                    }
+                    else {
+                        $stmt = $pdo->prepare("INSERT INTO site_settings (setting_key, setting_value) VALUES (?, ?)");
+                        $stmt->execute([$key, $value]);
+                    }
+                }
+            }
+
+            jsonResponse(['success' => true, 'message' => 'Pengaturan API berhasil disimpan']);
+            break;
+        }
+
+        // === JSON POST for Test SMTP ===
+        if ($section === 'test-smtp') {
+            require_once __DIR__ . '/mail_helper.php';
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (!$data) {
+                jsonResponse(['error' => 'Invalid JSON'], 400);
+            }
+            $result = testSmtpConnection($data);
+            if ($result['success']) {
+                jsonResponse($result);
+            }
+            else {
+                jsonResponse($result, 400);
+            }
+            break;
+        }
+
+        // === Multipart POST for Branding/Theme ===
         if (strpos($contentType, 'multipart/form-data') !== false) {
             $appName = isset($_POST['app_name']) ? trim($_POST['app_name']) : null;
             $appTagline = isset($_POST['app_tagline']) ? trim($_POST['app_tagline']) : null;

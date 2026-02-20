@@ -85,7 +85,14 @@ try {
         ('app_name', 'DuitKu'),
         ('app_tagline', 'Keuangan Pribadi'),
         ('app_logo', ''),
-        ('theme_color', '')
+        ('theme_color', ''),
+        ('google_client_id', ''),
+        ('smtp_host', ''),
+        ('smtp_port', '587'),
+        ('smtp_user', ''),
+        ('smtp_pass', ''),
+        ('smtp_from_email', ''),
+        ('smtp_from_name', '')
     ");
 
     echo json_encode([

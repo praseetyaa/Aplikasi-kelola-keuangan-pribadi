@@ -25,6 +25,7 @@ const app = {
     async loadBranding() {
         try {
             const settings = await api.getSettings();
+            this.settings = settings;
             const name = settings.app_name || 'DuitKu';
             const tagline = settings.app_tagline || 'Keuangan Pribadi';
             const logo = settings.app_logo || '';
@@ -186,15 +187,20 @@ const app = {
     },
 
     initGoogleSignIn() {
-        // Google Sign-In requires a valid Client ID
-        // For now, show a placeholder button that guides users
+        // Google Sign-In requires a valid Client ID from Settings
         const loginBtn = document.getElementById('google-signin-btn');
         const signupBtn = document.getElementById('google-signup-btn');
+
+        if (!this.settings?.google_client_id) {
+            this.renderFallbackGoogleBtn(loginBtn);
+            this.renderFallbackGoogleBtn(signupBtn);
+            return;
+        }
 
         if (typeof google !== 'undefined' && google.accounts) {
             try {
                 google.accounts.id.initialize({
-                    client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+                    client_id: this.settings.google_client_id,
                     callback: this.handleGoogleCallback.bind(this)
                 });
                 google.accounts.id.renderButton(loginBtn, {
