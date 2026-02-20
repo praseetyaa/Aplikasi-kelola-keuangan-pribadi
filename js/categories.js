@@ -14,16 +14,16 @@ const categoriesPage = {
                     <h2 class="text-2xl lg:text-3xl font-bold text-white">Kategori</h2>
                     <p class="text-dark-200/50 mt-1">Kelola kategori pemasukan &amp; pengeluaran</p>
                 </div>
-                <button onclick="categoriesPage.showAddModal()" class="btn-primary">
+                <button onclick="categoriesPage.showAddModal()" class="btn-primary w-full sm:w-auto justify-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     <span>Tambah Kategori</span>
                 </button>
             </div>
-            <div class="flex gap-2 mb-6">
-                <button class="tab-btn active" onclick="categoriesPage.switchTab('expense')">Pengeluaran</button>
-                <button class="tab-btn" onclick="categoriesPage.switchTab('income')">Pemasukan</button>
+            <div class="flex w-full gap-2 mb-6 bg-white/5 p-1 rounded-xl">
+                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 text-white shadow-sm" onclick="categoriesPage.switchTab('expense')">Pengeluaran</button>
+                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors text-white/50 hover:text-white" onclick="categoriesPage.switchTab('income')">Pemasukan</button>
             </div>
-            <div id="cat-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div id="cat-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <div class="skeleton w-full h-20"></div>
                 <div class="skeleton w-full h-20"></div>
             </div>
@@ -41,7 +41,13 @@ const categoriesPage = {
     switchTab(tab) {
         this.activeTab = tab;
         document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-            btn.classList.toggle('active', (tab === 'expense' && i === 0) || (tab === 'income' && i === 1));
+            if ((tab === 'expense' && i === 0) || (tab === 'income' && i === 1)) {
+                btn.classList.add('bg-white/10', 'text-white', 'shadow-sm');
+                btn.classList.remove('text-white/50', 'hover:text-white');
+            } else {
+                btn.classList.remove('bg-white/10', 'text-white', 'shadow-sm');
+                btn.classList.add('text-white/50', 'hover:text-white');
+            }
         });
         this.renderGrid();
     },
@@ -55,13 +61,13 @@ const categoriesPage = {
             return;
         }
         grid.innerHTML = filtered.map(cat => `
-            <div class="glass-card rounded-xl p-4 flex items-center gap-4 group hover:border-white/10 transition-all">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background:${cat.color}20">${cat.icon}</div>
+            <div class="glass-card rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 group hover:border-white/10 transition-all">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg sm:text-xl flex-shrink-0" style="background:${cat.color}20">${cat.icon}</div>
                 <div class="flex-1 min-w-0">
-                    <p class="font-medium text-white truncate">${cat.name}</p>
-                    <span class="badge ${cat.type === 'income' ? 'badge-income' : 'badge-expense'} mt-1">${cat.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</span>
+                    <p class="font-medium text-white truncate text-sm sm:text-base">${cat.name}</p>
+                    <span class="badge ${cat.type === 'income' ? 'badge-income' : 'badge-expense'} mt-1 hidden sm:inline-block">${cat.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</span>
                 </div>
-                <div class="hidden group-hover:flex items-center gap-1">
+                <div class="flex sm:hidden group-hover:flex items-center gap-1">
                     <button onclick="categoriesPage.showEditModal(${cat.id})" class="btn-icon" title="Edit">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>
