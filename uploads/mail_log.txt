@@ -1,0 +1,6 @@
+[2026-02-20 16:40:15] To: baru@test.com | Type: register | Code: 954521 | Sent: NO
+[2026-02-20 16:41:00] To: baru2@test.com | Type: register | Code: 852903 | Sent: NO
+[2026-02-20 16:42:45] To: testbaru@test.com | Type: register | Code: 924197 | Sent: NO
+[2026-02-20 16:44:10] To: final@test.com | Type: register | Code: 979730 | Sent: NO
+[2026-02-20 16:46:50] To: debug@test.com | Type: register | Code: 183504 | Sent: NO
+[2026-02-20 16:49:24] To: debug@test.com | Type: reset | Code: 697791 | Sent: NO

@@ -268,18 +268,16 @@ const app = {
             }
         });
 
-        // Register form
+        // Register form — sends verification code
         document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
             const errorEl = document.getElementById('register-error');
-
             toggleBtnLoading(btn, true);
             errorEl.classList.add('hidden');
 
             const password = document.getElementById('register-password').value;
             const confirm = document.getElementById('register-confirm').value;
-
             if (password !== confirm) {
                 errorEl.textContent = 'Password tidak cocok';
                 errorEl.classList.remove('hidden');
@@ -290,10 +288,119 @@ const app = {
             try {
                 const name = document.getElementById('register-name').value;
                 const email = document.getElementById('register-email').value;
-                const res = await api.register(name, email, password);
+                const res = await api.sendCode(name, email, password);
+                this._pendingEmail = email;
+                showVerify(email, res.dev_code || null);
+                showToast(res.message, 'success');
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                toggleBtnLoading(btn, false);
+            }
+        });
+
+        // Verification code form
+        document.getElementById('verify-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const errorEl = document.getElementById('verify-error');
+            toggleBtnLoading(btn, true);
+            errorEl.classList.add('hidden');
+
+            const digits = document.querySelectorAll('.verify-digit');
+            const code = Array.from(digits).map(d => d.value).join('');
+            if (code.length !== 6) {
+                errorEl.textContent = 'Masukkan 6 digit kode verifikasi';
+                errorEl.classList.remove('hidden');
+                toggleBtnLoading(btn, false);
+                return;
+            }
+
+            try {
+                const res = await api.verifyRegister(this._pendingEmail, code);
                 this.user = res.user;
                 this.showApp();
                 showToast('Akun berhasil dibuat! 🎉', 'success');
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                toggleBtnLoading(btn, false);
+            }
+        });
+
+        // Digit inputs auto-advance
+        document.querySelectorAll('.verify-digit').forEach((input, idx, all) => {
+            input.addEventListener('input', (e) => {
+                const val = e.target.value.replace(/[^0-9]/g, '');
+                e.target.value = val;
+                if (val && idx < all.length - 1) all[idx + 1].focus();
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+                    all[idx - 1].focus();
+                }
+            });
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+                Array.from(all).forEach((inp, i) => { inp.value = paste[i] || ''; });
+                const last = Math.min(paste.length, all.length) - 1;
+                if (last >= 0) all[last].focus();
+            });
+        });
+
+        // Forgot password — step 1: send code
+        document.getElementById('forgot-email-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const errorEl = document.getElementById('forgot-error');
+            toggleBtnLoading(btn, true);
+            errorEl.classList.add('hidden');
+
+            try {
+                const email = document.getElementById('forgot-email').value;
+                const res = await api.forgotPassword(email);
+                this._resetEmail = email;
+                // Show dev code if available
+                if (res.dev_code) {
+                    document.getElementById('forgot-dev-code').classList.remove('hidden');
+                    document.getElementById('forgot-dev-code-value').textContent = res.dev_code;
+                }
+                document.getElementById('forgot-step-email').classList.add('hidden');
+                document.getElementById('forgot-step-reset').classList.remove('hidden');
+                showToast(res.message, 'success');
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                toggleBtnLoading(btn, false);
+            }
+        });
+
+        // Forgot password — step 2: reset
+        document.getElementById('forgot-reset-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const errorEl = document.getElementById('reset-error');
+            toggleBtnLoading(btn, true);
+            errorEl.classList.add('hidden');
+
+            const newPw = document.getElementById('forgot-new-password').value;
+            const confirmPw = document.getElementById('forgot-confirm-password').value;
+            if (newPw !== confirmPw) {
+                errorEl.textContent = 'Password tidak cocok';
+                errorEl.classList.remove('hidden');
+                toggleBtnLoading(btn, false);
+                return;
+            }
+
+            try {
+                const code = document.getElementById('forgot-code').value;
+                const res = await api.resetPassword(this._resetEmail, code, newPw);
+                showToast(res.message, 'success');
+                showLogin();
             } catch (err) {
                 errorEl.textContent = err.message;
                 errorEl.classList.remove('hidden');
@@ -490,11 +597,44 @@ function closeModal() {
 function showLogin() {
     document.getElementById('login-page').classList.remove('hidden');
     document.getElementById('register-page').classList.add('hidden');
+    document.getElementById('verify-page').classList.add('hidden');
+    document.getElementById('forgot-page').classList.add('hidden');
 }
 
 function showRegister() {
     document.getElementById('login-page').classList.add('hidden');
     document.getElementById('register-page').classList.remove('hidden');
+    document.getElementById('verify-page').classList.add('hidden');
+    document.getElementById('forgot-page').classList.add('hidden');
+}
+
+function showVerify(email, devCode) {
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('register-page').classList.add('hidden');
+    document.getElementById('verify-page').classList.remove('hidden');
+    document.getElementById('forgot-page').classList.add('hidden');
+    document.getElementById('verify-email-hint').textContent = 'Masukkan kode 6 digit yang dikirim ke ' + email;
+    // Clear digits
+    document.querySelectorAll('.verify-digit').forEach(d => d.value = '');
+    document.querySelectorAll('.verify-digit')[0]?.focus();
+    // Dev code hint
+    if (devCode) {
+        document.getElementById('dev-code-hint').classList.remove('hidden');
+        document.getElementById('dev-code-value').textContent = devCode;
+    } else {
+        document.getElementById('dev-code-hint').classList.add('hidden');
+    }
+}
+
+function showForgotPassword() {
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('register-page').classList.add('hidden');
+    document.getElementById('verify-page').classList.add('hidden');
+    document.getElementById('forgot-page').classList.remove('hidden');
+    // Reset to step 1
+    document.getElementById('forgot-step-email').classList.remove('hidden');
+    document.getElementById('forgot-step-reset').classList.add('hidden');
+    document.getElementById('forgot-dev-code').classList.add('hidden');
 }
 
 // ============================================

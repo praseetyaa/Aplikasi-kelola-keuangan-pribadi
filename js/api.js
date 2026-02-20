@@ -46,12 +46,55 @@ const api = {
         });
     },
 
+    async sendCode(name, email, password) {
+        return this.request('auth.php?action=send_code', {
+            method: 'POST',
+            body: JSON.stringify({ name, email, password })
+        });
+    },
+
+    async verifyRegister(email, code) {
+        return this.request('auth.php?action=verify_register', {
+            method: 'POST',
+            body: JSON.stringify({ email, code })
+        });
+    },
+
     async googleLogin(credential) {
         return this.request('auth.php?action=google', {
             method: 'POST',
             body: JSON.stringify({ credential })
         });
     },
+
+    async forgotPassword(email) {
+        return this.request('auth.php?action=forgot_password', {
+            method: 'POST',
+            body: JSON.stringify({ email })
+        });
+    },
+
+    async resetPassword(email, code, new_password) {
+        return this.request('auth.php?action=reset_password', {
+            method: 'POST',
+            body: JSON.stringify({ email, code, new_password })
+        });
+    },
+
+    async updateProfile(name) {
+        return this.request('auth.php?action=update_profile', {
+            method: 'POST',
+            body: JSON.stringify({ name })
+        });
+    },
+
+    async updatePassword(current_password, new_password) {
+        return this.request('auth.php?action=update_password', {
+            method: 'POST',
+            body: JSON.stringify({ current_password, new_password })
+        });
+    },
+
 
     async getMe() {
         return this.request('auth.php?action=me');

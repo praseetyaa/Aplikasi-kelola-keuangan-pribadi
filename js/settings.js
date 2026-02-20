@@ -142,17 +142,61 @@ const settingsPage = {
                     </div>
                 </div>
 
-                <!-- Save Button -->
+                <!-- Save Button (Branding + Theme) -->
                 <div class="flex items-center justify-between py-2">
                     <p id="settings-status" class="text-sm text-dark-200/40"></p>
                     <button type="submit" class="btn-primary px-8 py-3">
-                        <span class="btn-text">💾 Simpan Perubahan</span>
+                        <span class="btn-text">💾 Simpan Tampilan</span>
                         <span class="btn-loading hidden">
                             <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                         </span>
                     </button>
                 </div>
             </form>
+
+            <!-- Account Section (separate forms) -->
+            <div class="glass-card rounded-2xl p-6 lg:p-8 max-w-3xl mt-6">
+                <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                    <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    Akun
+                </h3>
+
+                <!-- Change Name -->
+                <form id="account-name-form" class="mb-6 pb-6 border-b border-white/5">
+                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama</label>
+                    <div class="flex gap-3">
+                        <input type="text" id="setting-account-name" class="input-field flex-1" placeholder="Nama kamu">
+                        <button type="submit" class="btn-primary px-5 text-sm whitespace-nowrap">
+                            <span class="btn-text">Ubah Nama</span>
+                            <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Change Password -->
+                <form id="account-password-form" class="space-y-4">
+                    <h4 class="text-sm font-medium text-dark-200/70">Ubah Password</h4>
+                    <div>
+                        <label class="block text-xs text-dark-200/50 mb-1">Password Saat Ini</label>
+                        <input type="password" id="setting-current-pw" class="input-field w-full" placeholder="••••••••" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-dark-200/50 mb-1">Password Baru</label>
+                        <input type="password" id="setting-new-pw" class="input-field w-full" placeholder="Minimal 6 karakter" required minlength="6">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-dark-200/50 mb-1">Konfirmasi Password Baru</label>
+                        <input type="password" id="setting-confirm-pw" class="input-field w-full" placeholder="Ulangi password baru" required>
+                    </div>
+                    <div id="password-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3"></div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="btn-primary px-5 text-sm">
+                            <span class="btn-text">🔒 Ubah Password</span>
+                            <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>`;
 
         this.loadSettings();
@@ -179,6 +223,11 @@ const settingsPage = {
             document.getElementById('setting-theme-hex').value = color;
             this.updatePalettePreview(color);
             this.highlightPreset(color);
+
+            // Account name
+            if (app.user) {
+                document.getElementById('setting-account-name').value = app.user.name || '';
+            }
         } catch (err) {
             showToast(err.message, 'error');
         }
@@ -267,6 +316,7 @@ const settingsPage = {
     },
 
     bindForm() {
+        // Branding + Theme form
         const form = document.getElementById('settings-form');
         if (!form) return;
         form.addEventListener('submit', async (e) => {
@@ -283,23 +333,13 @@ const settingsPage = {
                 formData.append('theme_color', document.getElementById('setting-theme-hex').value.trim());
 
                 const logoFile = document.getElementById('setting-logo-file').files[0];
-                if (logoFile) {
-                    formData.append('logo', logoFile);
-                }
-
-                if (this._removeLogo) {
-                    formData.append('remove_logo', '1');
-                    this._removeLogo = false;
-                }
+                if (logoFile) formData.append('logo', logoFile);
+                if (this._removeLogo) { formData.append('remove_logo', '1'); this._removeLogo = false; }
 
                 await api.saveSettings(formData);
-                showToast('Pengaturan berhasil disimpan! 🎉', 'success');
+                showToast('Tampilan berhasil disimpan! 🎉', 'success');
                 statusEl.textContent = 'Tersimpan!';
-
-                // Refresh branding across app
                 await app.loadBranding();
-
-                // Refresh settings display
                 this.cancelNewLogo();
                 this.loadSettings();
             } catch (err) {
@@ -308,6 +348,57 @@ const settingsPage = {
             } finally {
                 toggleBtnLoading(btn, false);
                 setTimeout(() => { if (statusEl) statusEl.textContent = ''; }, 3000);
+            }
+        });
+
+        // Account name form
+        document.getElementById('account-name-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            toggleBtnLoading(btn, true);
+            try {
+                const name = document.getElementById('setting-account-name').value.trim();
+                if (!name) throw new Error('Nama tidak boleh kosong');
+                const res = await api.updateProfile(name);
+                app.user = res.user;
+                app.updateUserUI();
+                showToast('Nama berhasil diubah!', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            } finally {
+                toggleBtnLoading(btn, false);
+            }
+        });
+
+        // Account password form
+        document.getElementById('account-password-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const errorEl = document.getElementById('password-error');
+            toggleBtnLoading(btn, true);
+            errorEl.classList.add('hidden');
+
+            const newPw = document.getElementById('setting-new-pw').value;
+            const confirmPw = document.getElementById('setting-confirm-pw').value;
+            if (newPw !== confirmPw) {
+                errorEl.textContent = 'Password baru tidak cocok';
+                errorEl.classList.remove('hidden');
+                toggleBtnLoading(btn, false);
+                return;
+            }
+
+            try {
+                const currentPw = document.getElementById('setting-current-pw').value;
+                await api.updatePassword(currentPw, newPw);
+                showToast('Password berhasil diubah! 🔒', 'success');
+                document.getElementById('setting-current-pw').value = '';
+                document.getElementById('setting-new-pw').value = '';
+                document.getElementById('setting-confirm-pw').value = '';
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                toggleBtnLoading(btn, false);
             }
         });
     }

@@ -57,7 +57,6 @@
         <!-- Login Page -->
         <div id="login-page" class="min-h-screen flex items-center justify-center p-4">
             <div class="w-full max-w-md">
-                <!-- Logo -->
                 <div class="text-center mb-8">
                     <div id="login-logo-box"
                         class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 mb-4 shadow-lg shadow-primary-500/25">
@@ -72,10 +71,8 @@
                     <p class="app-tagline text-dark-200/60 mt-2">Kelola keuangan pribadimu dengan mudah</p>
                 </div>
 
-                <!-- Login Card -->
                 <div class="glass-card rounded-2xl p-8">
                     <h2 class="text-xl font-semibold text-white mb-6">Masuk ke Akun</h2>
-
                     <form id="login-form" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Email</label>
@@ -86,6 +83,11 @@
                             <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Password</label>
                             <input type="password" id="login-password" required class="input-field w-full"
                                 placeholder="••••••••">
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" onclick="showForgotPassword()"
+                                class="text-xs text-primary-400 hover:text-primary-300 transition-colors">Lupa
+                                password?</button>
                         </div>
                         <div id="login-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3"></div>
                         <button type="submit" class="btn-primary w-full">
@@ -108,8 +110,6 @@
                         <div class="relative flex justify-center text-sm"><span
                                 class="px-4 bg-dark-850 text-dark-200/50">atau</span></div>
                     </div>
-
-                    <!-- Google Sign-In Button -->
                     <div id="google-signin-btn" class="flex justify-center"></div>
 
                     <p class="text-center text-dark-200/50 text-sm mt-6">
@@ -140,7 +140,6 @@
 
                 <div class="glass-card rounded-2xl p-8">
                     <h2 class="text-xl font-semibold text-white mb-6">Daftar Akun</h2>
-
                     <form id="register-form" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Lengkap</label>
@@ -183,13 +182,178 @@
                         <div class="relative flex justify-center text-sm"><span
                                 class="px-4 bg-dark-850 text-dark-200/50">atau</span></div>
                     </div>
-
                     <div id="google-signup-btn" class="flex justify-center"></div>
 
                     <p class="text-center text-dark-200/50 text-sm mt-6">
                         Sudah punya akun?
                         <button onclick="showLogin()"
                             class="text-primary-400 hover:text-primary-300 font-medium transition-colors">Masuk</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification Code Page -->
+        <div id="verify-page" class="min-h-screen flex items-center justify-center p-4 hidden">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white">Verifikasi Email</h1>
+                    <p id="verify-email-hint" class="text-dark-200/60 mt-2 text-sm">Masukkan kode 6 digit yang dikirim
+                        ke email</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8">
+                    <!-- Dev code hint (shown when mail fails on localhost) -->
+                    <div id="dev-code-hint"
+                        class="hidden mb-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm">
+                        <span class="font-semibold">⚡ Dev Mode:</span> Kode verifikasi: <code id="dev-code-value"
+                            class="font-mono font-bold"></code>
+                    </div>
+
+                    <form id="verify-form" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-2">Kode Verifikasi</label>
+                            <div class="flex gap-2 justify-center" id="verify-code-inputs">
+                                <input type="text" maxlength="1"
+                                    class="verify-digit input-field w-12 h-14 text-center text-xl font-bold"
+                                    data-idx="0" inputmode="numeric">
+                                <input type="text" maxlength="1"
+                                    class="verify-digit input-field w-12 h-14 text-center text-xl font-bold"
+                                    data-idx="1" inputmode="numeric">
+                                <input type="text" maxlength="1"
+                                    class="verify-digit input-field w-12 h-14 text-center text-xl font-bold"
+                                    data-idx="2" inputmode="numeric">
+                                <span class="flex items-center text-dark-200/30 text-xl">—</span>
+                                <input type="text" maxlength="1"
+                                    class="verify-digit input-field w-12 h-14 text-center text-xl font-bold"
+                                    data-idx="3" inputmode="numeric">
+                                <input type="text" maxlength="1"
+                                    class="verify-digit input-field w-12 h-14 text-center text-xl font-bold"
+                                    data-idx="4" inputmode="numeric">
+                                <input type="text" maxlength="1"
+                                    class="verify-digit input-field w-12 h-14 text-center text-xl font-bold"
+                                    data-idx="5" inputmode="numeric">
+                            </div>
+                        </div>
+                        <div id="verify-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3"></div>
+                        <button type="submit" class="btn-primary w-full">
+                            <span class="btn-text">Verifikasi</span>
+                            <span class="btn-loading hidden">
+                                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4" fill="none" />
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                </svg>
+                            </span>
+                        </button>
+                    </form>
+
+                    <p class="text-center text-dark-200/50 text-sm mt-6">
+                        <button onclick="showRegister()"
+                            class="text-primary-400 hover:text-primary-300 transition-colors">← Kembali ke form
+                            daftar</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forgot Password Page -->
+        <div id="forgot-page" class="min-h-screen flex items-center justify-center p-4 hidden">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white">Lupa Password</h1>
+                    <p class="text-dark-200/60 mt-2 text-sm">Reset password via email</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8">
+                    <!-- Dev code hint -->
+                    <div id="forgot-dev-code"
+                        class="hidden mb-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm">
+                        <span class="font-semibold">⚡ Dev Mode:</span> Kode reset: <code id="forgot-dev-code-value"
+                            class="font-mono font-bold"></code>
+                    </div>
+
+                    <!-- Step 1: Email -->
+                    <div id="forgot-step-email">
+                        <h2 class="text-lg font-semibold text-white mb-4">Masukkan Email</h2>
+                        <form id="forgot-email-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Email terdaftar</label>
+                                <input type="email" id="forgot-email" required class="input-field w-full"
+                                    placeholder="email@contoh.com">
+                            </div>
+                            <div id="forgot-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3">
+                            </div>
+                            <button type="submit" class="btn-primary w-full">
+                                <span class="btn-text">Kirim Kode Reset</span>
+                                <span class="btn-loading hidden">
+                                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4" fill="none" />
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Code + New Password -->
+                    <div id="forgot-step-reset" class="hidden">
+                        <h2 class="text-lg font-semibold text-white mb-4">Reset Password</h2>
+                        <form id="forgot-reset-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Kode Verifikasi</label>
+                                <input type="text" id="forgot-code" required maxlength="6"
+                                    class="input-field w-full font-mono text-center tracking-widest text-lg"
+                                    placeholder="000000" inputmode="numeric">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Password Baru</label>
+                                <input type="password" id="forgot-new-password" required minlength="6"
+                                    class="input-field w-full" placeholder="Minimal 6 karakter">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Konfirmasi Password
+                                    Baru</label>
+                                <input type="password" id="forgot-confirm-password" required class="input-field w-full"
+                                    placeholder="Ulangi password baru">
+                            </div>
+                            <div id="reset-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3">
+                            </div>
+                            <button type="submit" class="btn-primary w-full">
+                                <span class="btn-text">Reset Password</span>
+                                <span class="btn-loading hidden">
+                                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4" fill="none" />
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <p class="text-center text-dark-200/50 text-sm mt-6">
+                        <button onclick="showLogin()"
+                            class="text-primary-400 hover:text-primary-300 transition-colors">← Kembali ke
+                            login</button>
                     </p>
                 </div>
             </div>

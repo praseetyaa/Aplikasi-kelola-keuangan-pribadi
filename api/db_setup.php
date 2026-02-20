@@ -20,9 +20,17 @@ try {
         password VARCHAR(255) NULL,
         google_id VARCHAR(255) NULL UNIQUE,
         avatar VARCHAR(500) NULL,
+        email_verified TINYINT(1) DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )");
+
+    // Add email_verified column if not exists
+    try {
+        $pdo->exec("ALTER TABLE users ADD COLUMN email_verified TINYINT(1) DEFAULT 0");
+    }
+    catch (Exception $e) {
+    }
 
     // Categories table
     $pdo->exec("CREATE TABLE IF NOT EXISTS categories (
@@ -49,6 +57,19 @@ try {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+    )");
+
+    // Verification codes table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS verification_codes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) NOT NULL,
+        code VARCHAR(10) NOT NULL,
+        type ENUM('register','reset') NOT NULL,
+        data TEXT NULL,
+        expires_at DATETIME NOT NULL,
+        used TINYINT(1) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_email_type (email, type)
     )");
 
     // Site settings table
