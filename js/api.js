@@ -130,5 +130,21 @@ const api = {
     async getReports(year) {
         const params = year ? `?year=${year}` : '';
         return this.request(`reports.php${params}`);
+    },
+
+    // Settings
+    async getSettings() {
+        return this.request('settings.php');
+    },
+
+    async saveSettings(formData) {
+        const res = await fetch(`${API_BASE}/settings.php`, {
+            method: 'POST',
+            credentials: 'include',
+            body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Gagal menyimpan settings');
+        return data;
     }
 };

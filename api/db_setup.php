@@ -51,13 +51,26 @@ try {
         FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
     )");
 
-    // Insert default categories for demonstration
-    // These will be created per-user on registration
+    // Site settings table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS site_settings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(100) NOT NULL UNIQUE,
+        setting_value TEXT NULL,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )");
+
+    // Insert default settings
+    $pdo->exec("INSERT IGNORE INTO site_settings (setting_key, setting_value) VALUES 
+        ('app_name', 'DuitKu'),
+        ('app_tagline', 'Keuangan Pribadi'),
+        ('app_logo', ''),
+        ('theme_color', '')
+    ");
 
     echo json_encode([
         'success' => true,
         'message' => 'Database and tables created successfully!',
-        'tables' => ['users', 'categories', 'transactions']
+        'tables' => ['users', 'categories', 'transactions', 'site_settings']
     ]);
 
 }

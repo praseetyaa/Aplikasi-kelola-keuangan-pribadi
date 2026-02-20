@@ -7,6 +7,9 @@ const app = {
     user: null,
 
     async init() {
+        // Load site branding first
+        await this.loadBranding();
+
         // Try to get current user
         try {
             const res = await api.getMe();
@@ -17,6 +20,136 @@ const app = {
         }
 
         this.bindEvents();
+    },
+
+    async loadBranding() {
+        try {
+            const settings = await api.getSettings();
+            const name = settings.app_name || 'DuitKu';
+            const tagline = settings.app_tagline || 'Keuangan Pribadi';
+            const logo = settings.app_logo || '';
+            const themeColor = settings.theme_color || '';
+
+            // Update page title
+            document.title = name + ' - ' + tagline;
+
+            // Update all app-name elements
+            document.querySelectorAll('.app-name').forEach(el => el.textContent = name);
+
+            // Update tagline elements
+            document.querySelectorAll('.app-tagline').forEach(el => {
+                if (el.closest('#login-page')) {
+                    el.textContent = 'Kelola keuangan pribadimu dengan mudah';
+                } else {
+                    el.textContent = tagline;
+                }
+            });
+
+            // Update logo elements
+            const logoBoxes = ['login-logo-box', 'register-logo-box', 'sidebar-logo-box'];
+            logoBoxes.forEach(id => {
+                const box = document.getElementById(id);
+                if (!box) return;
+                if (logo) {
+                    box.innerHTML = `<img src="${logo}" class="w-full h-full object-cover rounded-xl" alt="${name}">`;
+                } else {
+                    const svgSize = id === 'sidebar-logo-box' ? 'w-5 h-5' : 'w-8 h-8';
+                    box.innerHTML = `<svg class="${svgSize} text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                }
+            });
+
+            // Apply theme color
+            if (themeColor) {
+                this.applyThemeColor(themeColor);
+            }
+        } catch (e) {
+            // Silently fail — use defaults
+        }
+    },
+
+    applyThemeColor(hex) {
+        const palette = this.generatePalette(hex);
+        const root = document.documentElement;
+        const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+        shades.forEach((shade, i) => {
+            root.style.setProperty(`--theme-${shade}`, palette[i]);
+        });
+        // Set RGB for use in rgba()
+        const rgb = this.hexToRgb(palette[5]);
+        root.style.setProperty('--theme-rgb', `${rgb.r}, ${rgb.g}, ${rgb.b}`);
+
+        // Update Tailwind primary colors dynamically
+        if (typeof tailwind !== 'undefined' && tailwind.config) {
+            const primaryColors = {};
+            shades.forEach((shade, i) => { primaryColors[shade] = palette[i]; });
+            tailwind.config.theme.extend.colors.primary = primaryColors;
+        }
+
+        // Update gradient text colors on app-name elements
+        document.querySelectorAll('.app-name').forEach(el => {
+            el.style.background = `linear-gradient(to right, ${palette[4]}, ${palette[3]})`;
+            el.style.webkitBackgroundClip = 'text';
+            el.style.webkitTextFillColor = 'transparent';
+            el.style.backgroundClip = 'text';
+        });
+
+        // Update logo box backgrounds
+        ['login-logo-box', 'register-logo-box', 'sidebar-logo-box'].forEach(id => {
+            const box = document.getElementById(id);
+            if (box && !box.querySelector('img')) {
+                box.style.background = `linear-gradient(to bottom right, ${palette[4]}, ${palette[6]})`;
+            }
+        });
+    },
+
+    generatePalette(hex) {
+        const hsl = this.hexToHsl(hex);
+        const h = hsl.h;
+        return [
+            this.hslToHex(h, Math.min(hsl.s + 20, 100), 97),  // 50
+            this.hslToHex(h, Math.min(hsl.s + 15, 100), 93),  // 100
+            this.hslToHex(h, Math.min(hsl.s + 10, 100), 85),  // 200
+            this.hslToHex(h, Math.min(hsl.s + 5, 100), 75),   // 300
+            this.hslToHex(h, hsl.s, 62),                       // 400
+            this.hslToHex(h, hsl.s, 48),                       // 500 (base)
+            this.hslToHex(h, Math.min(hsl.s + 5, 100), 40),   // 600
+            this.hslToHex(h, Math.min(hsl.s + 8, 100), 33),   // 700
+            this.hslToHex(h, Math.min(hsl.s + 5, 100), 27),   // 800
+            this.hslToHex(h, Math.min(hsl.s + 3, 100), 22),   // 900
+            this.hslToHex(h, Math.min(hsl.s + 5, 100), 12),   // 950
+        ];
+    },
+
+    hexToRgb(hex) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return { r, g, b };
+    },
+
+    hexToHsl(hex) {
+        let { r, g, b } = this.hexToRgb(hex);
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h = 0, s = 0, l = (max + min) / 2;
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                case g: h = ((b - r) / d + 2) / 6; break;
+                case b: h = ((r - g) / d + 4) / 6; break;
+            }
+        }
+        return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+    },
+
+    hslToHex(h, s, l) {
+        s /= 100; l /= 100;
+        const a = s * Math.min(l, 1 - l);
+        const f = n => { const k = (n + h / 30) % 12; return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); };
+        const toHex = x => Math.round(x * 255).toString(16).padStart(2, '0');
+        return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
     },
 
     showAuth() {
@@ -219,7 +352,7 @@ const app = {
     },
 
     navigate(page) {
-        if (!['dashboard', 'transactions', 'categories', 'reports'].includes(page)) {
+        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings'].includes(page)) {
             page = 'dashboard';
         }
 
@@ -243,6 +376,7 @@ const app = {
             case 'transactions': transactionsPage.render(content); break;
             case 'categories': categoriesPage.render(content); break;
             case 'reports': reportsPage.render(content); break;
+            case 'settings': settingsPage.render(content); break;
         }
     }
 };
