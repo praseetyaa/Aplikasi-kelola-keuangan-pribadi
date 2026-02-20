@@ -37,12 +37,26 @@ const settingsPage = {
 
         container.innerHTML = `
         <div class="page-enter">
-            <div class="mb-6">
-                <h2 class="text-2xl lg:text-3xl font-bold text-white">Pengaturan</h2>
-                <p class="text-dark-200/50 mt-1">Kustomisasi tampilan aplikasi</p>
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 max-w-3xl">
+                <div>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Pengaturan</h2>
+                    <p id="settings-subtitle" class="text-dark-200/50 mt-1">Kustomisasi tampilan aplikasi</p>
+                </div>
+                
+                <div class="relative w-full md:w-64">
+                    <select id="settings-nav-dropdown" class="input-field w-full appearance-none pr-10 bg-slate-800/80 font-medium" onchange="settingsPage.switchSection(this.value)">
+                        <option value="tampilan">🎨 Tampilan & Tema</option>
+                        <option value="akun">👤 Kelola Akun</option>
+                        <option value="api">🔌 Integrasi & API</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-dark-200/50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                </div>
             </div>
 
-            <form id="settings-form" class="space-y-6 max-w-3xl">
+            <div id="section-tampilan" class="settings-section">
+                <form id="settings-form" class="space-y-6 max-w-3xl">
                 <!-- Branding Section -->
                 <div class="glass-card rounded-2xl p-6 lg:p-8">
                     <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
@@ -153,9 +167,10 @@ const settingsPage = {
                     </button>
                 </div>
             </form>
+            </div>
 
             <!-- Account Section (separate forms) -->
-            <div class="glass-card rounded-2xl p-6 lg:p-8 max-w-3xl mt-6">
+            <div id="section-akun" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 max-w-3xl">
                 <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
                     <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     Akun
@@ -201,7 +216,7 @@ const settingsPage = {
             </div>
 
             <!-- API & Integration Section -->
-            <div class="glass-card rounded-2xl p-6 lg:p-8 max-w-3xl mt-6">
+            <div id="section-api" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 max-w-3xl">
                 <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
                     <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     Integrasi & API
@@ -274,6 +289,16 @@ const settingsPage = {
 
         this.loadSettings();
         this.bindForm();
+    },
+
+    switchSection(sectionId) {
+        document.querySelectorAll('.settings-section').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`section-${sectionId}`).classList.remove('hidden');
+
+        const subtitle = document.getElementById('settings-subtitle');
+        if (sectionId === 'tampilan') subtitle.textContent = 'Kustomisasi tampilan aplikasi';
+        if (sectionId === 'akun') subtitle.textContent = 'Kelola profil dan keamanan akun';
+        if (sectionId === 'api') subtitle.textContent = 'Konfigurasi layanan pihak ketiga';
     },
 
     async loadSettings() {
