@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuitKu - Kelola Keuangan Pribadi</title>
+    <meta name="description" content="Aplikasi kelola keuangan pribadi yang mudah dan modern. Catat pemasukan, pengeluaran, dan pantau keuanganmu.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7',
+                            400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857',
+                            800: '#065f46', 900: '#064e3b', 950: '#022c22'
+                        },
+                        dark: {
+                            50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0',
+                            700: '#334155', 800: '#1e293b', 850: '#172033',
+                            900: '#0f172a', 950: '#020617'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-dark-950 text-white font-sans antialiased">
+    
+    <!-- Auth Pages -->
+    <div id="auth-container" class="hidden">
+        <!-- Login Page -->
+        <div id="login-page" class="min-h-screen flex items-center justify-center p-4">
+            <div class="w-full max-w-md">
+                <!-- Logo -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 mb-4 shadow-lg shadow-primary-500/25">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">DuitKu</h1>
+                    <p class="text-dark-200/60 mt-2">Kelola keuangan pribadimu dengan mudah</p>
+                </div>
+                
+                <!-- Login Card -->
+                <div class="glass-card rounded-2xl p-8">
+                    <h2 class="text-xl font-semibold text-white mb-6">Masuk ke Akun</h2>
+                    
+                    <form id="login-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Email</label>
+                            <input type="email" id="login-email" required
+                                class="input-field w-full" placeholder="email@contoh.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Password</label>
+                            <input type="password" id="login-password" required
+                                class="input-field w-full" placeholder="••••••••">
+                        </div>
+                        <div id="login-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3"></div>
+                        <button type="submit" class="btn-primary w-full">
+                            <span class="btn-text">Masuk</span>
+                            <span class="btn-loading hidden">
+                                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                            </span>
+                        </button>
+                    </form>
+                    
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                        <div class="relative flex justify-center text-sm"><span class="px-4 bg-dark-850 text-dark-200/50">atau</span></div>
+                    </div>
+                    
+                    <!-- Google Sign-In Button -->
+                    <div id="google-signin-btn" class="flex justify-center"></div>
+                    
+                    <p class="text-center text-dark-200/50 text-sm mt-6">
+                        Belum punya akun? 
+                        <button onclick="showRegister()" class="text-primary-400 hover:text-primary-300 font-medium transition-colors">Daftar</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Register Page -->
+        <div id="register-page" class="min-h-screen flex items-center justify-center p-4 hidden">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 mb-4 shadow-lg shadow-primary-500/25">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">DuitKu</h1>
+                    <p class="text-dark-200/60 mt-2">Buat akun baru</p>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-8">
+                    <h2 class="text-xl font-semibold text-white mb-6">Daftar Akun</h2>
+                    
+                    <form id="register-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Lengkap</label>
+                            <input type="text" id="register-name" required
+                                class="input-field w-full" placeholder="Nama kamu">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Email</label>
+                            <input type="email" id="register-email" required
+                                class="input-field w-full" placeholder="email@contoh.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Password</label>
+                            <input type="password" id="register-password" required minlength="6"
+                                class="input-field w-full" placeholder="Minimal 6 karakter">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Konfirmasi Password</label>
+                            <input type="password" id="register-confirm" required
+                                class="input-field w-full" placeholder="Ulangi password">
+                        </div>
+                        <div id="register-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3"></div>
+                        <button type="submit" class="btn-primary w-full">
+                            <span class="btn-text">Daftar</span>
+                            <span class="btn-loading hidden">
+                                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                            </span>
+                        </button>
+                    </form>
+                    
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                        <div class="relative flex justify-center text-sm"><span class="px-4 bg-dark-850 text-dark-200/50">atau</span></div>
+                    </div>
+                    
+                    <div id="google-signup-btn" class="flex justify-center"></div>
+                    
+                    <p class="text-center text-dark-200/50 text-sm mt-6">
+                        Sudah punya akun? 
+                        <button onclick="showLogin()" class="text-primary-400 hover:text-primary-300 font-medium transition-colors">Masuk</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- App Shell -->
+    <div id="app-container" class="hidden">
+        <!-- Mobile Header -->
+        <header class="lg:hidden fixed top-0 left-0 right-0 z-50 glass-nav px-4 py-3 flex items-center justify-between">
+            <button id="mobile-menu-btn" class="p-2 rounded-xl hover:bg-white/5 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <span class="text-lg font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">DuitKu</span>
+            <div id="mobile-user-avatar" class="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center text-sm font-medium text-primary-400 cursor-pointer"></div>
+        </header>
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed left-0 top-0 bottom-0 w-72 glass-sidebar z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">DuitKu</h1>
+                        <p class="text-xs text-dark-200/40">Keuangan Pribadi</p>
+                    </div>
+                </div>
+                
+                <!-- Nav -->
+                <nav class="flex-1 px-3 space-y-1">
+                    <a href="#dashboard" data-page="dashboard" class="nav-link active">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#transactions" data-page="transactions" class="nav-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        <span>Transaksi</span>
+                    </a>
+                    <a href="#categories" data-page="categories" class="nav-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                        <span>Kategori</span>
+                    </a>
+                    <a href="#reports" data-page="reports" class="nav-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <span>Laporan</span>
+                    </a>
+                </nav>
+                
+                <!-- User -->
+                <div class="p-4 border-t border-white/5">
+                    <div class="flex items-center gap-3 px-3 py-2">
+                        <div id="sidebar-avatar" class="w-9 h-9 rounded-full bg-primary-500/20 flex items-center justify-center text-sm font-medium text-primary-400 flex-shrink-0 overflow-hidden"></div>
+                        <div class="flex-1 min-w-0">
+                            <p id="sidebar-username" class="text-sm font-medium text-white truncate"></p>
+                            <p id="sidebar-email" class="text-xs text-dark-200/40 truncate"></p>
+                        </div>
+                        <button id="logout-btn" class="p-2 rounded-lg hover:bg-red-500/10 text-dark-200/40 hover:text-red-400 transition-colors" title="Keluar">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Sidebar overlay (mobile) -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+        
+        <!-- Main Content -->
+        <main id="main-content" class="lg:ml-72 min-h-screen pt-16 lg:pt-0">
+            <div id="page-content" class="p-4 lg:p-8 max-w-7xl mx-auto">
+                <!-- Pages rendered here by JS -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Toast container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[100] space-y-3"></div>
+    
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/transactions.js"></script>
+    <script src="js/categories.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>
