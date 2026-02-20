@@ -126,21 +126,26 @@ const settingsPage = {
                     <!-- Custom Color Picker -->
                     <div class="pt-4 border-t border-white/5">
                         <label class="block text-xs font-medium text-dark-200/50 mb-3 uppercase tracking-wider">Warna Kustom</label>
-                        <div class="flex items-center gap-4">
-                            <div class="relative">
-                                <input type="color" id="setting-theme-picker" value="#10b981" 
-                                    class="w-14 h-14 rounded-xl cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors" 
-                                    style="padding: 2px;"
-                                    oninput="settingsPage.onPickerChange(this.value)">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <!-- Color Picker Button -->
+                            <div class="flex-shrink-0">
+                                <label for="setting-theme-picker" class="block w-14 h-14 rounded-xl cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors relative overflow-hidden" style="padding: 2px;">
+                                    <input type="color" id="setting-theme-picker" value="#10b981" 
+                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                                        oninput="settingsPage.onPickerChange(this.value)">
+                                    <div id="setting-theme-picker-bg" class="w-full h-full rounded-lg" style="background-color: #10b981;"></div>
+                                </label>
                             </div>
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-1.5">
+                            
+                            <!-- HEX Info & Palette -->
+                            <div class="flex-1 w-full min-w-0">
+                                <div class="flex items-center gap-2 mb-3">
                                     <span class="text-xs text-dark-200/40 font-mono">HEX</span>
                                     <input type="text" id="setting-theme-hex" value="#10b981" maxlength="7"
                                         class="input-field text-sm font-mono w-28 py-1.5 px-3" placeholder="#10b981"
                                         oninput="settingsPage.onHexInput(this.value)">
                                 </div>
-                                <div id="theme-palette-preview" class="flex gap-1 mt-2">
+                                <div id="theme-palette-preview" class="grid grid-cols-6 sm:flex sm:flex-wrap gap-1">
                                     <!-- populated by JS -->
                                 </div>
                             </div>
@@ -259,11 +264,11 @@ const settingsPage = {
                                 <input type="password" id="setting-smtp-pass" class="input-field w-full" placeholder="••••••••">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Email Pengirim (opsional)</label>
+                                <label class="block text-xs text-dark-200/50 mb-1">Email Pengirim <span class="text-[10px]">(opsional)</span></label>
                                 <input type="email" id="setting-smtp-from-email" class="input-field w-full" placeholder="noreply@domain.com">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Nama Pengirim (opsional)</label>
+                                <label class="block text-xs text-dark-200/50 mb-1">Nama Pengirim <span class="text-[10px]">(opsional)</span></label>
                                 <input type="text" id="setting-smtp-from-name" class="input-field w-full" placeholder="DuitKu">
                             </div>
                         </div>
@@ -318,7 +323,9 @@ const settingsPage = {
             // Theme color
             const color = settings.theme_color || '#10b981';
             document.getElementById('setting-theme-picker').value = color;
+            document.getElementById('setting-theme-picker-bg').style.backgroundColor = color;
             document.getElementById('setting-theme-hex').value = color;
+
             this.updatePalettePreview(color);
             this.highlightPreset(color);
 
@@ -342,9 +349,11 @@ const settingsPage = {
 
     selectPreset(color) {
         document.getElementById('setting-theme-picker').value = color;
+        document.getElementById('setting-theme-picker-bg').style.backgroundColor = color;
         document.getElementById('setting-theme-hex').value = color;
-        this.highlightPreset(color);
+
         this.updatePalettePreview(color);
+        this.highlightPreset(color);
         // Live preview
         app.applyThemeColor(color);
     },
@@ -360,6 +369,7 @@ const settingsPage = {
     },
 
     onPickerChange(color) {
+        document.getElementById('setting-theme-picker-bg').style.backgroundColor = color;
         document.getElementById('setting-theme-hex').value = color;
         this.highlightPreset(color);
         this.updatePalettePreview(color);
@@ -369,6 +379,8 @@ const settingsPage = {
     onHexInput(val) {
         if (/^#[0-9a-fA-F]{6}$/.test(val)) {
             document.getElementById('setting-theme-picker').value = val;
+            document.getElementById('setting-theme-picker-bg').style.backgroundColor = val;
+
             this.highlightPreset(val);
             this.updatePalettePreview(val);
             app.applyThemeColor(val);
@@ -379,13 +391,22 @@ const settingsPage = {
         const palette = app.generatePalette(color);
         const container = document.getElementById('theme-palette-preview');
         if (!container) return;
-        container.innerHTML = palette.map((c, i) => {
-            const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-            return `<div class="flex flex-col items-center gap-0.5">
-                <div class="w-6 h-6 rounded-md shadow-sm border border-white/10" style="background:${c}" title="${shades[i]}"></div>
-                <span class="text-[8px] text-dark-200/30">${shades[i]}</span>
-            </div>`;
-        }).join('');
+        container.innerHTML = palette.map((c, i) => `
+            <div class="h-6 sm:h-8 w-full sm:flex-1 rounded border border-white/5 sm:border-none flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-white/50 min-w-[30px]" 
+                style="background: ${c}; color: ${this.getContrastColor(c)}" title="${c}">
+                ${i === 5 ? 'Base' : ''}
+            </div>
+        `).join('');
+    },
+
+    // Helper to get contrast color for text on a given background
+    getContrastColor(hexcolor) {
+        if (!hexcolor) return '#ffffff'; // Default to white if no color
+        const r = parseInt(hexcolor.substr(1, 2), 16);
+        const g = parseInt(hexcolor.substr(3, 2), 16);
+        const b = parseInt(hexcolor.substr(5, 2), 16);
+        const y = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (y >= 128) ? '#000000' : '#ffffff';
     },
 
     resetTheme() {

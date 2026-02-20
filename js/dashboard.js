@@ -56,23 +56,23 @@ const dashboardPage = {
             <!-- Charts Row -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
                 <!-- Monthly Trend -->
-                <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+                <div class="lg:col-span-2 glass-card rounded-2xl p-4 sm:p-6">
                     <h3 class="text-base font-semibold text-white mb-4">Tren Bulanan</h3>
-                    <div class="relative" style="height: 280px;">
+                    <div class="relative h-[240px] md:h-[280px]">
                         <canvas id="dash-trend-chart"></canvas>
                     </div>
                 </div>
                 <!-- Expense by Category -->
-                <div class="glass-card rounded-2xl p-6">
+                <div class="glass-card rounded-2xl p-4 sm:p-6">
                     <h3 class="text-base font-semibold text-white mb-4">Pengeluaran per Kategori</h3>
-                    <div id="dash-category-chart-container" class="relative flex items-center justify-center" style="height: 280px;">
+                    <div id="dash-category-chart-container" class="relative flex items-center justify-center h-[240px] md:h-[280px]">
                         <canvas id="dash-category-chart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- Recent Transactions -->
-            <div class="glass-card rounded-2xl p-6">
+            <div class="glass-card rounded-2xl p-4 sm:p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-base font-semibold text-white">Transaksi Terbaru</h3>
                     <a href="#transactions" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
