@@ -105,6 +105,30 @@ switch ($method) {
                 }
             }
 
+            $themeMode = isset($_POST['theme_mode']) ? trim($_POST['theme_mode']) : null;
+            if ($themeMode && in_array($themeMode, ['light', 'dark', 'system'])) {
+                $existing = $pdo->query("SELECT id FROM site_settings WHERE setting_key = 'theme_mode'")->fetch();
+                if ($existing) {
+                    $stmt = $pdo->prepare("UPDATE site_settings SET setting_value = ? WHERE setting_key = 'theme_mode'");
+                }
+                else {
+                    $stmt = $pdo->prepare("INSERT INTO site_settings (setting_value, setting_key) VALUES (?, 'theme_mode')");
+                }
+                $stmt->execute([$themeMode]);
+            }
+
+            $enablePreload = isset($_POST['enable_preload']) ? trim($_POST['enable_preload']) : null;
+            if ($enablePreload === 'true' || $enablePreload === 'false') {
+                $existing = $pdo->query("SELECT id FROM site_settings WHERE setting_key = 'enable_preload'")->fetch();
+                if ($existing) {
+                    $stmt = $pdo->prepare("UPDATE site_settings SET setting_value = ? WHERE setting_key = 'enable_preload'");
+                }
+                else {
+                    $stmt = $pdo->prepare("INSERT INTO site_settings (setting_value, setting_key) VALUES (?, 'enable_preload')");
+                }
+                $stmt->execute([$enablePreload]);
+            }
+
             if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
                 $file = $_FILES['logo'];
                 $allowed = ['image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp'];

@@ -7,19 +7,46 @@ const app = {
     user: null,
 
     async init() {
-        // Load site branding first
-        await this.loadBranding();
-
-        // Try to get current user
+        if (typeof api === 'undefined') return;
         try {
+            // Apply theme immediately if available
+            const themeMode = localStorage.getItem('theme_mode');
+            if (themeMode) this.applyThemeMode(themeMode);
+
+            await this.loadBranding();
+
             const res = await api.getMe();
             this.user = res.user;
-            this.showApp();
-        } catch {
-            this.showAuth();
-        }
 
-        this.bindEvents();
+            if (this.user) {
+                this.showApp();
+            } else {
+                this.showAuth();
+            }
+            this.bindEvents();
+        } catch (err) {
+            this.showAuth();
+            this.bindEvents();
+        } finally {
+            this.hidePreloader();
+        }
+    },
+
+    hidePreloader() {
+        const preloader = document.getElementById('app-preloader');
+        if (preloader) {
+            const enablePreload = localStorage.getItem('enable_preload');
+            if (enablePreload === 'false') {
+                preloader.style.display = 'none';
+            } else {
+                // Minimum display time for smooth animation feel
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.pointerEvents = 'none';
+                    setTimeout(() => preloader.style.display = 'none', 600);
+                }, 800);
+            }
+        }
     },
 
     async loadBranding() {
@@ -32,39 +59,64 @@ const app = {
             const themeColor = settings.theme_color || '';
 
             // Update page title
-            document.title = name + ' - ' + tagline;
-
-            // Update all app-name elements
-            document.querySelectorAll('.app-name').forEach(el => el.textContent = name);
-
-            // Update tagline elements
-            document.querySelectorAll('.app-tagline').forEach(el => {
-                if (el.closest('#login-page')) {
-                    el.textContent = 'Kelola keuangan pribadimu dengan mudah';
-                } else {
-                    el.textContent = tagline;
+            document.title = name;
+            if (settings) {
+                if (settings.app_name) {
+                    document.querySelectorAll('.app-name').forEach(el => el.textContent = settings.app_name);
+                    document.title = settings.app_name + ' - Kelola Keuangan';
                 }
-            });
-
-            // Update logo elements
-            const logoBoxes = ['login-logo-box', 'register-logo-box', 'sidebar-logo-box'];
-            logoBoxes.forEach(id => {
-                const box = document.getElementById(id);
-                if (!box) return;
-                if (logo) {
-                    box.innerHTML = `<img src="${logo}" class="w-full h-full object-cover rounded-xl" alt="${name}">`;
-                } else {
-                    const svgSize = id === 'sidebar-logo-box' ? 'w-5 h-5' : 'w-8 h-8';
-                    box.innerHTML = `<svg class="${svgSize} text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                if (settings.app_tagline) {
+                    document.querySelectorAll('.app-tagline').forEach(el => el.textContent = settings.app_tagline);
                 }
-            });
+                if (settings.app_logo) {
+                    const url = settings.app_logo + '?t=' + new Date().getTime();
+                    ['login-logo-box', 'register-logo-box', 'sidebar-logo-box'].forEach(id => {
+                        const box = document.getElementById(id);
+                        if (box) box.innerHTML = `<img src="${url}" alt="Logo" class="w-full h-full object-cover rounded-xl shadow-lg">`;
+                    });
+                }
+                if (settings.theme_color) this.applyThemeColor(settings.theme_color);
+
+                // Keep localStorage in sync with DB setup
+                if (settings.theme_mode) {
+                    localStorage.setItem('theme_mode', settings.theme_mode);
+                    this.applyThemeMode(settings.theme_mode);
+                }
+                if (settings.enable_preload) {
+                    localStorage.setItem('enable_preload', settings.enable_preload);
+                }
+
+                if (settings.google_client_id) {
+                    // Update tagline elements
+                    document.querySelectorAll('.app-tagline').forEach(el => {
+                        if (el.closest('#login-page')) {
+                            el.textContent = 'Kelola keuangan pribadimu dengan mudah';
+                        } else {
+                            el.textContent = tagline;
+                        }
+                    });
+
+                    // Update logo elements
+                    const logoBoxes = ['login-logo-box', 'register-logo-box', 'sidebar-logo-box'];
+                    logoBoxes.forEach(id => {
+                        const box = document.getElementById(id);
+                        if (!box) return;
+                        if (logo) {
+                            box.innerHTML = `<img src="${logo}" class="w-full h-full object-cover rounded-xl" alt="${name}">`;
+                        } else {
+                            const svgSize = id === 'sidebar-logo-box' ? 'w-5 h-5' : 'w-8 h-8';
+                            box.innerHTML = `<svg class="${svgSize} text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0-2.08.402-2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                        }
+                    });
+                }
+            }
 
             // Apply theme color
             if (themeColor) {
                 this.applyThemeColor(themeColor);
             }
         } catch (e) {
-            // Silently fail — use defaults
+            console.error("Error loading branding:", e);
         }
     },
 
@@ -101,6 +153,32 @@ const app = {
                 box.style.background = `linear-gradient(to bottom right, ${palette[4]}, ${palette[6]})`;
             }
         });
+    },
+
+    applyThemeMode(mode) {
+        if (mode === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else if (mode === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            // System mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            // Listen for system changes
+            if (!this.themeChangeListenerAssigned) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (localStorage.getItem('theme_mode') === 'system') {
+                        if (e.matches) document.documentElement.classList.add('dark');
+                        else document.documentElement.classList.remove('dark');
+                    }
+                });
+                this.themeChangeListenerAssigned = true;
+            }
+        }
     },
 
     generatePalette(hex) {
@@ -191,9 +269,11 @@ const app = {
         const loginBtn = document.getElementById('google-signin-btn');
         const signupBtn = document.getElementById('google-signup-btn');
 
+        if (!loginBtn && !signupBtn) return;
+
         if (!this.settings?.google_client_id) {
-            this.renderFallbackGoogleBtn(loginBtn);
-            this.renderFallbackGoogleBtn(signupBtn);
+            if (loginBtn) this.renderFallbackGoogleBtn(loginBtn);
+            if (signupBtn) this.renderFallbackGoogleBtn(signupBtn);
             return;
         }
 
@@ -203,29 +283,33 @@ const app = {
                     client_id: this.settings.google_client_id,
                     callback: this.handleGoogleCallback.bind(this)
                 });
-                google.accounts.id.renderButton(loginBtn, {
-                    theme: 'filled_black',
-                    size: 'large',
-                    width: '100%',
-                    text: 'signin_with',
-                    shape: 'rectangular',
-                    logo_alignment: 'center'
-                });
-                google.accounts.id.renderButton(signupBtn, {
-                    theme: 'filled_black',
-                    size: 'large',
-                    width: '100%',
-                    text: 'signup_with',
-                    shape: 'rectangular',
-                    logo_alignment: 'center'
-                });
+                if (loginBtn) {
+                    google.accounts.id.renderButton(loginBtn, {
+                        theme: 'filled_black',
+                        size: 'large',
+                        width: '100%',
+                        text: 'signin_with',
+                        shape: 'rectangular',
+                        logo_alignment: 'center'
+                    });
+                }
+                if (signupBtn) {
+                    google.accounts.id.renderButton(signupBtn, {
+                        theme: 'filled_black',
+                        size: 'large',
+                        width: '100%',
+                        text: 'signup_with',
+                        shape: 'rectangular',
+                        logo_alignment: 'center'
+                    });
+                }
             } catch (e) {
-                this.renderFallbackGoogleBtn(loginBtn);
-                this.renderFallbackGoogleBtn(signupBtn);
+                if (loginBtn) this.renderFallbackGoogleBtn(loginBtn);
+                if (signupBtn) this.renderFallbackGoogleBtn(signupBtn);
             }
         } else {
-            this.renderFallbackGoogleBtn(loginBtn);
-            this.renderFallbackGoogleBtn(signupBtn);
+            if (loginBtn) this.renderFallbackGoogleBtn(loginBtn);
+            if (signupBtn) this.renderFallbackGoogleBtn(signupBtn);
         }
     },
 

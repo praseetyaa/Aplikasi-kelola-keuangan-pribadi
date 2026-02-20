@@ -152,6 +152,41 @@ const settingsPage = {
                         </div>
                     </div>
 
+                    <!-- Preloader and Theme Mode -->
+                    <div class="space-y-4 pb-6 mt-6 border-t border-white/5 pt-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Theme Mode -->
+                            <div>
+                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                    Mode Tema
+                                </label>
+                                <select id="setting-theme-mode" class="select-field w-full">
+                                    <option value="system">Ikuti Sistem (Otomatis)</option>
+                                    <option value="dark">Mode Gelap</option>
+                                    <option value="light">Mode Terang</option>
+                                </select>
+                                <p class="text-[10px] sm:text-xs text-dark-200/50 mt-1">Ubah tampilan aplikasi menjadi terang atau gelap.</p>
+                            </div>
+
+                            <!-- Preloader Toggle -->
+                            <div>
+                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                    Animasi Loading (Preloader)
+                                </label>
+                                <div class="flex items-center gap-3 mt-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="setting-enable-preload" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
+                                    </label>
+                                    <span class="text-sm font-medium text-dark-200/70 select-none">Aktif</span>
+                                </div>
+                                <p class="text-[10px] sm:text-xs text-dark-200/50 mt-1.5">Tampilkan logo saat aplikasi pertama kali dimuat.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Reset theme -->
                     <div class="mt-4 pt-3 border-t border-white/5">
                         <button type="button" onclick="settingsPage.resetTheme()" class="text-xs text-dark-200/40 hover:text-white transition-colors flex items-center gap-1.5">
@@ -312,6 +347,8 @@ const settingsPage = {
             this.settings = settings;
             document.getElementById('setting-app-name').value = settings.app_name || '';
             document.getElementById('setting-app-tagline').value = settings.app_tagline || '';
+            document.getElementById('setting-theme-mode').value = settings.theme_mode || 'system';
+            document.getElementById('setting-enable-preload').checked = (settings.enable_preload !== 'false');
 
             if (settings.app_logo) {
                 document.getElementById('logo-current').classList.remove('hidden');
@@ -339,7 +376,11 @@ const settingsPage = {
             document.getElementById('setting-smtp-host').value = settings.smtp_host || '';
             document.getElementById('setting-smtp-port').value = settings.smtp_port || '';
             document.getElementById('setting-smtp-user').value = settings.smtp_user || '';
-            document.getElementById('setting-smtp-pass').value = settings.smtp_pass || '';
+            if (settings.smtp_pass === '••••••••') {
+                document.getElementById('setting-smtp-pass').value = '••••••••';
+            } else {
+                document.getElementById('setting-smtp-pass').value = settings.smtp_pass || '';
+            }
             document.getElementById('setting-smtp-from-email').value = settings.smtp_from_email || '';
             document.getElementById('setting-smtp-from-name').value = settings.smtp_from_name || '';
         } catch (err) {
@@ -459,6 +500,8 @@ const settingsPage = {
                 formData.append('app_name', document.getElementById('setting-app-name').value.trim());
                 formData.append('app_tagline', document.getElementById('setting-app-tagline').value.trim());
                 formData.append('theme_color', document.getElementById('setting-theme-hex').value.trim());
+                formData.append('theme_mode', document.getElementById('setting-theme-mode').value);
+                formData.append('enable_preload', document.getElementById('setting-enable-preload').checked ? 'true' : 'false');
 
                 const logoFile = document.getElementById('setting-logo-file').files[0];
                 if (logoFile) formData.append('logo', logoFile);
@@ -470,6 +513,17 @@ const settingsPage = {
                 await app.loadBranding();
                 this.cancelNewLogo();
                 this.loadSettings();
+
+                // Save theme/preload choices to localStorage immediately to avoid flickering on reload
+                localStorage.setItem('theme_mode', document.getElementById('setting-theme-mode').value);
+                localStorage.setItem('enable_preload', document.getElementById('setting-enable-preload').checked ? 'true' : 'false');
+
+                // Force theme update instantly without reload if possible
+                if (window.app && typeof window.app.applyThemeMode === 'function') {
+                    window.app.applyThemeMode(document.getElementById('setting-theme-mode').value);
+                }
+
+                showToast('Pengaturan tampilan disimpan. Reload halaman untuk melihat efek penuh.', 'success');
             } catch (err) {
                 showToast(err.message, 'error');
                 statusEl.textContent = 'Gagal menyimpan';

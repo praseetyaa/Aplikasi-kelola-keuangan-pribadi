@@ -92,7 +92,9 @@ try {
         ('smtp_user', ''),
         ('smtp_pass', ''),
         ('smtp_from_email', ''),
-        ('smtp_from_name', '')
+        ('smtp_from_name', ''),
+        ('theme_mode', 'system'),
+        ('enable_preload', 'true')
     ");
 
     echo json_encode([
