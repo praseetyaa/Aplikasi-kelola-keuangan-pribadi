@@ -134,7 +134,8 @@ const api = {
         if (filters.limit) params.set('limit', filters.limit);
         if (filters.offset) params.set('offset', filters.offset);
         const qs = params.toString();
-        return this.request(`transactions.php${qs ? '?' + qs : ''}`);
+        const cacheBuster = `_t=${new Date().getTime()}`;
+        return this.request(`transactions.php?${qs ? qs + '&' : ''}${cacheBuster}`);
     },
 
     async createTransaction(data) {

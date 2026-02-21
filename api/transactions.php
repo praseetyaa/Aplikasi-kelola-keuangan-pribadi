@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/db.php';
 $userId = getAuthUser();
 $method = $_SERVER['REQUEST_METHOD'];
@@ -6,7 +6,7 @@ switch ($method) {
     case 'GET':
         $id = isset($_GET['id']) ? $_GET['id'] : null;
         if ($id) {
-            $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE t.id = ? AND t.user_id = ?");
+            $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color, w.name as wallet_name FROM transactions t LEFT JOIN categories c ON t.category_id = c.id LEFT JOIN wallets w ON t.wallet_id = w.id WHERE t.id = ? AND t.user_id = ?");
             $stmt->execute([$id, $userId]);
             $tx = $stmt->fetch();
             if (!$tx) { jsonResponse(['error' => 'Not found'], 404); }
@@ -27,7 +27,7 @@ switch ($method) {
         $countStmt = $pdo->prepare("SELECT COUNT(*) as total FROM transactions t " . $where);
         $countStmt->execute($params);
         $total = (int)$countStmt->fetch()['total'];
-        $sql = "SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color FROM transactions t LEFT JOIN categories c ON t.category_id = c.id " . $where . " ORDER BY t.date DESC, t.created_at DESC LIMIT " . $limit . " OFFSET " . $offset;
+        $sql = "SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color, w.name as wallet_name FROM transactions t LEFT JOIN categories c ON t.category_id = c.id LEFT JOIN wallets w ON t.wallet_id = w.id " . $where . " ORDER BY t.date DESC, t.created_at DESC LIMIT " . $limit . " OFFSET " . $offset;
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         jsonResponse(['data' => $stmt->fetchAll(), 'total' => $total, 'limit' => $limit, 'offset' => $offset]);
@@ -38,13 +38,15 @@ switch ($method) {
         $amount = (float)(isset($data['amount']) ? $data['amount'] : 0);
         $description = trim(isset($data['description']) ? $data['description'] : '');
         $categoryId = isset($data['category_id']) ? $data['category_id'] : null;
+        $walletId = isset($data['wallet_id']) ? $data['wallet_id'] : null;
         $date = isset($data['date']) ? $data['date'] : date('Y-m-d');
         if (!in_array($type, ['income', 'expense']) || $amount <= 0) { jsonResponse(['error' => 'Tipe dan jumlah wajib diisi'], 400); }
         if (empty($categoryId)) { $categoryId = null; }
-        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, category_id, type, amount, description, date) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$userId, $categoryId, $type, $amount, $description, $date]);
+        if (empty($walletId)) { $walletId = null; }
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, category_id, wallet_id, type, amount, description, date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$userId, $categoryId, $walletId, $type, $amount, $description, $date]);
         $newId = $pdo->lastInsertId();
-        $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE t.id = ?");
+        $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color, w.name as wallet_name FROM transactions t LEFT JOIN categories c ON t.category_id = c.id LEFT JOIN wallets w ON t.wallet_id = w.id WHERE t.id = ?");
         $stmt->execute([$newId]);
         jsonResponse($stmt->fetch(), 201);
         break;
@@ -56,12 +58,14 @@ switch ($method) {
         $amount = (float)(isset($data['amount']) ? $data['amount'] : 0);
         $description = trim(isset($data['description']) ? $data['description'] : '');
         $categoryId = isset($data['category_id']) ? $data['category_id'] : null;
+        $walletId = isset($data['wallet_id']) ? $data['wallet_id'] : null;
         $date = isset($data['date']) ? $data['date'] : date('Y-m-d');
         if (!in_array($type, ['income', 'expense']) || $amount <= 0) { jsonResponse(['error' => 'Tipe dan jumlah wajib diisi'], 400); }
         if (empty($categoryId)) { $categoryId = null; }
-        $stmt = $pdo->prepare("UPDATE transactions SET category_id=?, type=?, amount=?, description=?, date=? WHERE id=? AND user_id=?");
-        $stmt->execute([$categoryId, $type, $amount, $description, $date, $id, $userId]);
-        $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE t.id=? AND t.user_id=?");
+        if (empty($walletId)) { $walletId = null; }
+        $stmt = $pdo->prepare("UPDATE transactions SET category_id=?, wallet_id=?, type=?, amount=?, description=?, date=? WHERE id=? AND user_id=?");
+        $stmt->execute([$categoryId, $walletId, $type, $amount, $description, $date, $id, $userId]);
+        $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color, w.name as wallet_name FROM transactions t LEFT JOIN categories c ON t.category_id = c.id LEFT JOIN wallets w ON t.wallet_id = w.id WHERE t.id=? AND t.user_id=?");
         $stmt->execute([$id, $userId]);
         jsonResponse($stmt->fetch());
         break;
