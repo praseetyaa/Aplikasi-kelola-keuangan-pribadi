@@ -44,11 +44,24 @@ try {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )");
 
+    // Wallets table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS wallets (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        type ENUM('bank','ewallet','credit') NOT NULL,
+        starting_balance DECIMAL(15,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+
     // Transactions table
     $pdo->exec("CREATE TABLE IF NOT EXISTS transactions (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         category_id INT NULL,
+        wallet_id INT NULL,
         type ENUM('income','expense') NOT NULL,
         amount DECIMAL(15,2) NOT NULL,
         description VARCHAR(500) NULL,
@@ -56,8 +69,17 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+        FOREIGN KEY (wallet_id) REFERENCES wallets(id) ON DELETE SET NULL
     )");
+
+    // Add wallet_id column if not exists (for existing databases)
+    try {
+        $pdo->exec("ALTER TABLE transactions ADD COLUMN wallet_id INT NULL");
+        $pdo->exec("ALTER TABLE transactions ADD CONSTRAINT fk_wallet FOREIGN KEY (wallet_id) REFERENCES wallets(id) ON DELETE SET NULL");
+    }
+    catch (Exception $e) {
+    }
 
     // Verification codes table
     $pdo->exec("CREATE TABLE IF NOT EXISTS verification_codes (
@@ -100,7 +122,7 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Database and tables created successfully!',
-        'tables' => ['users', 'categories', 'transactions', 'site_settings']
+        'tables' => ['users', 'wallets', 'categories', 'transactions', 'site_settings']
     ]);
 
 }

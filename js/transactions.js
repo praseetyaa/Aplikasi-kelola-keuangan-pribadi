@@ -10,6 +10,7 @@ const transactionsPage = {
         search: ''
     },
     categories: [],
+    wallets: [],
     offset: 0,
     limit: 20,
 
@@ -81,6 +82,7 @@ const transactionsPage = {
         </div>`;
 
         await this.loadCategories();
+        await this.loadWallets();
         this.loadTransactions();
     },
 
@@ -94,6 +96,14 @@ const transactionsPage = {
                     this.categories.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
                 select.value = current;
             }
+        } catch (err) {
+            console.error(err);
+        }
+    },
+
+    async loadWallets() {
+        try {
+            this.wallets = await api.getWallets();
         } catch (err) {
             console.error(err);
         }
@@ -153,7 +163,7 @@ const transactionsPage = {
                         <p class="text-sm font-medium text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
                         <div class="flex items-center gap-2 mt-0.5">
                             <span class="badge ${tx.type === 'income' ? 'badge-income' : 'badge-expense'}">${tx.type === 'income' ? 'Masuk' : 'Keluar'}</span>
-                            <span class="text-xs text-dark-200/40">${tx.category_name || '-'} · ${formatDate(tx.date)}</span>
+                            <span class="text-xs text-dark-200/40">${tx.category_name || '-'} · ${tx.wallet_name || 'Tunai'} · ${formatDate(tx.date)}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -221,6 +231,11 @@ const transactionsPage = {
             return cats.map(c => `<option value="${c.id}" ${tx?.category_id == c.id ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
         };
 
+        const getWalletOptions = () => {
+            return '<option value="">Pilih Dompet (Opsional)</option>' +
+                this.wallets.map(w => `<option value="${w.id}" ${tx?.wallet_id == w.id ? 'selected' : ''}>${w.name}</option>`).join('');
+        };
+
         const body = `
             <form id="tx-form" class="space-y-4">
                 <div>
@@ -246,6 +261,12 @@ const transactionsPage = {
                     <select id="tx-category" class="select-field w-full" required>
                         <option value="">Pilih kategori</option>
                         ${getCategoryOptions(selectedType)}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Dompet (Sumber/Tujuan)</label>
+                    <select id="tx-wallet" class="select-field w-full">
+                        ${getWalletOptions()}
                     </select>
                 </div>
                 <div>
@@ -279,6 +300,7 @@ const transactionsPage = {
                 type: document.getElementById('tx-type').value,
                 amount: parseFloat(document.getElementById('tx-amount').value),
                 category_id: document.getElementById('tx-category').value || null,
+                wallet_id: document.getElementById('tx-wallet').value || null,
                 description: document.getElementById('tx-desc').value,
                 date: document.getElementById('tx-date').value
             };

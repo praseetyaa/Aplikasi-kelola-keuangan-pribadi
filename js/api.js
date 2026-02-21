@@ -183,6 +183,31 @@ const api = {
         });
     },
 
+    // Wallets
+    async getWallets() {
+        return this.request('dompet.php');
+    },
+
+    async createWallet(data) {
+        return this.request('dompet.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async updateWallet(id, data) {
+        return this.request(`dompet.php?id=${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async deleteWallet(id) {
+        return this.request(`dompet.php?id=${id}`, {
+            method: 'DELETE'
+        });
+    },
+
     // Reports
     async getReports(year) {
         const params = year ? `?year=${year}` : '';

@@ -552,7 +552,7 @@ const app = {
     },
 
     navigate(page) {
-        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings'].includes(page)) {
+        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings', 'wallets'].includes(page)) {
             page = 'dashboard';
         }
 
@@ -576,6 +576,7 @@ const app = {
             case 'transactions': transactionsPage.render(content); break;
             case 'categories': categoriesPage.render(content); break;
             case 'reports': reportsPage.render(content); break;
+            case 'wallets': walletsPage.render(content); break;
             case 'settings': settingsPage.render(content); break;
         }
     }
