@@ -1,1 +1,1 @@
-<?php echo "hello\n"; ?>
+<?php require_once __DIR__."/api/db.php"; $userId=getAuthUser(); echo "u=$userId\n";$stmt=$pdo->prepare("SELECT SUM(starting_balance) as TotalM FROM wallets WHERE user_id=?"); $stmt->execute([$userId]); print_r($stmt->fetch()); $stmt=$pdo->prepare("SELECT * FROM transactions WHERE user_id=?"); $stmt->execute([$userId]); print_r($stmt->fetchAll()); ?>
