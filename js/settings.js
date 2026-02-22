@@ -37,7 +37,7 @@ const settingsPage = {
 
         container.innerHTML = `
         <div class="page-enter">
-            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 max-w-3xl">
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 ">
                 <div>
                     <h2 class="text-2xl lg:text-3xl font-bold text-white">Pengaturan</h2>
                     <p id="settings-subtitle" class="text-dark-200/50 mt-1">Kustomisasi tampilan aplikasi</p>
@@ -57,7 +57,7 @@ const settingsPage = {
             </div>
 
             <div id="section-tampilan" class="settings-section">
-                <form id="settings-form" class="space-y-6 max-w-3xl">
+                <form id="settings-form" class="space-y-6 ">
                 <!-- Branding Section -->
                 <div class="glass-card rounded-2xl p-6 lg:p-8">
                     <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
@@ -211,7 +211,7 @@ const settingsPage = {
             </div>
 
             <!-- Account Section (separate forms) -->
-            <div id="section-akun" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 max-w-3xl">
+            <div id="section-akun" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 ">
                 <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
                     <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     Akun
@@ -257,7 +257,7 @@ const settingsPage = {
             </div>
 
             <!-- API & Integration Section -->
-            <div id="section-api" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 max-w-3xl">
+            <div id="section-api" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 ">
                 <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
                     <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     Integrasi & API
@@ -328,7 +328,7 @@ const settingsPage = {
             </div>
 
             <!-- Pembaruan Section -->
-            <div id="section-pembaruan" class="settings-section hidden max-w-3xl space-y-5">
+            <div id="section-pembaruan" class="settings-section hidden  space-y-5">
 
                 <!-- Versi Saat Ini -->
                 <div class="glass-card rounded-2xl p-6">
