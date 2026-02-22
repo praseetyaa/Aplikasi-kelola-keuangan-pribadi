@@ -81,6 +81,33 @@ try {
     catch (Exception $e) {
     }
 
+    // Planning / Wishlist table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS planning (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        name VARCHAR(200) NOT NULL,
+        icon VARCHAR(50) DEFAULT '🎯',
+        target_amount DECIMAL(15,2) NOT NULL,
+        saved_amount DECIMAL(15,2) DEFAULT 0,
+        monthly_saving DECIMAL(15,2) DEFAULT 0,
+        deadline DATE NULL,
+        status ENUM('active','completed','cancelled') DEFAULT 'active',
+        notes TEXT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+
+    // Auto-migrate: add planning columns if they exist in older DB
+    $planningCols = ['monthly_saving DECIMAL(15,2) DEFAULT 0', 'notes TEXT NULL'];
+    foreach ($planningCols as $col) {
+        try {
+            $pdo->exec("ALTER TABLE planning ADD COLUMN $col");
+        }
+        catch (Exception $e) {
+        }
+    }
+
     // Verification codes table
     $pdo->exec("CREATE TABLE IF NOT EXISTS verification_codes (
         id INT AUTO_INCREMENT PRIMARY KEY,

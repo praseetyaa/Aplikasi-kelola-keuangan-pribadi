@@ -71,6 +71,32 @@ const dashboardPage = {
                 </div>
             </div>
 
+            <!-- Wallets & Planning Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
+                <!-- Dompet Widget -->
+                <div class="glass-card rounded-2xl p-4 sm:p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-semibold text-white">💳 Dompet</h3>
+                        <a href="#wallets" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Kelola →</a>
+                    </div>
+                    <div id="dash-wallets" class="space-y-2">
+                        <div class="skeleton w-full h-12 rounded-xl"></div>
+                        <div class="skeleton w-full h-12 rounded-xl"></div>
+                    </div>
+                </div>
+                <!-- Planning Widget -->
+                <div class="glass-card rounded-2xl p-4 sm:p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-semibold text-white">🎯 Planning Aktif</h3>
+                        <a href="#planning" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
+                    </div>
+                    <div id="dash-planning" class="space-y-3">
+                        <div class="skeleton w-full h-14 rounded-xl"></div>
+                        <div class="skeleton w-full h-14 rounded-xl"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Recent Transactions -->
             <div class="glass-card rounded-2xl p-4 sm:p-6">
                 <div class="flex items-center justify-between mb-4">
@@ -90,21 +116,28 @@ const dashboardPage = {
 
     async loadData(month) {
         try {
-            const data = await api.getDashboard(month);
+            // Load dashboard, wallets, planning in parallel
+            const [data, wallets, plans] = await Promise.all([
+                api.getDashboard(month),
+                api.getWallets().catch(() => []),
+                api.getPlanning('active').catch(() => [])
+            ]);
 
-            // Update summary cards
+            // Summary cards
             document.getElementById('dash-balance').textContent = formatCurrency(data.balance);
             document.getElementById('dash-income').textContent = formatCurrency(data.total_income);
             document.getElementById('dash-expense').textContent = formatCurrency(data.total_expense);
 
-            // Trend chart
+            // Charts
             this.renderTrendChart(data.monthly_trend);
-
-            // Category chart
             this.renderCategoryChart(data.expense_by_category);
 
             // Recent transactions
             this.renderRecentTransactions(data.recent_transactions);
+
+            // New widgets
+            this.renderWallets(wallets);
+            this.renderPlanning(plans);
         } catch (err) {
             showToast(err.message, 'error');
         }
@@ -278,5 +311,77 @@ const dashboardPage = {
                 </span>
             </div>
         `).join('');
+    },
+
+    renderWallets(wallets) {
+        const el = document.getElementById('dash-wallets');
+        if (!el) return;
+
+        if (!wallets || wallets.length === 0) {
+            el.innerHTML = `<div class="empty-state py-4">
+                <p class="text-dark-200/40 text-sm">Belum ada dompet</p>
+                <a href="#wallets" class="text-primary-400 text-sm mt-1 hover:text-primary-300">+ Tambah Dompet</a>
+            </div>`;
+            return;
+        }
+
+        const typeIcon = { bank: '🏦', ewallet: '📱', credit: '💳' };
+        el.innerHTML = wallets.map(w => {
+            const bal = parseFloat(w.balance ?? w.starting_balance ?? 0);
+            const isNeg = bal < 0;
+            return `
+            <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors hover:bg-white/5 cursor-pointer" onclick="app.navigate('wallets')">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(255,255,255,0.06)">
+                    ${typeIcon[w.type] || '💰'}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">${w.name}</p>
+                    <p class="text-xs text-dark-200/40 capitalize">${w.type}</p>
+                </div>
+                <span class="text-sm font-semibold flex-shrink-0 ${isNeg ? 'text-red-400' : 'text-emerald-400'}">${formatCurrency(bal)}</span>
+            </div>`;
+        }).join('');
+    },
+
+    renderPlanning(plans) {
+        const el = document.getElementById('dash-planning');
+        if (!el) return;
+
+        if (!plans || plans.length === 0) {
+            el.innerHTML = `<div class="empty-state py-4">
+                <p class="text-dark-200/40 text-sm">Belum ada planning aktif</p>
+                <a href="#planning" class="text-primary-400 text-sm mt-1 hover:text-primary-300">+ Tambah Goal</a>
+            </div>`;
+            return;
+        }
+
+        // Show max 3 active plans
+        el.innerHTML = plans.slice(0, 3).map(p => {
+            const pct = Math.min(100, parseFloat(p.progress_pct) || 0);
+            const color = pct >= 60 ? '#10b981' : pct >= 30 ? '#f59e0b' : '#ef4444';
+            const info = p.monthly_needed
+                ? `Nabung/bln: ${formatCurrency(p.monthly_needed)}`
+                : p.estimated_months
+                    ? `~${p.estimated_months} bln lagi`
+                    : `${formatCurrency(p.saved_amount)} / ${formatCurrency(p.target_amount)}`;
+            return `
+            <div class="group cursor-pointer" onclick="app.navigate('planning')">
+                <div class="flex items-center gap-2.5 mb-1.5">
+                    <span class="text-lg leading-none">${p.icon || '🎯'}</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-white truncate">${p.name}</p>
+                        <p class="text-xs text-dark-200/40">${info}</p>
+                    </div>
+                    <span class="text-xs font-semibold flex-shrink-0" style="color:${color}">${pct}%</span>
+                </div>
+                <div class="w-full bg-white/5 rounded-full h-1.5">
+                    <div class="h-1.5 rounded-full transition-all" style="width:${pct}%;background:${color}"></div>
+                </div>
+            </div>`;
+        }).join('');
+
+        if (plans.length > 3) {
+            el.innerHTML += `<a href="#planning" class="block text-center text-xs text-primary-400 hover:text-primary-300 mt-2 pt-2 border-t border-white/5">+${plans.length - 3} goal lainnya →</a>`;
+        }
     }
 };

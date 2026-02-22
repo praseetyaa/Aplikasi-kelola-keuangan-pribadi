@@ -229,5 +229,31 @@ const api = {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Gagal menyimpan settings');
         return data;
+    },
+
+    // Planning / Wishlist
+    async getPlanning(status) {
+        const qs = status ? `?status=${status}` : '';
+        return this.request(`planning.php${qs}`);
+    },
+
+    async createPlanning(data) {
+        return this.request('planning.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async updatePlanning(id, data) {
+        return this.request(`planning.php?id=${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async deletePlanning(id) {
+        return this.request(`planning.php?id=${id}`, {
+            method: 'DELETE'
+        });
     }
 };
