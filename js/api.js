@@ -255,5 +255,25 @@ const api = {
         return this.request(`planning.php?id=${id}`, {
             method: 'DELETE'
         });
+    },
+
+    // System Update
+    async getLocalVersion() {
+        return this.request('update.php?action=local_version');
+    },
+
+    async checkUpdate() {
+        return this.request('update.php?action=check');
+    },
+
+    async runMigrations() {
+        return this.request('update.php?action=migrate', { method: 'POST', body: '{}' });
+    },
+
+    async applyUpdate(data) {
+        return this.request('update.php?action=apply', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
     }
 };

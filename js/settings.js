@@ -48,6 +48,7 @@ const settingsPage = {
                         <option value="tampilan">🎨 Tampilan & Tema</option>
                         <option value="akun">👤 Kelola Akun</option>
                         <option value="api">🔌 Integrasi & API</option>
+                        <option value="pembaruan">🔄 Pembaruan Sistem</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-dark-200/50">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -325,6 +326,64 @@ const settingsPage = {
                     </div>
                 </form>
             </div>
+
+            <!-- Pembaruan Section -->
+            <div id="section-pembaruan" class="settings-section hidden max-w-3xl space-y-5">
+
+                <!-- Versi Saat Ini -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                        Informasi Versi
+                    </h3>
+                    <div id="update-version-info" class="space-y-3">
+                        <div class="skeleton h-5 w-48 rounded"></div>
+                        <div class="skeleton h-5 w-36 rounded"></div>
+                    </div>
+                </div>
+
+                <!-- Cek Pembaruan -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-start justify-between gap-4 mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                                <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                Cek Pembaruan
+                            </h3>
+                            <p class="text-xs text-dark-200/40 mt-1">Cek versi terbaru dari GitHub</p>
+                        </div>
+                        <button id="btn-check-update" onclick="settingsPage.checkUpdate()" class="btn-secondary px-4 py-2 text-sm flex-shrink-0 flex items-center gap-2">
+                            <span class="btn-text flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                Cek Sekarang
+                            </span>
+                            <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <!-- Status hasil cek -->
+                    <div id="update-check-result" class="hidden">
+                        <!-- filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Log Migrasi DB -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-base font-semibold text-white mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8-4s8 1.79 8 4"/></svg>
+                        Riwayat Migrasi Database
+                    </h3>
+                    <div id="update-migration-log" class="space-y-1.5">
+                        <div class="skeleton h-4 w-full rounded"></div>
+                        <div class="skeleton h-4 w-3/4 rounded"></div>
+                    </div>
+                    <button onclick="settingsPage.runMigrations()" class="mt-4 text-xs text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        Jalankan Migrasi Pending
+                    </button>
+                </div>
+
+            </div>
         </div>`;
 
         this.loadSettings();
@@ -339,6 +398,10 @@ const settingsPage = {
         if (sectionId === 'tampilan') subtitle.textContent = 'Kustomisasi tampilan aplikasi';
         if (sectionId === 'akun') subtitle.textContent = 'Kelola profil dan keamanan akun';
         if (sectionId === 'api') subtitle.textContent = 'Konfigurasi layanan pihak ketiga';
+        if (sectionId === 'pembaruan') {
+            subtitle.textContent = 'Pembaruan & migrasi database';
+            this.loadUpdateInfo();
+        }
     },
 
     async loadSettings() {
@@ -635,6 +698,178 @@ const settingsPage = {
                     toggleBtnLoading(testBtn, false);
                 }
             });
+        }
+    },
+
+    // ────────────────────────────────
+    // Update System Methods
+    // ────────────────────────────────
+    async loadUpdateInfo() {
+        const versionEl = document.getElementById('update-version-info');
+        const migLog = document.getElementById('update-migration-log');
+        if (!versionEl) return;
+
+        try {
+            const data = await api.getLocalVersion();
+
+            versionEl.innerHTML = `
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/5 rounded-xl p-3">
+                        <p class="text-xs text-dark-200/40 mb-0.5">Versi Aplikasi</p>
+                        <p class="text-lg font-bold text-white font-mono">v${data.version}</p>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-3">
+                        <p class="text-xs text-dark-200/40 mb-0.5">Versi Database</p>
+                        <p class="text-lg font-bold text-white font-mono">v${data.db_version}</p>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-3">
+                        <p class="text-xs text-dark-200/40 mb-0.5">Tanggal Rilis</p>
+                        <p class="text-sm font-medium text-white">${data.release_date || '-'}</p>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-3">
+                        <p class="text-xs text-dark-200/40 mb-0.5">Repository</p>
+                        <a href="https://github.com/${data.github_repo}" target="_blank" 
+                           class="text-sm font-medium text-primary-400 hover:text-primary-300 truncate block">${data.github_repo || '-'}</a>
+                    </div>
+                </div>
+                ${!data.can_auto_update ? `<div class="mt-3 px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs text-amber-400">
+                    ⚠️ Auto-update tidak tersedia (direktori tidak writable atau PHP exec() dinonaktifkan). Update manual diperlukan.
+                </div>` : ''}
+            `;
+
+            // Migrasi log
+            if (data.migrations && data.migrations.length > 0) {
+                migLog.innerHTML = data.migrations.map(m => `
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="text-emerald-400">✓</span>
+                        <span class="font-mono text-white/60">v${m.version}</span>
+                        <span class="text-dark-200/40">${m.name}</span>
+                        <span class="ml-auto text-dark-200/30">${m.applied_at?.split(' ')[0] || ''}</span>
+                    </div>
+                `).join('');
+            } else {
+                migLog.innerHTML = '<p class="text-xs text-dark-200/40">Belum ada riwayat migrasi</p>';
+            }
+        } catch (err) {
+            versionEl.innerHTML = `<p class="text-red-400 text-sm">${err.message}</p>`;
+        }
+    },
+
+    async checkUpdate() {
+        const btn = document.getElementById('btn-check-update');
+        const result = document.getElementById('update-check-result');
+        if (!btn || !result) return;
+
+        toggleBtnLoading(btn, true);
+        result.classList.add('hidden');
+
+        try {
+            const data = await api.checkUpdate();
+
+            if (data.error && !data.latest_version) {
+                result.innerHTML = `
+                    <div class="flex items-start gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+                        <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        <p class="text-sm text-red-400">${data.error}</p>
+                    </div>`;
+                result.classList.remove('hidden');
+                return;
+            }
+
+            if (!data.has_update) {
+                result.innerHTML = `
+                    <div class="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div>
+                            <p class="text-sm font-semibold text-emerald-400">Aplikasi sudah versi terbaru ✨</p>
+                            <p class="text-xs text-dark-200/40 mt-0.5">v${data.current_version} adalah yang terbaru</p>
+                        </div>
+                    </div>`;
+            } else {
+                // Parse changelog markdown sederhana
+                const changelog = (data.release_body || '')
+                    .replace(/##\s/g, '<br><strong class="text-white">')
+                    .replace(/\n- /g, '<br>• ')
+                    .replace(/\n/g, '<br>');
+
+                result.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-4 rounded-xl bg-primary-500/10 border border-primary-500/30">
+                            <svg class="w-5 h-5 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-white">Pembaruan tersedia: <span class="text-primary-400">v${data.latest_version}</span></p>
+                                <p class="text-xs text-dark-200/40">${data.release_name || ''} · ${data.published_at?.split('T')[0] || ''}</p>
+                            </div>
+                        </div>
+
+                        ${data.release_body ? `<div class="bg-white/5 rounded-xl p-4">
+                            <p class="text-xs font-semibold text-dark-200/50 uppercase tracking-wider mb-2">Changelog</p>
+                            <div class="text-sm text-dark-200/70 leading-relaxed">${changelog}</div>
+                        </div>` : ''}
+
+                        <div class="flex items-center gap-3">
+                            ${data.can_auto_update ? `
+                            <button onclick="settingsPage.applyUpdate('${data.latest_tag}', '${data.download_url}')" 
+                                    id="btn-apply-update"
+                                    class="btn-primary px-5 py-2.5 flex items-center gap-2">
+                                <span class="btn-text flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
+                                    Update Sekarang
+                                </span>
+                                <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
+                            </button>` : ''}
+                            <a href="${data.html_url}" target="_blank" class="btn-secondary px-4 py-2.5 text-sm flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Lihat di GitHub
+                            </a>
+                        </div>
+                    </div>`;
+            }
+            result.classList.remove('hidden');
+
+        } catch (err) {
+            result.innerHTML = `<p class="text-red-400 text-sm">${err.message}</p>`;
+            result.classList.remove('hidden');
+        } finally {
+            toggleBtnLoading(btn, false);
+        }
+    },
+
+    async applyUpdate(tag, downloadUrl) {
+        const btn = document.getElementById('btn-apply-update');
+        if (btn) toggleBtnLoading(btn, true);
+
+        const confirmed = confirm(`Update ke versi ${tag.replace('v', '')}?\n\nProses ini akan:\n• Download file terbaru dari GitHub\n• Mengganti file aplikasi\n• Menjalankan migrasi database\n\nLanjutkan?`);
+        if (!confirmed) {
+            if (btn) toggleBtnLoading(btn, false);
+            return;
+        }
+
+        try {
+            showToast('Mengunduh dan menerapkan update...', 'info');
+            const res = await api.applyUpdate({ latest_tag: tag, download_url: downloadUrl });
+            showToast(res.message, 'success');
+
+            if (res.migrations?.applied?.length > 0) {
+                showToast(`Migrasi DB: ${res.migrations.applied.join(', ')}`, 'info');
+            }
+
+            // Reload halaman setelah 2 detik
+            setTimeout(() => location.reload(), 2000);
+        } catch (err) {
+            showToast(err.message, 'error');
+            if (btn) toggleBtnLoading(btn, false);
+        }
+    },
+
+    async runMigrations() {
+        try {
+            showToast('Menjalankan migrasi...', 'info');
+            const res = await api.runMigrations();
+            showToast(res.message, res.success ? 'success' : 'error');
+            this.loadUpdateInfo();
+        } catch (err) {
+            showToast(err.message, 'error');
         }
     }
 };

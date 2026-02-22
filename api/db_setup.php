@@ -129,6 +129,17 @@ try {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )");
 
+    // DB Migrations tracking table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS db_migrations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        version INT NOT NULL UNIQUE,
+        name VARCHAR(200) NOT NULL,
+        applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    // Mark baseline migrations as applied (v001 = base schema, v002 = planning table)
+    $pdo->exec("INSERT IGNORE INTO db_migrations (version, name) VALUES (1, 'base_schema'), (2, 'add_planning_table')");
+
     // Insert default settings
     $pdo->exec("INSERT IGNORE INTO site_settings (setting_key, setting_value) VALUES 
         ('app_name', 'DuitKu'),
