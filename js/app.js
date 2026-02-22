@@ -595,6 +595,49 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
+/**
+ * Format angka ke string seperti "10.000.000" (titik = pemisah ribuan, tanpa Rp)
+ */
+function formatInputNumber(value) {
+    const num = String(value).replace(/\D/g, '');
+    if (!num) return '';
+    return parseInt(num, 10).toLocaleString('id-ID');
+}
+
+/**
+ * Bersihkan string format "10.000" → angka 10000
+ */
+function parseInputNumber(value) {
+    const clean = String(value).replace(/\./g, '').replace(/,/g, '').trim();
+    return clean === '' ? 0 : (parseInt(clean, 10) || 0);
+}
+
+/**
+ * Pasang listener auto-format rupiah pada sebuah input element.
+ * Nilai mentah (angka) bisa diambil lewat parseInputNumber(el.value).
+ */
+function attachCurrencyInput(el) {
+    if (!el) return;
+    el.setAttribute('inputmode', 'numeric');
+    el.setAttribute('autocomplete', 'off');
+
+    el.addEventListener('input', function () {
+        const cursorPos = this.selectionStart;
+        const oldLen = this.value.length;
+        const raw = this.value.replace(/\D/g, '');
+        const formatted = raw ? parseInt(raw, 10).toLocaleString('id-ID') : '';
+        this.value = formatted;
+        // Pertahankan posisi kursor
+        const diff = formatted.length - oldLen;
+        try { this.setSelectionRange(cursorPos + diff, cursorPos + diff); } catch (_) { }
+    });
+
+    el.addEventListener('blur', function () {
+        const raw = this.value.replace(/\D/g, '');
+        this.value = raw ? parseInt(raw, 10).toLocaleString('id-ID') : '';
+    });
+}
+
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat('id-ID', {

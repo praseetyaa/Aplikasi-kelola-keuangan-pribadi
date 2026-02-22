@@ -254,7 +254,10 @@ const transactionsPage = {
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Jumlah (Rp)</label>
-                    <input type="number" id="tx-amount" class="input-field w-full" placeholder="0" min="1" required value="${tx?.amount || ''}">
+                    <input type="text" id="tx-amount" class="input-field w-full" placeholder="0" required
+                        inputmode="numeric" autocomplete="off"
+                        oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.')"
+                        value="${tx?.amount ? formatInputNumber(tx.amount) : ''}">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Kategori</label>
@@ -290,6 +293,7 @@ const transactionsPage = {
         `;
 
         showModal(isEdit ? 'Edit Transaksi' : 'Tambah Transaksi', body);
+        attachCurrencyInput(document.getElementById('tx-amount'));
 
         document.getElementById('tx-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -298,7 +302,7 @@ const transactionsPage = {
 
             const data = {
                 type: document.getElementById('tx-type').value,
-                amount: parseFloat(document.getElementById('tx-amount').value),
+                amount: parseInputNumber(document.getElementById('tx-amount').value),
                 category_id: document.getElementById('tx-category').value || null,
                 wallet_id: document.getElementById('tx-wallet').value || null,
                 description: document.getElementById('tx-desc').value,

@@ -155,7 +155,10 @@ const walletsPage = {
                 </div>
                 <div id="wallet-balance-container">
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Saldo Awal (Rp)</label>
-                    <input type="number" id="wallet-starting-balance" class="input-field w-full" placeholder="0" value="${wallet?.starting_balance || ''}">
+                    <input type="text" id="wallet-starting-balance" class="input-field w-full" placeholder="0"
+                        inputmode="numeric" autocomplete="off"
+                        oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.')"
+                        value="${wallet?.starting_balance ? formatInputNumber(wallet.starting_balance) : ''}">
                     <p class="text-xs text-dark-200/40 mt-1">Saldo saat ini akan dihitung otomatis dari riwayat transaksi.</p>
                 </div>
                 <div class="flex gap-3 pt-2">
@@ -171,6 +174,7 @@ const walletsPage = {
         `;
 
         showModal(isEdit ? 'Edit Dompet' : 'Tambah Dompet', body);
+        attachCurrencyInput(document.getElementById('wallet-starting-balance'));
 
         // Adjust labels based on selected type
         const typeSelect = document.getElementById('wallet-type');
@@ -197,7 +201,7 @@ const walletsPage = {
             const data = {
                 name: document.getElementById('wallet-name').value,
                 type: document.getElementById('wallet-type').value,
-                starting_balance: parseFloat(balanceVal) || 0
+                starting_balance: parseInputNumber(document.getElementById('wallet-starting-balance').value)
             };
 
             try {
