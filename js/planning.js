@@ -261,13 +261,13 @@ const planningPage = {
         const icons = ['🎯', '📱', '💻', '🏠', '🚗', '✈️', '👜', '⌚', '📷', '🎮', '🎸', '🏋️', '💍', '🏖️', '📚', '🎓'];
 
         const iconPicker = icons.map(ic => `
-        < button type = "button" onclick = "planningPage._pickIcon(this,'${ic}')"
-class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl transition-all hover:bg-white/10 ${plan?.icon === ic ? 'bg-white/15 ring-1 ring-primary-500/60' : ''}" >
+            <button type="button" onclick="planningPage._pickIcon(this,'${ic}')"
+class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl transition-all hover:bg-white/10 ${plan?.icon === ic ? 'bg-white/15 ring-1 ring-primary-500/60' : ''}">
     ${ic}
-            </button > `).join('');
+            </button>`).join('');
 
         const body = `
-    < form id = "plan-form" class="space-y-4" >
+    <form id="plan-form" class="space-y-4">
         <input type="hidden" id="plan-icon-val" value="${plan?.icon || '🎯'}">
 
             <!-- Icon picker -->
@@ -408,8 +408,8 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const pct = Math.min(100, Math.round((saved / target) * 100));
         let rows = [];
 
-        rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Progress</span><span class="font-semibold text-white">${pct}%</span></div > `);
-        rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-white">${formatCurrency(remain)}</span></div > `);
+        rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Progress</span><span class="font-semibold text-white">${pct}%</span></div>`);
+        rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-white">${formatCurrency(remain)}</span></div>`);
 
         if (dlVal) {
             const now = new Date();
@@ -417,11 +417,11 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             const days = Math.ceil((dl - now) / 86400000);
             const months = Math.max(1, Math.ceil(days / 30));
             const perMonth = remain > 0 ? Math.ceil(remain / months) : 0;
-            rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-white">${months} bulan (${days} hari)</span></div > `);
+            rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-white">${months} bulan (${days} hari)</span></div>`);
             if (remain > 0) {
-                rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div > `);
+                rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div>`);
             } else {
-                rows.push(`< div class="text-emerald-400 font-semibold text-center" >🎉 Target sudah tercapai!</div > `);
+                rows.push(`<div class="text-emerald-400 font-semibold text-center">🎉 Target sudah tercapai!</div>`);
             }
         } else if (monthly > 0 && remain > 0) {
             const estMonths = Math.ceil(remain / monthly);
@@ -444,7 +444,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         if (!plan) return;
 
         const remain = Math.max(0, parseFloat(plan.target_amount) - parseFloat(plan.saved_amount));
-        const suggestAmount = plan.monthly_saving > 0 ? plan.monthly_saving : remain;
+        const suggestAmount = plan.monthly_needed > 0 ? plan.monthly_needed : (plan.monthly_saving > 0 ? plan.monthly_saving : remain);
         const currentMonth = getCurrentMonth();
 
         const body = `
@@ -531,9 +531,24 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
     async markDone(id) {
         const plan = this.plans.find(p => p.id == id);
         if (!plan) return;
-        if (!confirm(`Tandai "${plan.name}" sebagai selesai ? 🎉`)) return;
+
+        const body = `
+            <div class="text-center py-2">
+                <div class="text-5xl mb-4">🎉</div>
+                <p class="text-white text-lg font-medium mb-2">Selesaikan Goal?</p>
+                <p class="text-dark-200/60 text-sm">"${plan.name}" akan ditandai sebagai selesai.</p>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
+                <button onclick="planningPage._confirmMarkDone(${Number(id)})" class="btn-primary flex-1">Selesai</button>
+            </div>`;
+        showModal('Konfirmasi', body);
+    },
+
+    async _confirmMarkDone(id) {
+        closeModal();
         try {
-            await api.updatePlanning(id, { status: 'completed' });
+            await api.updatePlanning(Number(id), { status: 'completed' });
             showToast('Selamat! Goal tercapai! 🎉', 'success');
             await this.loadPlans();
         } catch (err) {
@@ -544,9 +559,24 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
     async deletePlan(id) {
         const plan = this.plans.find(p => p.id == id);
         if (!plan) return;
-        if (!confirm(`Hapus goal "${plan.name}" ? Data ini tidak bisa dikembalikan.`)) return;
+
+        const body = `
+            <div class="text-center py-2">
+                <div class="text-5xl mb-4">🗑️</div>
+                <p class="text-white text-lg font-medium mb-2">Hapus Goal?</p>
+                <p class="text-dark-200/60 text-sm">"${plan.name}" akan dihapus permanen.</p>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
+                <button onclick="planningPage._confirmDelete(${Number(id)})" class="btn-primary flex-1" style="background:#ef4444">Hapus</button>
+            </div>`;
+        showModal('Konfirmasi', body);
+    },
+
+    async _confirmDelete(id) {
+        closeModal();
         try {
-            await api.deletePlanning(id);
+            await api.deletePlanning(Number(id));
             showToast('Goal dihapus', 'info');
             await this.loadPlans();
         } catch (err) {

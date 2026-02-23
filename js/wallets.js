@@ -224,9 +224,26 @@ const walletsPage = {
     },
 
     async deleteWallet(id) {
-        if (!confirm('Hapus dompet ini? Transaksi yang terhubung akan kehilangan referensi dompet (tapi tidak terhapus).')) return;
+        const wallet = this.wallets.find(w => w.id == id);
+        if (!wallet) return;
+
+        const body = `
+            <div class="text-center py-2">
+                <div class="text-5xl mb-4">🗑️</div>
+                <p class="text-white text-lg font-medium mb-2">Hapus Dompet?</p>
+                <p class="text-dark-200/60 text-sm">"${wallet.name}" akan dihapus. Transaksi yang terhubung akan kehilangan referensi dompet (tapi tidak terhapus).</p>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
+                <button onclick="walletsPage._confirmDelete(${Number(id)})" class="btn-primary flex-1" style="background:#ef4444">Hapus</button>
+            </div>`;
+        showModal('Konfirmasi', body);
+    },
+
+    async _confirmDelete(id) {
+        closeModal();
         try {
-            await api.deleteWallet(id);
+            await api.deleteWallet(Number(id));
             showToast('Dompet dihapus', 'success');
             this.render(document.getElementById('page-content'));
         } catch (err) {

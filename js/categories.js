@@ -154,8 +154,25 @@ const categoriesPage = {
         document.getElementById('cat-color').value = color;
     },
     async deleteCategory(id) {
-        if (!confirm('Hapus kategori ini?')) return;
-        try { await api.deleteCategory(id); showToast('Kategori dihapus', 'success'); this.loadCategories(); }
+        const cat = this.categories.find(c => c.id == id);
+        if (!cat) return;
+
+        const body = `
+            <div class="text-center py-2">
+                <div class="text-5xl mb-4">🗑️</div>
+                <p class="text-white text-lg font-medium mb-2">Hapus Kategori?</p>
+                <p class="text-dark-200/60 text-sm">"${cat.name}" akan dihapus permanen.</p>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
+                <button onclick="categoriesPage._confirmDelete(${Number(id)})" class="btn-primary flex-1" style="background:#ef4444">Hapus</button>
+            </div>`;
+        showModal('Konfirmasi', body);
+    },
+
+    async _confirmDelete(id) {
+        closeModal();
+        try { await api.deleteCategory(Number(id)); showToast('Kategori dihapus', 'success'); this.loadCategories(); }
         catch (err) { showToast(err.message, 'error'); }
     }
 };

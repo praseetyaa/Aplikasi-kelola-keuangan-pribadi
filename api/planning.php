@@ -147,6 +147,8 @@ if ($method === 'POST') {
 
 if ($method === 'PUT') {
     if (!$id) jsonResponse(['error' => 'ID diperlukan'], 400);
+    $id = (int)$id;
+    $user_id = (int)$user_id;
     $chk = $pdo->prepare("SELECT id FROM planning WHERE id=? AND user_id=?");
     $chk->execute([$id,$user_id]);
     if (!$chk->fetch()) jsonResponse(['error' => 'Tidak ditemukan'], 404);
@@ -170,6 +172,8 @@ if ($method === 'PUT') {
 
 if ($method === 'DELETE') {
     if (!$id) jsonResponse(['error'=>'ID diperlukan'],400);
+    $id = (int)$id;
+    $user_id = (int)$user_id;
     $stmt=$pdo->prepare("DELETE FROM planning WHERE id=? AND user_id=?");
     $stmt->execute([$id,$user_id]);
     if ($stmt->rowCount()===0) jsonResponse(['error'=>'Tidak ditemukan'],404);

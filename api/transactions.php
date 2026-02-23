@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/db.php';
 $userId = getAuthUser();
 $method = $_SERVER['REQUEST_METHOD'];
@@ -70,7 +70,7 @@ switch ($method) {
         jsonResponse($stmt->fetch());
         break;
     case 'DELETE':
-        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
         if (!$id) { jsonResponse(['error' => 'ID required'], 400); }
         $stmt = $pdo->prepare("DELETE FROM transactions WHERE id=? AND user_id=?");
         $stmt->execute([$id, $userId]);

@@ -61,7 +61,7 @@ switch ($method) {
         break;
 
     case 'DELETE':
-        $id = $_GET['id'] ?? null;
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
         if (!$id)
             jsonResponse(['error' => 'ID required'], 400);
 

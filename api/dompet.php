@@ -65,7 +65,7 @@ try {
             jsonResponse($wallet);
             break;
         case 'DELETE':
-            $id = isset($_GET['id']) ? $_GET['id'] : null;
+            $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
             if (!$id) { jsonResponse(['error' => 'ID required'], 400); }
             $stmt = $pdo->prepare("DELETE FROM wallets WHERE id = ? AND user_id = ?");
             $stmt->execute([$id, $userId]);

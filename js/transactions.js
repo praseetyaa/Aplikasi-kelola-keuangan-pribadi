@@ -11,6 +11,7 @@ const transactionsPage = {
     },
     categories: [],
     wallets: [],
+    transactions: [],
     offset: 0,
     limit: 20,
 
@@ -129,6 +130,12 @@ const transactionsPage = {
         try {
             const params = { ...this.filters, limit: this.limit, offset: this.offset };
             const res = await api.getTransactions(params);
+
+            if (!append) {
+                this.transactions = res.data || [];
+            } else {
+                this.transactions = [...this.transactions, ...(res.data || [])];
+            }
 
             const list = document.getElementById('tx-list');
             if (!list) return;
@@ -343,9 +350,26 @@ const transactionsPage = {
     },
 
     async deleteTransaction(id) {
-        if (!confirm('Hapus transaksi ini?')) return;
+        const tx = this.transactions.find(t => t.id == id);
+        if (!tx) return;
+
+        const body = `
+            <div class="text-center py-2">
+                <div class="text-5xl mb-4">🗑️</div>
+                <p class="text-white text-lg font-medium mb-2">Hapus Transaksi?</p>
+                <p class="text-dark-200/60 text-sm">${tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} ${formatCurrency(tx.amount)} pada ${formatDate(tx.date)} akan dihapus.</p>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
+                <button onclick="transactionsPage._confirmDelete(${Number(id)})" class="btn-primary flex-1" style="background:#ef4444">Hapus</button>
+            </div>`;
+        showModal('Konfirmasi', body);
+    },
+
+    async _confirmDelete(id) {
+        closeModal();
         try {
-            await api.deleteTransaction(id);
+            await api.deleteTransaction(Number(id));
             showToast('Transaksi dihapus', 'success');
             this.offset = 0;
             this.loadTransactions();

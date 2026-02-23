@@ -153,7 +153,7 @@ const api = {
     },
 
     async deleteTransaction(id) {
-        return this.request(`transactions.php?id=${id}`, {
+        return this.request(`transactions.php?id=${Number(id)}`, {
             method: 'DELETE'
         });
     },
@@ -179,7 +179,7 @@ const api = {
     },
 
     async deleteCategory(id) {
-        return this.request(`categories.php?id=${id}`, {
+        return this.request(`categories.php?id=${Number(id)}`, {
             method: 'DELETE'
         });
     },
@@ -204,7 +204,7 @@ const api = {
     },
 
     async deleteWallet(id) {
-        return this.request(`dompet.php?id=${id}`, {
+        return this.request(`dompet.php?id=${Number(id)}`, {
             method: 'DELETE'
         });
     },
@@ -245,14 +245,14 @@ const api = {
     },
 
     async updatePlanning(id, data) {
-        return this.request(`planning.php?id=${id}`, {
+        return this.request(`planning.php?id=${Number(id)}`, {
             method: 'PUT',
             body: JSON.stringify(data)
         });
     },
 
     async deletePlanning(id) {
-        return this.request(`planning.php?id=${id}`, {
+        return this.request(`planning.php?id=${Number(id)}`, {
             method: 'DELETE'
         });
     },
