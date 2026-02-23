@@ -32,6 +32,11 @@ const app = {
         } finally {
             this.hidePreloader();
         }
+        
+        // Safety: ensure body is visible after 5 seconds
+        setTimeout(() => {
+            document.body.style.visibility = 'visible';
+        }, 5000);
     },
 
     initPWA() {
@@ -109,18 +114,23 @@ const app = {
 
     hidePreloader() {
         const preloader = document.getElementById('app-preloader');
+        const enablePreload = localStorage.getItem('enable_preload');
+        
+        // Restore body visibility immediately if preloader is disabled
+        if (enablePreload === 'false') {
+            document.body.style.visibility = 'visible';
+            if (preloader) preloader.style.display = 'none';
+            return;
+        }
+        
+        // Otherwise show preloader then hide
+        document.body.style.visibility = 'visible';
         if (preloader) {
-            const enablePreload = localStorage.getItem('enable_preload');
-            if (enablePreload === 'false') {
-                preloader.style.display = 'none';
-            } else {
-                // Minimum display time for smooth animation feel
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    preloader.style.pointerEvents = 'none';
-                    setTimeout(() => preloader.style.display = 'none', 600);
-                }, 800);
-            }
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+                setTimeout(() => preloader.style.display = 'none', 600);
+            }, 800);
         }
     },
 
