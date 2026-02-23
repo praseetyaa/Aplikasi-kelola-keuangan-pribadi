@@ -85,7 +85,7 @@
 
 1. **Clone Repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/praseetyaa/Aplikasi-kelola-keuangan-pribadi.git
    ```
 
 2. **Setup Database**
