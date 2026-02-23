@@ -42,6 +42,15 @@ const app = {
                 .catch((err) => console.log('SW error:', err));
         }
 
+        // Set status bar to blend with navbar on Android
+        if (navigator.userAgent.match(/Android/i)) {
+            document.documentElement.style.setProperty('--statusbar-bg', '#0f172a');
+            if (window.statusBar) {
+                window.statusBar.style.backgroundColor = 'transparent';
+                window.statusBar.style.background = 'transparent';
+            }
+        }
+
         // PWA Install prompt
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -123,6 +132,7 @@ const app = {
             const tagline = settings.app_tagline || 'Keuangan Pribadi';
             const logo = settings.app_logo || '';
             const themeColor = settings.theme_color || '';
+            const iconVersion = settings.icon_version || '1';
 
             // Update page title
             document.title = name;
@@ -142,6 +152,18 @@ const app = {
                     });
                 }
                 if (settings.theme_color) this.applyThemeColor(settings.theme_color);
+
+                // Update PWA icon with version
+                const iconVersionParam = '?v=' + iconVersion;
+                document.querySelectorAll('link[rel="apple-touch-icon"]').forEach(el => {
+                    el.href = 'icon.php?size=192' + iconVersionParam;
+                });
+                
+                // Update manifest link if exists
+                let manifestLink = document.querySelector('link[rel="manifest"]');
+                if (manifestLink) {
+                    manifestLink.href = 'manifest.json' + iconVersionParam;
+                }
 
                 // Keep localStorage in sync with DB setup
                 if (settings.theme_mode) {

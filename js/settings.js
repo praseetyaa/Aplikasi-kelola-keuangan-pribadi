@@ -415,7 +415,7 @@ const settingsPage = {
 
             if (settings.app_logo) {
                 document.getElementById('logo-current').classList.remove('hidden');
-                document.getElementById('logo-preview-img').src = settings.app_logo;
+                document.getElementById('logo-preview-img').src = settings.app_logo + '?t=' + Date.now();
             } else {
                 document.getElementById('logo-current').classList.add('hidden');
             }

@@ -161,6 +161,9 @@ switch ($method) {
                     $logoPath = 'uploads/' . $filename;
                     $stmt = $pdo->prepare("UPDATE site_settings SET setting_value = ? WHERE setting_key = 'app_logo'");
                     $stmt->execute([$logoPath]);
+                    // Increment icon version to refresh PWA icon
+                    $pdo->exec("UPDATE site_settings SET setting_value = icon_value + 1 FROM (SELECT CAST(setting_value AS UNSIGNED) as icon_value FROM site_settings WHERE setting_key = 'icon_version') t WHERE setting_key = 'icon_version'");
+                    $pdo->exec("UPDATE site_settings SET setting_value = COALESCE(CAST(setting_value AS UNSIGNED), 0) + 1 WHERE setting_key = 'icon_version'");
                 }
                 else {
                     jsonResponse(['error' => 'Gagal mengupload file.'], 500);
@@ -177,6 +180,7 @@ switch ($method) {
                     }
                 }
                 $pdo->exec("UPDATE site_settings SET setting_value = '' WHERE setting_key = 'app_logo'");
+                $pdo->exec("UPDATE site_settings SET setting_value = COALESCE(CAST(setting_value AS UNSIGNED), 0) + 1 WHERE setting_key = 'icon_version'");
             }
 
             $stmt = $pdo->query("SELECT setting_key, setting_value FROM site_settings");

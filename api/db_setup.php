@@ -145,6 +145,7 @@ try {
         ('app_name', 'DuitKu'),
         ('app_tagline', 'Keuangan Pribadi'),
         ('app_logo', ''),
+        ('icon_version', '1'),
         ('theme_color', ''),
         ('google_client_id', ''),
         ('smtp_host', ''),

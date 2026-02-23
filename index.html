@@ -57,12 +57,13 @@
         rel="stylesheet">
 
     <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.php">
     <link rel="apple-touch-icon" href="icon.php?size=192">
-    <meta name="theme-color" content="#10b981">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DuitKu">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -406,7 +407,7 @@
     <!-- App Shell -->
     <div id="app-container" class="hidden">
         <!-- Mobile Header -->
-        <header class="lg:hidden fixed top-0 left-0 right-0 z-30 glass-nav px-4 py-3 flex items-center justify-between">
+        <header class="lg:hidden fixed top-0 left-0 right-0 z-30 px-4 py-3 flex items-center justify-between" style="padding-top: max(12px, env(safe-area-inset-top)); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);">
             <button id="mobile-menu-btn" class="p-2 rounded-xl hover:bg-white/5 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
