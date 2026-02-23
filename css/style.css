@@ -2,19 +2,21 @@
    DuitKu - Custom Styles
    ============================================ */
 
-/* Theme Color Variables */
+/* Theme Color Variables - Default Rose */
 :root {
-    --theme-50: #ecfdf5;
-    --theme-100: #d1fae5;
-    --theme-200: #a7f3d0;
-    --theme-300: #6ee7b7;
-    --theme-400: #34d399;
-    --theme-500: #10b981;
-    --theme-600: #059669;
-    --theme-700: #047857;
-    --theme-800: #065f46;
-    --theme-900: #064e3b;
-    --theme-950: #022c22;
+    --theme-50: #fff1f2;
+    --theme-100: #ffe4e6;
+    --theme-200: #fecdd3;
+    --theme-300: #fda4af;
+    --theme-400: #fb7185;
+    --theme-500: #f43f5e;
+    --theme-600: #e11d48;
+    --theme-700: #be123c;
+    --theme-800: #9f1239;
+    --theme-900: #881337;
+    --theme-950: #4c0519;
+    
+    --theme-rgb: 244, 63, 94;
 }
 
 /* Glassmorphism cards */

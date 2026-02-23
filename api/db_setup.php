@@ -146,7 +146,7 @@ try {
         ('app_tagline', 'Keuangan Pribadi'),
         ('app_logo', ''),
         ('icon_version', '1'),
-        ('theme_color', ''),
+        ('theme_color', '#f43f5e'),
         ('google_client_id', ''),
         ('smtp_host', ''),
         ('smtp_port', '587'),
@@ -154,7 +154,7 @@ try {
         ('smtp_pass', ''),
         ('smtp_from_email', ''),
         ('smtp_from_name', ''),
-        ('theme_mode', 'system'),
+        ('theme_mode', 'dark'),
         ('enable_preload', 'true')
     ");
 

@@ -8,7 +8,7 @@ const settingsPage = {
 
     // Curated color palette presets
     presets: [
-        { name: 'Emerald', color: '#10b981', icon: '🌿' },
+        { name: 'Rose', color: '#f43f5e', icon: '🌹' },
         { name: 'Blue', color: '#3b82f6', icon: '💎' },
         { name: 'Violet', color: '#8b5cf6', icon: '🔮' },
         { name: 'Rose', color: '#f43f5e', icon: '🌹' },
@@ -131,19 +131,12 @@ const settingsPage = {
                             <!-- Color Picker Button -->
                             <div class="flex-shrink-0">
                                 <label for="setting-theme-picker" class="block w-14 h-14 rounded-xl cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors relative overflow-hidden" style="padding: 2px;">
-                                    <input type="color" id="setting-theme-picker" value="#10b981" 
-                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
-                                        oninput="settingsPage.onPickerChange(this.value)">
-                                    <div id="setting-theme-picker-bg" class="w-full h-full rounded-lg" style="background-color: #10b981;"></div>
-                                </label>
-                            </div>
-                            
-                            <!-- HEX Info & Palette -->
-                            <div class="flex-1 w-full min-w-0">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-xs text-dark-200/40 font-mono">HEX</span>
-                                    <input type="text" id="setting-theme-hex" value="#10b981" maxlength="7"
-                                        class="input-field text-sm font-mono w-28 py-1.5 px-3" placeholder="#10b981"
+                                    <input type="color" id="setting-theme-picker" value="#f43f5e" 
+                                     onchange="document.getElementById('setting-theme-hex').value=this.value;document.getElementById('setting-theme-picker-bg').style.backgroundColor=this.value"
+                                     class="w-10 h-10 rounded-lg cursor-pointer border-0">
+                                     <div id="setting-theme-picker-bg" class="w-full h-full rounded-lg" style="background-color: #f43f5e;"></div>
+                                     <input type="text" id="setting-theme-hex" value="#f43f5e" maxlength="7"
+                                        class="input-field text-sm font-mono w-28 py-1.5 px-3" placeholder="#f43f5e"
                                         oninput="settingsPage.onHexInput(this.value)">
                                 </div>
                                 <div id="theme-palette-preview" class="grid grid-cols-6 sm:flex sm:flex-wrap gap-1">
@@ -421,7 +414,7 @@ const settingsPage = {
             }
 
             // Theme color
-            const color = settings.theme_color || '#10b981';
+            const color = settings.theme_color || '#f43f5e';
             document.getElementById('setting-theme-picker').value = color;
             document.getElementById('setting-theme-picker-bg').style.backgroundColor = color;
             document.getElementById('setting-theme-hex').value = color;
@@ -514,7 +507,7 @@ const settingsPage = {
     },
 
     resetTheme() {
-        const defaultColor = '#10b981';
+        const defaultColor = '#f43f5e';
         this.selectPreset(defaultColor);
         showToast('Warna direset ke default', 'info');
     },

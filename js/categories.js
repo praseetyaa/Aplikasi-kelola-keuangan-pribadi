@@ -87,7 +87,7 @@ const categoriesPage = {
     showCategoryModal(cat = null) {
         const isEdit = cat !== null;
         const emojis = ['💰', '💼', '💻', '📈', '🎁', '🍔', '🚗', '🛍️', '📄', '🎮', '🏥', '📚', '📦', '🏠', '✈️', '👕', '☕', '🎬'];
-        const colors = ['#10b981', '#06b6d4', '#8b5cf6', '#f59e0b', '#ef4444', '#f97316', '#ec4899', '#6366f1', '#a855f7', '#14b8a6', '#3b82f6', '#6b7280'];
+        const colors = ['#f43f5e', '#06b6d4', '#8b5cf6', '#f59e0b', '#ef4444', '#f97316', '#ec4899', '#6366f1', '#a855f7', '#14b8a6', '#3b82f6', '#6b7280', '#10b981'];
 
         const body = `
             <form id="cat-form" class="space-y-4">
@@ -115,7 +115,7 @@ const categoriesPage = {
                     <div class="flex flex-wrap gap-2" id="cat-color-picker">
                         ${colors.map(c => `<button type="button" class="w-8 h-8 rounded-lg hover:scale-110 transition-transform ${cat?.color === c ? 'ring-2 ring-white ring-offset-2 ring-offset-dark-800' : ''}" style="background:${c}" onclick="categoriesPage.selectColor(this,'${c}')"></button>`).join('')}
                     </div>
-                    <input type="hidden" id="cat-color" value="${cat?.color || '#10b981'}">
+                    <input type="hidden" id="cat-color" value="${cat?.color || '#f43f5e'}">
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Batal</button>

@@ -2,6 +2,14 @@
 // Reports Page
 // ============================================
 
+function getThemeColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-500').trim() || '#f43f5e';
+}
+
+function getThemeColorRgb() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '244, 63, 94';
+}
+
 const reportsPage = {
     charts: {},
     currentYear: new Date().getFullYear(),
@@ -103,7 +111,7 @@ const reportsPage = {
                 datasets: [
                     {
                         label: 'Pemasukan', data: incomeData,
-                        borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)',
+                        borderColor: getThemeColor(), backgroundColor: `rgba(${getThemeColorRgb()},0.1)`,
                         fill: true, tension: 0.4, pointRadius: 4, pointHoverRadius: 6, borderWidth: 2
                     },
                     {

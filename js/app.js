@@ -51,16 +51,16 @@ const onboarding = {
         
         document.getElementById('onboarding-slides').innerHTML = `
             <div class="mb-8">
-                <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-primary-500/20 to-emerald-500/20 flex items-center justify-center text-6xl">
+                <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[#f43f5e]/20 to-[#f43f5e]/5 flex items-center justify-center text-6xl">
                     ${slide.icon}
                 </div>
                 <h2 class="text-2xl font-bold text-white mb-3">${slide.title}</h2>
-                <p class="text-dark-200/60 text-lg">${slide.desc}</p>
+                <p class="text-white/60 text-lg">${slide.desc}</p>
             </div>
         `;
         
         dotsContainer.innerHTML = this.slides.map((_, i) => 
-            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'bg-primary-500 w-6' : 'bg-white/20'}"></div>`
+            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'bg-[#f43f5e] w-6' : 'bg-white/20'}"></div>`
         ).join('');
         
         nextBtn.textContent = this.currentIndex === this.slides.length - 1 ? 'Mulai' : 'Lanjut';
@@ -100,20 +100,42 @@ const app = {
     async init() {
         if (typeof api === 'undefined') return;
         
+        // Apply default dark mode immediately
+        document.documentElement.classList.add('dark');
+        
+        // Hide preloader and auth initially
+        document.getElementById('app-preloader').classList.add('hidden');
+        document.getElementById('auth-container').classList.add('hidden');
+        document.getElementById('onboarding-screen').classList.add('hidden');
+        
         // Check onboarding first (before any API calls)
         const seenOnboarding = localStorage.getItem('onboarding_seen');
         if (!seenOnboarding) {
-            // Show onboarding, but continue init in background
-            document.getElementById('auth-container').classList.add('hidden');
-            document.getElementById('app-preloader').style.display = 'none';
+            // Show onboarding - make body visible
             document.body.style.visibility = 'visible';
+            document.getElementById('onboarding-screen').classList.remove('hidden');
             onboarding.init();
-            // Continue with init but don't show auth yet
-            this.initOnboardingMode = true;
+            return;
         }
         
+        // Skip to auth if onboarding seen - show preloader briefly then auth
+        document.body.style.visibility = 'visible';
+        document.getElementById('auth-container').classList.remove('hidden');
+        this.showAuth();
+        return;
+    },
+
+    async initAfterOnboarding() {
+        // Show preloader for app init
+        const preloader = document.getElementById('app-preloader');
+        if (preloader) {
+            preloader.classList.remove('hidden');
+            preloader.style.display = 'flex';
+            preloader.style.opacity = '1';
+        }
+        document.body.style.visibility = 'visible';
+        
         try {
-            // Apply theme immediately if available
             const themeMode = localStorage.getItem('theme_mode');
             if (themeMode) this.applyThemeMode(themeMode);
 
@@ -136,7 +158,6 @@ const app = {
             this.hidePreloader();
         }
         
-        // Safety: ensure body is visible after 5 seconds
         setTimeout(() => {
             document.body.style.visibility = 'visible';
         }, 5000);

@@ -75,12 +75,12 @@
 </head>
 
 <body
-    class="bg-dark-50 dark:bg-dark-950 text-dark-900 dark:text-white font-sans antialiased transition-colors duration-200"
+    class="bg-dark-950 text-white font-sans antialiased transition-colors duration-200"
     style="visibility: hidden;">
 
     <!-- Preloader -->
     <div id="app-preloader"
-        class="fixed inset-0 z-[9999] bg-dark-50 dark:bg-dark-950 flex flex-col items-center justify-center transition-opacity duration-500"
+        class="hidden fixed inset-0 z-[9999] bg-dark-950 flex flex-col items-center justify-center transition-opacity duration-500"
         style="visibility: visible;">
         <div class="relative w-20 h-20 mb-4">
             <div class="absolute inset-0 border-4 border-primary-500/20 rounded-full"></div>
@@ -99,23 +99,25 @@
     </div>
 
     <!-- Onboarding Screen -->
-    <div id="onboarding-screen" class="hidden min-h-screen flex flex-col">
-        <div class="flex-1 flex flex-col items-center justify-center p-8 text-center">
+    <div id="onboarding-screen" class="hidden min-h-screen flex flex-col fixed inset-0 z-[9998] bg-dark-950 overflow-hidden">
+        <div class="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
             <div id="onboarding-slides" class="w-full max-w-sm">
                 <!-- Slides will be injected by JS -->
             </div>
         </div>
-        <div class="p-8">
-            <div class="flex justify-center gap-2 mb-6" id="onboarding-dots"></div>
-            <div class="flex gap-3">
-                <button onclick="onboarding.skip()" class="btn-secondary flex-1">Lewati</button>
-                <button onclick="onboarding.next()" id="onboarding-next-btn" class="btn-primary flex-1">Lanjut</button>
+        <div class="pb-8 px-6 w-full" style="padding-bottom: max(2rem, env(safe-area-inset-bottom));">
+            <div class="w-full max-w-sm mx-auto">
+                <div class="flex justify-center gap-2 mb-6" id="onboarding-dots"></div>
+                <div class="flex gap-3">
+                    <button onclick="onboarding.skip()" class="btn-secondary flex-1">Lewati</button>
+                    <button onclick="onboarding.next()" id="onboarding-next-btn" class="btn-primary flex-1">Lanjut</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Auth Pages -->
-    <div id="auth-container" class="hidden">
+    <div id="auth-container" class="hidden fixed inset-0 z-[9997] bg-dark-950">
         <!-- Login Page -->
         <div id="login-page" class="min-h-screen flex items-center justify-center p-4">
             <div class="w-full max-w-md">

@@ -2,6 +2,14 @@
 // Dashboard Page
 // ============================================
 
+function getThemeColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-500').trim() || '#f43f5e';
+}
+
+function getThemeColorRgb() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '244, 63, 94';
+}
+
 const dashboardPage = {
     charts: {},
 
@@ -223,8 +231,8 @@ const dashboardPage = {
                     {
                         label: 'Pemasukan',
                         data: incomeData,
-                        backgroundColor: 'rgba(16, 185, 129, 0.6)',
-                        borderColor: '#10b981',
+                        backgroundColor: `rgba(${getThemeColorRgb()}, 0.6)`,
+                        borderColor: getThemeColor(),
                         borderWidth: 1,
                         borderRadius: 6,
                         borderSkipped: false
@@ -399,7 +407,7 @@ const dashboardPage = {
         if (!plans || plans.length === 0) {
             el.innerHTML = `<div class="empty-state py-4">
                 <p class="text-dark-200/40 text-sm">Belum ada planning aktif</p>
-                <a href="#planning" class="text-primary-400 text-sm mt-1 hover:text-primary-300">+ Tambah Goal</a>
+                <a href="#planning" class="text-[#f43f5e] text-sm mt-1 hover:opacity-80">+ Tambah Goal</a>
             </div>`;
             return;
         }
@@ -407,7 +415,7 @@ const dashboardPage = {
         // Show max 3 active plans
         el.innerHTML = plans.slice(0, 3).map(p => {
             const pct = Math.min(100, parseFloat(p.progress_pct) || 0);
-            const color = pct >= 60 ? '#10b981' : pct >= 30 ? '#f59e0b' : '#ef4444';
+            const color = pct >= 60 ? getThemeColor() : pct >= 30 ? '#f59e0b' : '#ef4444';
             const info = p.monthly_needed
                 ? `Nabung/bln: ${formatCurrency(p.monthly_needed)}`
                 : p.estimated_months
