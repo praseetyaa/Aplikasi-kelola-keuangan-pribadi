@@ -257,6 +257,17 @@ const api = {
         });
     },
 
+    async getPlanningHistory(id) {
+        return this.request(`planning.php?id=${id}&action=history`);
+    },
+
+    async addPlanningHistory(id, data) {
+        return this.request(`planning.php?id=${id}&action=history`, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+
     // System Update
     async getLocalVersion() {
         return this.request('update.php?action=local_version');

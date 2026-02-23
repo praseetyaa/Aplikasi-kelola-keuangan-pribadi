@@ -175,6 +175,9 @@ const planningPage = {
             <button onclick="planningPage.updateSaved(${p.id})" class="btn-icon" title="Update tabungan">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
             </button>
+            <button onclick="planningPage.viewHistory(${p.id})" class="btn-icon" title="Lihat Riwayat">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </button>
             <button onclick="planningPage.showEditModal(${p.id})" class="btn-icon" title="Edit">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             </button>
@@ -185,10 +188,10 @@ const planningPage = {
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>` : `
             <button onclick="planningPage.showEditModal(${p.id})" class="btn-icon" title="Lihat detail">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
             </button>
             <button onclick="planningPage.deletePlan(${p.id})" class="btn-icon hover:!text-red-400 hover:!bg-red-500/10" title="Hapus">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>`;
 
         return `
@@ -213,7 +216,7 @@ const planningPage = {
                 </div>
             </div>
 
-            <!-- Amount -->
+            <!--Amount -->
             <div class="flex justify-between items-baseline mb-2">
                 <div>
                     <p class="text-xs text-dark-200/50 mb-0.5">Terkumpul</p>
@@ -236,10 +239,10 @@ const planningPage = {
 
             <!-- Info bawah -->
             <div class="mt-auto space-y-1.5 pt-2 border-t border-white/5">
-                ${deadlineHtml ? `<div>${deadlineHtml}</div>` : ''}
-                ${monthlyHtml}
-                ${p.notes ? `<p class="text-xs text-dark-200/40 truncate" title="${p.notes}">📝 ${p.notes}</p>` : ''}
-            </div>`;
+        ${deadlineHtml ? `<div>${deadlineHtml}</div>` : ''}
+        ${monthlyHtml}
+        ${p.notes ? `<p class="text-xs text-dark-200/40 truncate" title="${p.notes}">📝 ${p.notes}</p>` : ''}
+    </div>`;
     },
 
     // ── Modal Tambah / Edit ──────────────────────────────────────────────────
@@ -258,87 +261,87 @@ const planningPage = {
         const icons = ['🎯', '📱', '💻', '🏠', '🚗', '✈️', '👜', '⌚', '📷', '🎮', '🎸', '🏋️', '💍', '🏖️', '📚', '🎓'];
 
         const iconPicker = icons.map(ic => `
-            <button type="button" onclick="planningPage._pickIcon(this,'${ic}')"
-                class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl transition-all hover:bg-white/10 ${plan?.icon === ic ? 'bg-white/15 ring-1 ring-primary-500/60' : ''}">
-                ${ic}
-            </button>`).join('');
+        < button type = "button" onclick = "planningPage._pickIcon(this,'${ic}')"
+class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl transition-all hover:bg-white/10 ${plan?.icon === ic ? 'bg-white/15 ring-1 ring-primary-500/60' : ''}" >
+    ${ic}
+            </button > `).join('');
 
         const body = `
-            <form id="plan-form" class="space-y-4">
-                <input type="hidden" id="plan-icon-val" value="${plan?.icon || '🎯'}">
+    < form id = "plan-form" class="space-y-4" >
+        <input type="hidden" id="plan-icon-val" value="${plan?.icon || '🎯'}">
 
-                <!-- Icon picker -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-2">Ikon</label>
-                    <div class="flex flex-wrap gap-1.5">${iconPicker}</div>
-                </div>
+            <!-- Icon picker -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-2">Ikon</label>
+                <div class="flex flex-wrap gap-1.5">${iconPicker}</div>
+            </div>
 
-                <!-- Nama -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Tujuan</label>
-                    <input type="text" id="plan-name" class="input-field w-full" placeholder="Cth: Beli iPhone 17" required
-                        value="${plan?.name || ''}">
-                </div>
+            <!-- Nama -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Tujuan</label>
+                <input type="text" id="plan-name" class="input-field w-full" placeholder="Cth: Beli iPhone 17" required
+                    value="${plan?.name || ''}">
+            </div>
 
-                <!-- Target -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Harga (Rp)</label>
-                    <input type="text" id="plan-target" class="input-field w-full" placeholder="0" required
-                        inputmode="numeric" autocomplete="off"
-                        oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
-                        value="${plan?.target_amount ? formatInputNumber(plan.target_amount) : ''}">
-                </div>
+            <!-- Target -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Harga (Rp)</label>
+                <input type="text" id="plan-target" class="input-field w-full" placeholder="0" required
+                    inputmode="numeric" autocomplete="off"
+                    oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
+                    value="${plan?.target_amount ? formatInputNumber(plan.target_amount) : ''}">
+            </div>
 
-                <!-- Terkumpul -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Sudah Terkumpul (Rp)</label>
-                    <input type="text" id="plan-saved" class="input-field w-full" placeholder="0"
-                        inputmode="numeric" autocomplete="off"
-                        oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
-                        value="${plan?.saved_amount ? formatInputNumber(plan.saved_amount) : ''}">
-                </div>
+            <!-- Terkumpul -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Sudah Terkumpul (Rp)</label>
+                <input type="text" id="plan-saved" class="input-field w-full" placeholder="0"
+                    inputmode="numeric" autocomplete="off"
+                    oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
+                    value="${plan?.saved_amount ? formatInputNumber(plan.saved_amount) : ''}">
+            </div>
 
-                <!-- Deadline -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Deadline (Opsional)</label>
-                    <input type="date" id="plan-deadline" class="input-field w-full"
-                        min="${new Date().toISOString().split('T')[0]}"
-                        value="${plan?.deadline || ''}">
+            <!-- Deadline -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Deadline (Opsional)</label>
+                <input type="date" id="plan-deadline" class="input-field w-full"
+                    min="${new Date().toISOString().split('T')[0]}"
+                    value="${plan?.deadline || ''}">
                     <p class="text-xs text-dark-200/40 mt-1">Kosongkan jika tidak ada target waktu</p>
-                </div>
+            </div>
 
-                <!-- Target nabung/bulan -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Nabung/Bulan (Rp) <span class="text-dark-200/40 font-normal">– opsional</span></label>
-                    <input type="text" id="plan-monthly" class="input-field w-full" placeholder="0"
-                        inputmode="numeric" autocomplete="off"
-                        oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
-                        value="${plan?.monthly_saving ? formatInputNumber(plan.monthly_saving) : ''}">
-                </div>
+            <!-- Target nabung/bulan -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Nabung/Bulan (Rp) <span class="text-dark-200/40 font-normal">– opsional</span></label>
+                <input type="text" id="plan-monthly" class="input-field w-full" placeholder="0"
+                    inputmode="numeric" autocomplete="off"
+                    oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
+                    value="${plan?.monthly_saving ? formatInputNumber(plan.monthly_saving) : ''}">
+            </div>
 
-                <!-- Kalkulator real-time -->
-                <div id="plan-calc-box" class="hidden rounded-xl p-4 space-y-2" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
-                    <p class="text-xs font-semibold text-dark-200/60 uppercase tracking-wide">📊 Kalkulator</p>
-                    <div id="plan-calc-content" class="space-y-1.5 text-sm"></div>
-                </div>
+            <!-- Kalkulator real-time -->
+            <div id="plan-calc-box" class="hidden rounded-xl p-4 space-y-2" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
+                <p class="text-xs font-semibold text-dark-200/60 uppercase tracking-wide">📊 Kalkulator</p>
+                <div id="plan-calc-content" class="space-y-1.5 text-sm"></div>
+            </div>
 
-                <!-- Notes -->
-                <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Catatan (Opsional)</label>
-                    <input type="text" id="plan-notes" class="input-field w-full" placeholder="Keterangan tambahan"
-                        value="${plan?.notes || ''}">
-                </div>
+            <!-- Notes -->
+            <div>
+                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Catatan (Opsional)</label>
+                <input type="text" id="plan-notes" class="input-field w-full" placeholder="Keterangan tambahan"
+                    value="${plan?.notes || ''}">
+            </div>
 
-                <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
-                    <button type="submit" class="btn-primary flex-1">
-                        <span class="btn-text">${isEdit ? 'Simpan' : 'Buat Goal'}</span>
-                        <span class="btn-loading hidden">
-                            <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                        </span>
-                    </button>
-                </div>
-            </form>`;
+            <div class="flex gap-3 pt-2">
+                <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
+                <button type="submit" class="btn-primary flex-1">
+                    <span class="btn-text">${isEdit ? 'Simpan' : 'Buat Goal'}</span>
+                    <span class="btn-loading hidden">
+                        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+                    </span>
+                </button>
+            </div>
+        </form>`;
 
         showModal(isEdit ? 'Edit Goal' : 'Tambah Goal', body);
 
@@ -405,8 +408,8 @@ const planningPage = {
         const pct = Math.min(100, Math.round((saved / target) * 100));
         let rows = [];
 
-        rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Progress</span><span class="font-semibold text-white">${pct}%</span></div>`);
-        rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-white">${formatCurrency(remain)}</span></div>`);
+        rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Progress</span><span class="font-semibold text-white">${pct}%</span></div > `);
+        rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-white">${formatCurrency(remain)}</span></div > `);
 
         if (dlVal) {
             const now = new Date();
@@ -414,20 +417,20 @@ const planningPage = {
             const days = Math.ceil((dl - now) / 86400000);
             const months = Math.max(1, Math.ceil(days / 30));
             const perMonth = remain > 0 ? Math.ceil(remain / months) : 0;
-            rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-white">${months} bulan (${days} hari)</span></div>`);
+            rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-white">${months} bulan (${days} hari)</span></div > `);
             if (remain > 0) {
-                rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div>`);
+                rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div > `);
             } else {
-                rows.push(`<div class="text-emerald-400 font-semibold text-center">🎉 Target sudah tercapai!</div>`);
+                rows.push(`< div class="text-emerald-400 font-semibold text-center" >🎉 Target sudah tercapai!</div > `);
             }
         } else if (monthly > 0 && remain > 0) {
             const estMonths = Math.ceil(remain / monthly);
             const finDate = new Date();
             finDate.setMonth(finDate.getMonth() + estMonths);
             const finStr = finDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-            rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Estimasi selesai</span><span class="font-bold text-primary-400">${estMonths} bulan (${finStr})</span></div>`);
+            rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Estimasi selesai</span><span class="font-bold text-primary-400">${estMonths} bulan (${finStr})</span></div > `);
         } else if (monthly > 0 && remain <= 0) {
-            rows.push(`<div class="text-emerald-400 font-semibold text-center">🎉 Target sudah tercapai!</div>`);
+            rows.push(`< div class="text-emerald-400 font-semibold text-center" >🎉 Target sudah tercapai!</div > `);
         }
 
         content.innerHTML = rows.join('');
@@ -440,40 +443,52 @@ const planningPage = {
         const plan = this.plans.find(p => p.id == id);
         if (!plan) return;
 
+        const remain = Math.max(0, parseFloat(plan.target_amount) - parseFloat(plan.saved_amount));
+        const suggestAmount = plan.monthly_saving > 0 ? plan.monthly_saving : remain;
+        const currentMonth = getCurrentMonth();
+
         const body = `
-            <div class="space-y-4">
+    < div class="space-y-4" >
                 <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
                     <p class="text-sm text-dark-200/60 mb-1">Target</p>
                     <p class="text-xl font-bold text-white">${formatCurrency(plan.target_amount)}</p>
+                    <p class="text-sm text-dark-200/60 mt-1 mb-1">Sudah Terkumpul: <span class="text-white">${formatCurrency(plan.saved_amount)}</span></p>
                     <div class="w-full bg-white/5 rounded-full h-1.5 mt-2">
                         <div class="bg-primary-500 h-1.5 rounded-full" style="width:${Math.min(100, plan.progress_pct)}%"></div>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Jumlah Terkumpul Sekarang (Rp)</label>
+                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Bulan Pembayaran</label>
+                    <input type="month" id="update-saved-month" class="input-field w-full" value="${currentMonth}">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nominal Tambahan (Rp)</label>
                     <input type="text" id="update-saved-val" class="input-field w-full" placeholder="0"
                         inputmode="numeric" autocomplete="off"
                         oninput="this.value=formatInputNumber(this.value)"
-                        value="${formatInputNumber(plan.saved_amount)}">
+                        value="${formatInputNumber(suggestAmount)}">
                 </div>
                 <div class="flex gap-3 pt-1">
                     <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
                     <button type="button" id="update-saved-btn" onclick="planningPage._submitUpdateSaved(${id})" class="btn-primary flex-1">
-                        <span class="btn-text">Update</span>
+                        <span class="btn-text">Simpan</span>
                         <span class="btn-loading hidden"><svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                     </button>
                 </div>
-            </div>`;
-        showModal(`Update Tabungan – ${plan.icon} ${plan.name}`, body);
+            </div > `;
+        showModal(`Update Tabungan – ${plan.icon} ${plan.name} `, body);
     },
 
     async _submitUpdateSaved(id) {
         const btn = document.getElementById('update-saved-btn');
         const val = parseInputNumber(document.getElementById('update-saved-val').value);
+        const month = document.getElementById('update-saved-month').value;
+        if (val <= 0) return showToast('Nominal harus lebih dari 0', 'error');
+
         toggleBtnLoading(btn, true);
         try {
-            await api.updatePlanning(id, { saved_amount: val });
-            showToast('Tabungan berhasil diperbarui 💰', 'success');
+            await window.api.addPlanningHistory(id, { amount: val, month, type: 'deposit' });
+            showToast('Topup berhasil dicatat 💰', 'success');
             closeModal();
             await this.loadPlans();
         } catch (err) {
@@ -482,12 +497,41 @@ const planningPage = {
         }
     },
 
+    async viewHistory(id) {
+        const plan = this.plans.find(p => p.id == id);
+        if (!plan) return;
+
+        try {
+            const history = await window.api.getPlanningHistory(id);
+            let historyHtml = '<div class="space-y-3 max-h-96 overflow-y-auto pr-1">';
+
+            if (history.length === 0) {
+                historyHtml += `< div class="text-center py-6 text-dark-200/50 text-sm" > Belum ada riwayat pembayaran</div > `;
+            } else {
+                historyHtml += history.map(h => `
+    < div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5" >
+                        <div>
+                            <p class="text-sm font-medium text-white">${new Date(h.month + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
+                            <p class="text-xs text-dark-200/50">${formatDate(h.created_at)} · ${h.type === 'deposit' ? 'Pemasukan' : 'Perubahan'}</p>
+                        </div>
+                        <span class="text-sm font-bold text-emerald-400">+${formatCurrency(h.amount)}</span>
+                    </div >
+    `).join('');
+            }
+            historyHtml += '</div>';
+
+            showModal(`Riwayat – ${plan.icon} ${plan.name} `, historyHtml);
+        } catch (err) {
+            showToast('Gagal memuat riwayat: ' + err.message, 'error');
+        }
+    },
+
     // ── Mark done / delete ──────────────────────────────────────────────────
 
     async markDone(id) {
         const plan = this.plans.find(p => p.id == id);
         if (!plan) return;
-        if (!confirm(`Tandai "${plan.name}" sebagai selesai? 🎉`)) return;
+        if (!confirm(`Tandai "${plan.name}" sebagai selesai ? 🎉`)) return;
         try {
             await api.updatePlanning(id, { status: 'completed' });
             showToast('Selamat! Goal tercapai! 🎉', 'success');
@@ -500,7 +544,7 @@ const planningPage = {
     async deletePlan(id) {
         const plan = this.plans.find(p => p.id == id);
         if (!plan) return;
-        if (!confirm(`Hapus goal "${plan.name}"? Data ini tidak bisa dikembalikan.`)) return;
+        if (!confirm(`Hapus goal "${plan.name}" ? Data ini tidak bisa dikembalikan.`)) return;
         try {
             await api.deletePlanning(id);
             showToast('Goal dihapus', 'info');

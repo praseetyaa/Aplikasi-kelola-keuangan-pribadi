@@ -10,6 +10,9 @@ const dashboardPage = {
 
         container.innerHTML = `
         <div class="page-enter">
+            <!-- Dynamic Alerts -->
+            <div id="dash-alerts" class="mb-6 empty:hidden space-y-3"></div>
+
             <!-- Header -->
             <div class="mb-8">
                 <h2 class="text-2xl lg:text-3xl font-bold text-white">Dashboard</h2>
@@ -136,11 +139,34 @@ const dashboardPage = {
             this.renderRecentTransactions(data.recent_transactions);
 
             // New widgets
+            this.renderAlerts(data.planning_alerts);
             this.renderWallets(wallets);
             this.renderPlanning(plans);
         } catch (err) {
             showToast(err.message, 'error');
         }
+    },
+
+    renderAlerts(alerts) {
+        const el = document.getElementById('dash-alerts');
+        if (!el) return;
+
+        if (!alerts || alerts.length === 0) {
+            el.innerHTML = '';
+            return;
+        }
+
+        el.innerHTML = alerts.map(p => `
+            <div class="glass-card bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-start gap-4 animate-fade-in cursor-pointer" onclick="app.navigate('planning')">
+                <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0 text-amber-400 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div>
+                    <h4 class="text-amber-500 font-bold mb-1">Update Tabungan: ${p.name}</h4>
+                    <p class="text-white/70 text-sm">Kamu belum menabung <strong>${formatCurrency(p.monthly_saving)}</strong> untuk target ini di bulan berjalan. Ayo tetap konsisten!</p>
+                </div>
+            </div>
+        `).join('');
     },
 
     renderTrendChart(trends) {
