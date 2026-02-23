@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'db.php';
 
 $user_id = getAuthUser();

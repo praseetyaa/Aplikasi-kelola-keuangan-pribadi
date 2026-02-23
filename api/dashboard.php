@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/db.php';
 $userId = getAuthUser();
 $month = isset($_GET['month']) ? $_GET['month'] : date('Y-m');
