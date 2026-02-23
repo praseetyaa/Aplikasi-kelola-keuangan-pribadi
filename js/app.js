@@ -2,6 +2,96 @@
 // App Core — Router, Auth, Navigation
 // ============================================
 
+// ============================================
+// Onboarding
+// ============================================
+const onboarding = {
+    slides: [
+        {
+            icon: '💰',
+            title: 'Kelola Keuangan',
+            desc: 'Catat pemasukan dan pengeluaran dengan mudah setiap hari'
+        },
+        {
+            icon: '🎯',
+            title: 'Target Tabungan',
+            desc: 'Buat goal menabung dan wujudkan mimpi-mimpi kamu'
+        },
+        {
+            icon: '📊',
+            title: 'Laporan Canggih',
+            desc: 'Lihat analisis keuanganmu dengan grafik yang menarik'
+        },
+        {
+            icon: '🔔',
+            title: 'Pengingat Pintar',
+            desc: 'Dapatkan notifikasi untuk tetap konsisten menabung'
+        }
+    ],
+    currentIndex: 0,
+
+    init() {
+        const seen = localStorage.getItem('onboarding_seen');
+        if (seen) {
+            this.showAuth();
+            return;
+        }
+        this.show();
+    },
+
+    show() {
+        document.getElementById('onboarding-screen').classList.remove('hidden');
+        this.render();
+    },
+
+    render() {
+        const slide = this.slides[this.currentIndex];
+        const dotsContainer = document.getElementById('onboarding-dots');
+        const nextBtn = document.getElementById('onboarding-next-btn');
+        
+        document.getElementById('onboarding-slides').innerHTML = `
+            <div class="mb-8">
+                <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-primary-500/20 to-emerald-500/20 flex items-center justify-center text-6xl">
+                    ${slide.icon}
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">${slide.title}</h2>
+                <p class="text-dark-200/60 text-lg">${slide.desc}</p>
+            </div>
+        `;
+        
+        dotsContainer.innerHTML = this.slides.map((_, i) => 
+            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'bg-primary-500 w-6' : 'bg-white/20'}"></div>`
+        ).join('');
+        
+        nextBtn.textContent = this.currentIndex === this.slides.length - 1 ? 'Mulai' : 'Lanjut';
+    },
+
+    next() {
+        if (this.currentIndex < this.slides.length - 1) {
+            this.currentIndex++;
+            this.render();
+        } else {
+            this.complete();
+        }
+    },
+
+    skip() {
+        this.complete();
+    },
+
+    complete() {
+        localStorage.setItem('onboarding_seen', 'true');
+        document.getElementById('onboarding-screen').classList.add('hidden');
+        
+        // Continue with app init
+        app.initAfterOnboarding();
+    },
+
+    showAuth() {
+        document.getElementById('auth-container').classList.remove('hidden');
+    }
+};
+
 const app = {
     currentPage: 'dashboard',
     user: null,
@@ -9,6 +99,19 @@ const app = {
 
     async init() {
         if (typeof api === 'undefined') return;
+        
+        // Check onboarding first (before any API calls)
+        const seenOnboarding = localStorage.getItem('onboarding_seen');
+        if (!seenOnboarding) {
+            // Show onboarding, but continue init in background
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('app-preloader').style.display = 'none';
+            document.body.style.visibility = 'visible';
+            onboarding.init();
+            // Continue with init but don't show auth yet
+            this.initOnboardingMode = true;
+        }
+        
         try {
             // Apply theme immediately if available
             const themeMode = localStorage.getItem('theme_mode');
@@ -34,6 +137,39 @@ const app = {
         }
         
         // Safety: ensure body is visible after 5 seconds
+        setTimeout(() => {
+            document.body.style.visibility = 'visible';
+        }, 5000);
+    },
+
+    async initAfterOnboarding() {
+        // Show preloader again for app init
+        document.getElementById('app-preloader').style.display = 'flex';
+        document.getElementById('app-preloader').style.opacity = '1';
+        
+        try {
+            const themeMode = localStorage.getItem('theme_mode');
+            if (themeMode) this.applyThemeMode(themeMode);
+
+            await this.loadBranding();
+
+            const res = await api.getMe();
+            this.user = res.user;
+
+            if (this.user) {
+                this.showApp();
+            } else {
+                this.showAuth();
+            }
+            this.bindEvents();
+            this.initPWA();
+        } catch (err) {
+            this.showAuth();
+            this.bindEvents();
+        } finally {
+            this.hidePreloader();
+        }
+        
         setTimeout(() => {
             document.body.style.visibility = 'visible';
         }, 5000);

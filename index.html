@@ -98,6 +98,22 @@
             DuitKu</h2>
     </div>
 
+    <!-- Onboarding Screen -->
+    <div id="onboarding-screen" class="hidden min-h-screen flex flex-col">
+        <div class="flex-1 flex flex-col items-center justify-center p-8 text-center">
+            <div id="onboarding-slides" class="w-full max-w-sm">
+                <!-- Slides will be injected by JS -->
+            </div>
+        </div>
+        <div class="p-8">
+            <div class="flex justify-center gap-2 mb-6" id="onboarding-dots"></div>
+            <div class="flex gap-3">
+                <button onclick="onboarding.skip()" class="btn-secondary flex-1">Lewati</button>
+                <button onclick="onboarding.next()" id="onboarding-next-btn" class="btn-primary flex-1">Lanjut</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Auth Pages -->
     <div id="auth-container" class="hidden">
         <!-- Login Page -->
