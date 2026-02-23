@@ -552,7 +552,7 @@ const app = {
     },
 
     navigate(page) {
-        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings', 'wallets', 'planning'].includes(page)) {
+        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings', 'wallets', 'planning', 'notifications'].includes(page)) {
             page = 'dashboard';
         }
 
@@ -579,6 +579,7 @@ const app = {
             case 'wallets': walletsPage.render(content); break;
             case 'planning': planningPage.render(content); break;
             case 'settings': settingsPage.render(content); break;
+            case 'notifications': notificationsPage.render(content); break;
         }
     }
 };
