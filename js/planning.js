@@ -487,7 +487,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
 
         toggleBtnLoading(btn, true);
         try {
-            await window.api.addPlanningHistory(id, { amount: val, month, type: 'deposit' });
+            await api.addPlanningHistory(id, { amount: val, month, type: 'deposit' });
             showToast('Topup berhasil dicatat 💰', 'success');
             closeModal();
             await this.loadPlans();
@@ -502,21 +502,21 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         if (!plan) return;
 
         try {
-            const history = await window.api.getPlanningHistory(id);
+            const history = await api.getPlanningHistory(id);
             let historyHtml = '<div class="space-y-3 max-h-96 overflow-y-auto pr-1">';
 
             if (history.length === 0) {
-                historyHtml += `< div class="text-center py-6 text-dark-200/50 text-sm" > Belum ada riwayat pembayaran</div > `;
+                historyHtml += `<div class="text-center py-6 text-dark-200/50 text-sm"> Belum ada riwayat pembayaran</div>`;
             } else {
                 historyHtml += history.map(h => `
-    < div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5" >
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
                         <div>
                             <p class="text-sm font-medium text-white">${new Date(h.month + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
                             <p class="text-xs text-dark-200/50">${formatDate(h.created_at)} · ${h.type === 'deposit' ? 'Pemasukan' : 'Perubahan'}</p>
                         </div>
                         <span class="text-sm font-bold text-emerald-400">+${formatCurrency(h.amount)}</span>
-                    </div >
-    `).join('');
+                    </div>
+                `).join('');
             }
             historyHtml += '</div>';
 
