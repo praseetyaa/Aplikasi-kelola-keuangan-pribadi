@@ -5,6 +5,7 @@
 const app = {
     currentPage: 'dashboard',
     user: null,
+    deferredPrompt: null,
 
     async init() {
         if (typeof api === 'undefined') return;
@@ -24,12 +25,77 @@ const app = {
                 this.showAuth();
             }
             this.bindEvents();
+            this.initPWA();
         } catch (err) {
             this.showAuth();
             this.bindEvents();
         } finally {
             this.hidePreloader();
         }
+    },
+
+    initPWA() {
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then((reg) => console.log('SW registered'))
+                .catch((err) => console.log('SW error:', err));
+        }
+
+        // PWA Install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            setTimeout(() => this.showInstallPrompt(), 3000);
+        });
+
+        // App installed
+        window.addEventListener('appinstalled', () => {
+            this.deferredPrompt = null;
+            console.log('PWA installed');
+        });
+    },
+
+    showInstallPrompt() {
+        if (!this.deferredPrompt || localStorage.getItem('pwa_install_dismissed')) return;
+        
+        const toast = document.createElement('div');
+        toast.id = 'pwa-install-toast';
+        toast.className = 'fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 glass-card rounded-2xl p-4 flex items-center gap-4 z-50 animate-fade-in';
+        toast.innerHTML = `
+            <div class="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-white font-medium">Install DuitKu</h4>
+                <p class="text-dark-200/60 text-sm">Tambah ke layar utama untuk pengalaman terbaik</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="app.dismissInstallPrompt()" class="px-3 py-1.5 text-sm text-dark-200/60 hover:text-white">Nanti</button>
+                <button onclick="app.installPWA()" class="px-3 py-1.5 bg-primary-500 hover:bg-primary-600 text-white text-sm rounded-lg font-medium">Install</button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+    },
+
+    async installPWA() {
+        if (!this.deferredPrompt) return;
+        this.deferredPrompt.prompt();
+        const { outcome } = await this.deferredPrompt.userChoice;
+        this.deferredPrompt = null;
+        const toast = document.getElementById('pwa-install-toast');
+        if (toast) toast.remove();
+        if (outcome === 'accepted') {
+            showToast('DuitKu berhasil diinstall!', 'success');
+        }
+    },
+
+    dismissInstallPrompt() {
+        localStorage.setItem('pwa_install_dismissed', 'true');
+        const toast = document.getElementById('pwa-install-toast');
+        if (toast) toast.remove();
     },
 
     hidePreloader() {
