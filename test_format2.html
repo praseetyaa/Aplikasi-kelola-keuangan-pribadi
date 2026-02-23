@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script>
+        function formatInputNumber(value) {
+            if (value === null || value === undefined || value === '') return '';
+
+            let str = String(value).trim();
+
+            if (str.includes('.') && str.split('.')[1].length === 2 && !str.includes(',')) {
+                str = String(Math.round(parseFloat(str)));
+            }
+
+            const num = str.replace(/\D/g, '');
+            if (!num) return '';
+            return parseInt(num, 10).toLocaleString('id-ID');
+        }
+
+        // Test the exact line from js/planning.js
+        let plan = { target_amount: "100000.00" };
+        let formatted = formatInputNumber(plan.target_amount);
+        document.write("Initial formatting: " + formatted + "<br>");
+
+        // This simulates the value attribute in HTML
+        let valueAttr = formatted;
+
+        // When reading from input box on page load or recalc, the value is just the string "100.000"
+        let readFromInput = valueAttr;
+
+        // Let's say we pass that into formatInputNumber again (because of the oninput trigger or something)
+        document.write("Reformatting the read value: " + formatInputNumber(readFromInput) + "<br>");
+
+        // What if plan.target_amount was a number?
+        plan = { target_amount: 100000.00 }; // float
+        document.write("Float format test: " + formatInputNumber(plan.target_amount) + "<br>");
+
+    </script>
+</body>
+
+</html>

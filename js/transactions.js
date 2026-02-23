@@ -155,30 +155,33 @@ const transactionsPage = {
             res.data.forEach(tx => {
                 const row = document.createElement('div');
                 row.className = 'transaction-row group';
+                const rowColor = tx.category_color || '#6b7280';
+                row.style.background = `linear-gradient(145deg, ${rowColor}15 0%, rgba(255,255,255,0.02) 100%)`;
+                row.style.borderColor = `${rowColor}30`;
                 row.innerHTML = `
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background: ${tx.category_color || '#6b7280'}20">
                         ${tx.category_icon || '💰'}
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
-                        <div class="flex items-center gap-2 mt-0.5">
-                            <span class="badge ${tx.type === 'income' ? 'badge-income' : 'badge-expense'}">${tx.type === 'income' ? 'Masuk' : 'Keluar'}</span>
-                            <span class="text-xs text-dark-200/40">${tx.category_name || '-'} · ${tx.wallet_name || 'Tunai'} · ${formatDate(tx.date)}</span>
+                    <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+                        <div class="min-w-0">
+                            <p class="text-sm font-medium text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span class="badge ${tx.type === 'income' ? 'badge-income' : 'badge-expense'}">${tx.type === 'income' ? 'Masuk' : 'Keluar'}</span>
+                                <span class="text-xs text-dark-200/40 truncate">${tx.category_name || '-'} · ${tx.wallet_name || 'Tunai'} · ${formatDate(tx.date)}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="flex flex-col items-end sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-1 sm:mt-0 pt-2 sm:pt-0 border-t border-white/5 sm:border-none">
                             <span class="text-sm font-semibold ${tx.type === 'income' ? 'text-green-400' : 'text-red-400'} flex-shrink-0">
                                 ${tx.type === 'income' ? '+' : '-'}${formatCurrency(tx.amount)}
                             </span>
-                        </div>
-                        <div class="hidden group-hover:flex items-center gap-1">
-                            <button onclick="transactionsPage.showEditModal(${tx.id})" class="btn-icon" title="Edit">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                            </button>
-                            <button onclick="transactionsPage.deleteTransaction(${tx.id})" class="btn-icon hover:!text-red-400 hover:!bg-red-500/10" title="Hapus">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button onclick="transactionsPage.showEditModal(${tx.id})" class="btn-icon" title="Edit">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                </button>
+                                <button onclick="transactionsPage.deleteTransaction(${tx.id})" class="btn-icon hover:!text-red-400 hover:!bg-red-500/10" title="Hapus">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;

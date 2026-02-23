@@ -208,7 +208,7 @@ const planningPage = {
                         ${statusBadge}
                     </div>
                 </div>
-                <div class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5 flex-shrink-0">
+                <div class="flex items-center gap-0.5 flex-shrink-0">
                     ${actions}
                 </div>
             </div>
@@ -285,7 +285,7 @@ const planningPage = {
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Harga (Rp)</label>
                     <input type="text" id="plan-target" class="input-field w-full" placeholder="0" required
                         inputmode="numeric" autocomplete="off"
-                        oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.');planningPage._recalc()"
+                        oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
                         value="${plan?.target_amount ? formatInputNumber(plan.target_amount) : ''}">
                 </div>
 
@@ -294,7 +294,7 @@ const planningPage = {
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Sudah Terkumpul (Rp)</label>
                     <input type="text" id="plan-saved" class="input-field w-full" placeholder="0"
                         inputmode="numeric" autocomplete="off"
-                        oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.');planningPage._recalc()"
+                        oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
                         value="${plan?.saved_amount ? formatInputNumber(plan.saved_amount) : ''}">
                 </div>
 
@@ -312,7 +312,7 @@ const planningPage = {
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Nabung/Bulan (Rp) <span class="text-dark-200/40 font-normal">– opsional</span></label>
                     <input type="text" id="plan-monthly" class="input-field w-full" placeholder="0"
                         inputmode="numeric" autocomplete="off"
-                        oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.');planningPage._recalc()"
+                        oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
                         value="${plan?.monthly_saving ? formatInputNumber(plan.monthly_saving) : ''}">
                 </div>
 
@@ -453,7 +453,7 @@ const planningPage = {
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Jumlah Terkumpul Sekarang (Rp)</label>
                     <input type="text" id="update-saved-val" class="input-field w-full" placeholder="0"
                         inputmode="numeric" autocomplete="off"
-                        oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.')"
+                        oninput="this.value=formatInputNumber(this.value)"
                         value="${formatInputNumber(plan.saved_amount)}">
                 </div>
                 <div class="flex gap-3 pt-1">

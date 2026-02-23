@@ -61,13 +61,13 @@ const categoriesPage = {
             return;
         }
         grid.innerHTML = filtered.map(cat => `
-            <div class="glass-card rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 group hover:border-white/10 transition-all">
+            <div class="glass-card rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 group transition-all" style="background: linear-gradient(145deg, ${cat.color}15 0%, rgba(255,255,255,0.02) 100%); border-color: ${cat.color}30;">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg sm:text-xl flex-shrink-0" style="background:${cat.color}20">${cat.icon}</div>
                 <div class="flex-1 min-w-0">
                     <p class="font-medium text-white truncate text-sm sm:text-base">${cat.name}</p>
                     <span class="badge ${cat.type === 'income' ? 'badge-income' : 'badge-expense'} mt-1 hidden sm:inline-block">${cat.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</span>
                 </div>
-                <div class="flex sm:hidden group-hover:flex items-center gap-1">
+                <div class="flex items-center gap-1">
                     <button onclick="categoriesPage.showEditModal(${cat.id})" class="btn-icon" title="Edit">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>

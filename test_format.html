@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script>
+        function formatInputNumber(value) {
+            if (value === null || value === undefined || value === '') return '';
+
+            let str = String(value).trim();
+
+            // Check if it's from database (has .00 decimals, and no thousand separators)
+            if (str.includes('.') && str.split('.')[1].length === 2 && !str.includes(',')) {
+                str = String(Math.round(parseFloat(str)));
+            }
+
+            // Remove everything except numbers (strips dots, commas, etc)
+            const num = str.replace(/\D/g, '');
+            if (!num) return '';
+            return parseInt(num, 10).toLocaleString('id-ID');
+        }
+
+        console.log("formatInputNumber('100000.00') =>", formatInputNumber('100000.00'));
+        console.log("formatInputNumber(100000) =>", formatInputNumber(100000));
+        console.log("formatInputNumber('100.000') =>", formatInputNumber('100.000'));
+        console.log("formatInputNumber('10.000.000') =>", formatInputNumber('10.000.000'));
+
+        document.write("formatInputNumber('100000.00') => " + formatInputNumber('100000.00') + "<br>");
+        document.write("formatInputNumber(100000) => " + formatInputNumber(100000) + "<br>");
+        document.write("formatInputNumber('100.000') => " + formatInputNumber('100.000') + "<br>");
+        document.write("formatInputNumber('10.000.000') => " + formatInputNumber('10.000.000') + "<br>");
+
+        function parseInputNumber(value) {
+            if (value === null || value === undefined) return 0;
+
+            let str = String(value).trim();
+            if (str === '') return 0;
+
+            if (str.includes('.') && str.split('.')[1].length === 2 && !str.includes(',')) {
+                return Math.round(parseFloat(str)) || 0;
+            }
+
+            const clean = str.replace(/\./g, '').replace(/,/g, '');
+            return clean === '' ? 0 : (parseInt(clean, 10) || 0);
+        }
+
+        document.write("<br>parseInputNumber('100000.00') => " + parseInputNumber('100000.00') + "<br>");
+        document.write("parseInputNumber('100.000') => " + parseInputNumber('100.000') + "<br>");
+        document.write("parseInputNumber('10.000.000') => " + parseInputNumber('10.000.000') + "<br>");
+    </script>
+</body>
+
+</html>

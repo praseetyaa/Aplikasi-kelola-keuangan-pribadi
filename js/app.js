@@ -599,8 +599,21 @@ function formatCurrency(amount) {
 /**
  * Format angka ke string seperti "10.000.000" (titik = pemisah ribuan, tanpa Rp)
  */
+/**
+ * Format angka ke string seperti "10.000.000" (titik = pemisah ribuan, tanpa Rp)
+ */
 function formatInputNumber(value) {
-    const num = String(value).replace(/\D/g, '');
+    if (value === null || value === undefined || value === '') return '';
+
+    let str = String(value).trim();
+
+    // Check if it's from database (has .00 decimals, and no thousand separators)
+    if (str.includes('.') && str.split('.')[1].length === 2 && !str.includes(',')) {
+        str = String(Math.round(parseFloat(str)));
+    }
+
+    // Remove everything except numbers (strips dots, commas, etc)
+    const num = str.replace(/\D/g, '');
     if (!num) return '';
     return parseInt(num, 10).toLocaleString('id-ID');
 }
@@ -609,7 +622,18 @@ function formatInputNumber(value) {
  * Bersihkan string format "10.000" → angka 10000
  */
 function parseInputNumber(value) {
-    const clean = String(value).replace(/\./g, '').replace(/,/g, '').trim();
+    if (value === null || value === undefined) return 0;
+
+    let str = String(value).trim();
+    if (str === '') return 0;
+
+    // Deteksi jika ini format database dengan sen (misal 10000.00)
+    if (str.includes('.') && str.split('.')[1].length === 2 && !str.includes(',')) {
+        return Math.round(parseFloat(str)) || 0;
+    }
+
+    // Format input user indonesia (titik sebagai ribuan)
+    const clean = str.replace(/\./g, '').replace(/,/g, '');
     return clean === '' ? 0 : (parseInt(clean, 10) || 0);
 }
 

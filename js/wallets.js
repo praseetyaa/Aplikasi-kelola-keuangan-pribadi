@@ -64,10 +64,10 @@ const walletsPage = {
 
             const getTypeInfo = (type) => {
                 switch (type) {
-                    case 'bank': return { label: 'Perbankan', icon: '🏦', bg: 'bg-blue-500/20 text-blue-400' };
-                    case 'ewallet': return { label: 'E-Wallet', icon: '📱', bg: 'bg-emerald-500/20 text-emerald-400' };
-                    case 'credit': return { label: 'Kartu Kredit', icon: '💳', bg: 'bg-rose-500/20 text-rose-400' };
-                    default: return { label: 'Lainnya', icon: '💼', bg: 'bg-gray-500/20 text-gray-400' };
+                    case 'bank': return { label: 'Perbankan', icon: '🏦', bg: 'bg-blue-500/20 text-blue-400', color: '#3b82f6' };
+                    case 'ewallet': return { label: 'E-Wallet', icon: '📱', bg: 'bg-emerald-500/20 text-emerald-400', color: '#10b981' };
+                    case 'credit': return { label: 'Kartu Kredit', icon: '💳', bg: 'bg-rose-500/20 text-rose-400', color: '#f43f5e' };
+                    default: return { label: 'Lainnya', icon: '💼', bg: 'bg-gray-500/20 text-gray-400', color: '#9ca3af' };
                 }
             };
 
@@ -85,7 +85,9 @@ const walletsPage = {
                 const typeInfo = getTypeInfo(wallet.type);
 
                 const card = document.createElement('div');
-                card.className = 'glass-card rounded-2xl p-5 flex flex-col group relative overflow-hidden';
+                card.className = 'glass-card rounded-2xl p-5 flex flex-col group relative overflow-hidden transition-all';
+                card.style.background = `linear-gradient(145deg, ${typeInfo.color}15 0%, rgba(255,255,255,0.02) 100%)`;
+                card.style.borderColor = `${typeInfo.color}30`;
                 card.innerHTML = `
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-3">
@@ -97,7 +99,7 @@ const walletsPage = {
                                 <span class="text-xs font-medium text-dark-200/50">${typeInfo.label}</span>
                             </div>
                         </div>
-                        <div class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                        <div class="flex items-center gap-1">
                             <button onclick="walletsPage.showEditModal(${wallet.id})" class="p-1.5 rounded-lg hover:bg-white/10 text-dark-200/40 hover:text-white transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </button>
