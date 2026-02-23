@@ -428,9 +428,9 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             const finDate = new Date();
             finDate.setMonth(finDate.getMonth() + estMonths);
             const finStr = finDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-            rows.push(`< div class="flex justify-between" ><span class="text-dark-200/50">Estimasi selesai</span><span class="font-bold text-primary-400">${estMonths} bulan (${finStr})</span></div > `);
+            rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Estimasi selesai</span><span class="font-bold text-primary-400">${estMonths} bulan (${finStr})</span></div>`);
         } else if (monthly > 0 && remain <= 0) {
-            rows.push(`< div class="text-emerald-400 font-semibold text-center" >🎉 Target sudah tercapai!</div > `);
+            rows.push(`<div class="text-emerald-400 font-semibold text-center">🎉 Target sudah tercapai!</div>`);
         }
 
         content.innerHTML = rows.join('');
@@ -448,7 +448,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const currentMonth = getCurrentMonth();
 
         const body = `
-    < div class="space-y-4" >
+            <div class="space-y-4">
                 <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
                     <p class="text-sm text-dark-200/60 mb-1">Target</p>
                     <p class="text-xl font-bold text-white">${formatCurrency(plan.target_amount)}</p>
@@ -475,8 +475,8 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
                         <span class="btn-loading hidden"><svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                     </button>
                 </div>
-            </div > `;
-        showModal(`Update Tabungan – ${plan.icon} ${plan.name} `, body);
+            </div>`;
+        showModal(`Update Tabungan – ${plan.icon} ${plan.name}`, body);
     },
 
     async _submitUpdateSaved(id) {
