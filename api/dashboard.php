@@ -36,7 +36,30 @@ $expenseByCategory = $stmt->fetchAll();
 $stmt = $pdo->prepare("SELECT t.*, c.name as category_name, c.icon as category_icon, c.color as category_color FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE t.user_id = ? ORDER BY t.date DESC, t.created_at DESC LIMIT 5");
 $stmt->execute([$userId]);
 $recentTransactions = $stmt->fetchAll();
-jsonResponse(['month' => $month, 'total_income' => $totalIncome, 'total_expense' => $totalExpense, 'balance' => $balance, 'monthly_trend' => $monthlyTrend, 'expense_by_category' => $expenseByCategory, 'recent_transactions' => $recentTransactions]);
+$stmt = $pdo->prepare("
+    SELECT p.id, p.name, p.monthly_saving 
+    FROM planning p 
+    WHERE p.user_id = ? 
+      AND p.status = 'active' 
+      AND p.monthly_saving > 0
+      AND p.id NOT IN (
+          SELECT planning_id FROM planning_history 
+          WHERE user_id = ? AND month = ? AND type = 'deposit'
+      )
+");
+$stmt->execute([$userId, $userId, date('Y-m')]);
+$planningAlerts = $stmt->fetchAll();
+
+jsonResponse([
+    'month' => $month, 
+    'total_income' => $totalIncome, 
+    'total_expense' => $totalExpense, 
+    'balance' => $balance, 
+    'monthly_trend' => $monthlyTrend, 
+    'expense_by_category' => $expenseByCategory, 
+    'recent_transactions' => $recentTransactions,
+    'planning_alerts' => $planningAlerts
+]);
 
 
 

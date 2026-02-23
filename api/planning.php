@@ -22,6 +22,18 @@ try {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )");
+
+    $pdo->exec("CREATE TABLE IF NOT EXISTS planning_history (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        planning_id INT NOT NULL,
+        user_id INT NOT NULL,
+        amount DECIMAL(15,2) NOT NULL,
+        month VARCHAR(7) NOT NULL,
+        type ENUM('deposit', 'withdrawal') DEFAULT 'deposit',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (planning_id) REFERENCES planning(id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
 } catch (Exception $e) {}
 
 function calcPlanning($row) {
@@ -57,6 +69,39 @@ function calcPlanning($row) {
     $row['monthly_needed']     = $monthly_needed;
     $row['estimated_months']   = $est_months;
     return $row;
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'history') {
+    if (!$id) jsonResponse(['error' => 'ID diperlukan'], 400);
+
+    $stmt = $pdo->prepare("SELECT id, saved_amount FROM planning WHERE id = ? AND user_id = ?");
+    $stmt->execute([$id, $user_id]);
+    $plan = $stmt->fetch();
+    if (!$plan) jsonResponse(['error' => 'Planning tidak ditemukan'], 404);
+
+    if ($method === 'GET') {
+        $stmt = $pdo->prepare("SELECT * FROM planning_history WHERE planning_id = ? AND user_id = ? ORDER BY month DESC, created_at DESC");
+        $stmt->execute([$id, $user_id]);
+        jsonResponse($stmt->fetchAll());
+    }
+
+    if ($method === 'POST') {
+        $d = getJsonBody();
+        $amount = isset($d['amount']) ? (float)$d['amount'] : 0;
+        $mon = isset($d['month']) ? $d['month'] : date('Y-m');
+        $type = isset($d['type']) ? $d['type'] : 'deposit';
+
+        if ($amount <= 0) jsonResponse(['error' => 'Nominal harus lebih dari 0'], 422);
+
+        $stmt = $pdo->prepare("INSERT INTO planning_history (planning_id, user_id, amount, month, type) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$id, $user_id, $amount, $mon, $type]);
+
+        $newSaved = $type === 'deposit' ? $plan['saved_amount'] + $amount : max(0, $plan['saved_amount'] - $amount);
+        $stmt = $pdo->prepare("UPDATE planning SET saved_amount = ? WHERE id = ?");
+        $stmt->execute([$newSaved, $id]);
+
+        jsonResponse(['success' => true, 'message' => 'Riwayat berhasil ditambahkan']);
+    }
 }
 
 if ($method === 'GET') {
