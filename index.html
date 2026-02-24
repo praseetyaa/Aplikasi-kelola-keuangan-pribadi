@@ -409,145 +409,156 @@
 
     <!-- App Shell -->
     <div id="app-container" class="hidden">
-        <!-- Mobile Header -->
-        <header class="lg:hidden fixed top-0 left-0 right-0 z-30 px-4 py-3 flex items-center justify-between"
-            style="padding-top: max(12px, env(safe-area-inset-top)); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <button id="mobile-menu-btn" class="p-2 rounded-xl hover:bg-white/5 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+
+        <!-- Bottom Mobile Navbar (Floating) -->
+        <nav class="lg:hidden fixed z-50 bg-[#0f172a]/90 backdrop-blur-2xl border border-white/10 px-6 py-4 flex items-center justify-between shadow-2xl shadow-black/50"
+            style="bottom: calc(16px + env(safe-area-inset-bottom)); left: 16px; right: 16px; border-radius: 28px;">
+            <a href="#dashboard" data-page="dashboard"
+                class="mobile-nav-link flex flex-col items-center gap-1 text-dark-200/50 hover:text-white transition-colors">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-            </button>
-            <span
-                class="app-name text-lg font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">DuitKu</span>
-            <div class="flex items-center gap-2">
-                <button onclick="app.navigate('notifications')"
-                    class="p-2 rounded-xl hover:bg-white/5 transition-colors relative">
-                    <svg class="w-6 h-6 text-dark-200/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            </a>
+            <a href="#wallets" data-page="wallets"
+                class="mobile-nav-link flex flex-col items-center gap-1 text-dark-200/50 hover:text-white transition-colors">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+            </a>
+            <div class="-mt-10">
+                <a href="#transactions" data-page="transactions"
+                    class="mobile-nav-link flex flex-col items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 shadow-lg shadow-primary-500/30 text-white hover:scale-105 transition-transform border-[4px] border-[#0f172a]">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                </a>
+            </div>
+            <a href="#planning" data-page="planning"
+                class="mobile-nav-link flex flex-col items-center gap-1 text-dark-200/50 hover:text-white transition-colors">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+            </a>
+            <a href="#settings" data-page="settings"
+                class="mobile-nav-link flex flex-col items-center gap-1 text-dark-200/50 hover:text-white transition-colors">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </a>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="hidden lg:flex fixed left-0 top-0 bottom-0 w-72 glass-sidebar z-50 flex-col h-full">
+            <!-- Logo -->
+            <div class="p-6 flex items-center gap-3">
+                <div id="sidebar-logo-box"
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1
+                        class="app-name text-lg font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">
+                        DuitKu</h1>
+                    <p class="app-tagline text-xs text-dark-200/40">Keuangan Pribadi</p>
+                </div>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex-1 px-3 space-y-1">
+                <a href="#dashboard" data-page="dashboard" class="nav-link active">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="#notifications" data-page="notifications" class="nav-link relative">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    <span id="mobile-notification-badge"
-                        class="hidden absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
-                </button>
-                <div id="mobile-user-avatar"
-                    class="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center text-sm font-medium text-primary-400 cursor-pointer">
-                </div>
-            </div>
-        </header>
+                    <span>Notifikasi</span>
+                    <span id="notification-badge"
+                        class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
+                </a>
+                <a href="#transactions" data-page="transactions" class="nav-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                    <span>Transaksi</span>
+                </a>
+                <a href="#wallets" data-page="wallets" class="nav-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    <span>Dompet</span>
+                </a>
+                <a href="#planning" data-page="planning" class="nav-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                    <span>Planning</span>
+                </a>
+                <a href="#categories" data-page="categories" class="nav-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <span>Kategori</span>
+                </a>
+                <a href="#reports" data-page="reports" class="nav-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span>Laporan</span>
+                </a>
+                <a href="#settings" data-page="settings" class="nav-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
 
-        <!-- Sidebar -->
-        <aside id="sidebar"
-            class="fixed left-0 top-0 bottom-0 w-72 glass-sidebar z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
-            <div class="flex flex-col h-full">
-                <!-- Logo -->
-                <div class="p-6 flex items-center gap-3">
-                    <div id="sidebar-logo-box"
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+            <!-- User -->
+            <div class="p-4 border-t border-white/5">
+                <div class="flex items-center gap-3 px-3 py-2">
+                    <div id="sidebar-avatar"
+                        class="w-9 h-9 rounded-full bg-primary-500/20 flex items-center justify-center text-sm font-medium text-primary-400 flex-shrink-0 overflow-hidden">
                     </div>
-                    <div>
-                        <h1
-                            class="app-name text-lg font-bold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">
-                            DuitKu</h1>
-                        <p class="app-tagline text-xs text-dark-200/40">Keuangan Pribadi</p>
+                    <div class="flex-1 min-w-0">
+                        <p id="sidebar-username" class="text-sm font-medium text-white truncate"></p>
+                        <p id="sidebar-email" class="text-xs text-dark-200/40 truncate"></p>
                     </div>
-                </div>
-
-                <!-- Nav -->
-                <nav class="flex-1 px-3 space-y-1">
-                    <a href="#dashboard" data-page="dashboard" class="nav-link active">
+                    <button id="logout-btn"
+                        class="p-2 rounded-lg hover:bg-red-500/10 text-dark-200/40 hover:text-red-400 transition-colors"
+                        title="Keluar">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        <span>Home</span>
-                    </a>
-                    <a href="#notifications" data-page="notifications" class="nav-link relative">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        <span>Notifikasi</span>
-                        <span id="notification-badge"
-                            class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
-                    </a>
-                    <a href="#transactions" data-page="transactions" class="nav-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                        </svg>
-                        <span>Transaksi</span>
-                    </a>
-                    <a href="#wallets" data-page="wallets" class="nav-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                        </svg>
-                        <span>Dompet</span>
-                    </a>
-                    <a href="#planning" data-page="planning" class="nav-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
-                        <span>Planning</span>
-                    </a>
-                    <a href="#categories" data-page="categories" class="nav-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                        <span>Kategori</span>
-                    </a>
-                    <a href="#reports" data-page="reports" class="nav-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        <span>Laporan</span>
-                    </a>
-                    <a href="#settings" data-page="settings" class="nav-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>Pengaturan</span>
-                    </a>
-                </nav>
-
-                <!-- User -->
-                <div class="p-4 border-t border-white/5">
-                    <div class="flex items-center gap-3 px-3 py-2">
-                        <div id="sidebar-avatar"
-                            class="w-9 h-9 rounded-full bg-primary-500/20 flex items-center justify-center text-sm font-medium text-primary-400 flex-shrink-0 overflow-hidden">
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p id="sidebar-username" class="text-sm font-medium text-white truncate"></p>
-                            <p id="sidebar-email" class="text-xs text-dark-200/40 truncate"></p>
-                        </div>
-                        <button id="logout-btn"
-                            class="p-2 rounded-lg hover:bg-red-500/10 text-dark-200/40 hover:text-red-400 transition-colors"
-                            title="Keluar">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                        </button>
-                    </div>
+                    </button>
                 </div>
             </div>
         </aside>
 
-        <!-- Sidebar overlay (mobile) -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden"></div>
-
         <!-- Main Content -->
-        <main id="main-content" class="lg:ml-72 min-h-screen pt-16 lg:pt-0">
+        <main id="main-content"
+            class="lg:ml-72 min-h-screen pt-4 lg:pt-0 pb-[calc(130px+env(safe-area-inset-bottom))] lg:pb-0">
             <div id="page-content" class="p-4 lg:p-8 max-w-7xl mx-auto">
                 <!-- Pages rendered here by JS -->
             </div>

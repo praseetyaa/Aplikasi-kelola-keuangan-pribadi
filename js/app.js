@@ -32,7 +32,7 @@ const app = {
         } finally {
             this.hidePreloader();
         }
-        
+
         // Safety: ensure body is visible after 5 seconds
         setTimeout(() => {
             document.body.style.visibility = 'visible';
@@ -72,7 +72,7 @@ const app = {
 
     showInstallPrompt() {
         if (!this.deferredPrompt || localStorage.getItem('pwa_install_dismissed')) return;
-        
+
         const toast = document.createElement('div');
         toast.id = 'pwa-install-toast';
         toast.className = 'fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 glass-card rounded-2xl p-4 flex items-center gap-4 z-50 animate-fade-in';
@@ -115,14 +115,14 @@ const app = {
     hidePreloader() {
         const preloader = document.getElementById('app-preloader');
         const enablePreload = localStorage.getItem('enable_preload');
-        
+
         // Restore body visibility immediately if preloader is disabled
         if (enablePreload === 'false') {
             document.body.style.visibility = 'visible';
             if (preloader) preloader.style.display = 'none';
             return;
         }
-        
+
         // Otherwise show preloader then hide
         document.body.style.visibility = 'visible';
         if (preloader) {
@@ -168,7 +168,7 @@ const app = {
                 document.querySelectorAll('link[rel="apple-touch-icon"]').forEach(el => {
                     el.href = 'icon.php?size=192' + iconVersionParam;
                 });
-                
+
                 // Update manifest link if exists
                 let manifestLink = document.querySelector('link[rel="manifest"]');
                 if (manifestLink) {
@@ -351,11 +351,11 @@ const app = {
         const mobileAvatar = document.getElementById('mobile-user-avatar');
 
         if (this.user.avatar) {
-            sidebarAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
-            mobileAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
+            if (sidebarAvatar) sidebarAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
+            if (mobileAvatar) mobileAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
         } else {
-            sidebarAvatar.textContent = initial;
-            mobileAvatar.textContent = initial;
+            if (sidebarAvatar) sidebarAvatar.textContent = initial;
+            if (mobileAvatar) mobileAvatar.textContent = initial;
         }
 
         document.getElementById('sidebar-username').textContent = this.user.name;
@@ -609,7 +609,7 @@ const app = {
         });
 
         // Nav links
-        document.querySelectorAll('.nav-link').forEach(link => {
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const page = link.dataset.page;
@@ -617,36 +617,11 @@ const app = {
             });
         });
 
-        // Mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            this.toggleSidebar();
-        });
-
-        document.getElementById('sidebar-overlay').addEventListener('click', () => {
-            this.toggleSidebar(false);
-        });
-
         // Hash change
         window.addEventListener('hashchange', () => {
             const page = window.location.hash.slice(1) || 'dashboard';
             this.navigate(page);
         });
-    },
-
-    toggleSidebar(show) {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-
-        const isCurrentlyOpen = !sidebar.classList.contains('-translate-x-full');
-        const shouldShow = show !== undefined ? show : !isCurrentlyOpen;
-
-        if (shouldShow) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        } else {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
     },
 
     navigate(page) {
@@ -662,8 +637,24 @@ const app = {
             link.classList.toggle('active', link.dataset.page === page);
         });
 
-        // Close mobile sidebar
-        this.toggleSidebar(false);
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            const isActive = link.dataset.page === page;
+            if (link.dataset.page === 'transactions') {
+                if (isActive) {
+                    link.classList.add('ring-4', 'ring-primary-500/20');
+                } else {
+                    link.classList.remove('ring-4', 'ring-primary-500/20');
+                }
+            } else {
+                if (isActive) {
+                    link.classList.remove('text-dark-200/50');
+                    link.classList.add('text-primary-400');
+                } else {
+                    link.classList.add('text-dark-200/50');
+                    link.classList.remove('text-primary-400');
+                }
+            }
+        });
 
         // Render page
         const content = document.getElementById('page-content');
