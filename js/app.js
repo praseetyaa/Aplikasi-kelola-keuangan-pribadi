@@ -51,7 +51,7 @@ const onboarding = {
 
         document.getElementById('onboarding-slides').innerHTML = `
             <div class="mb-8">
-                <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[#f43f5e]/20 to-[#f43f5e]/5 flex items-center justify-center text-6xl">
+                <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[#10b981]/20 to-[#10b981]/5 flex items-center justify-center text-6xl">
                     ${slide.icon}
                 </div>
                 <h2 class="text-2xl font-bold text-white mb-3">${slide.title}</h2>
@@ -60,7 +60,7 @@ const onboarding = {
         `;
 
         dotsContainer.innerHTML = this.slides.map((_, i) =>
-            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'bg-[#f43f5e] w-6' : 'bg-white/20'}"></div>`
+            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'bg-[#10b981] w-6' : 'bg-white/20'}"></div>`
         ).join('');
 
         nextBtn.textContent = this.currentIndex === this.slides.length - 1 ? 'Mulai' : 'Lanjut';

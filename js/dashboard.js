@@ -3,11 +3,11 @@
 // ============================================
 
 function getThemeColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--theme-500').trim() || '#f43f5e';
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-500').trim() || '#10b981';
 }
 
 function getThemeColorRgb() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '244, 63, 94';
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '16, 185, 129';
 }
 
 const dashboardPage = {
@@ -404,7 +404,7 @@ const dashboardPage = {
         if (!plans || plans.length === 0) {
             el.innerHTML = `<div class="empty-state py-4">
                 <p class="text-dark-200/40 text-sm">Belum ada planning aktif</p>
-                <a href="#planning" class="text-[#f43f5e] text-sm mt-1 hover:opacity-80">+ Tambah Goal</a>
+                <a href="#planning" class="text-[#10b981] text-sm mt-1 hover:opacity-80">+ Tambah Goal</a>
             </div>`;
             return;
         }

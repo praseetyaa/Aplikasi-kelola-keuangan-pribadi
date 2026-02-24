@@ -65,7 +65,7 @@ const walletsPage = {
             const getTypeInfo = (type) => {
                 switch (type) {
                     case 'bank': return { label: 'Perbankan', icon: '🏦', bg: 'bg-blue-500/20 text-blue-400', color: '#3b82f6' };
-                    case 'ewallet': return { label: 'E-Wallet', icon: '📱', bg: 'bg-rose-500/20 text-rose-400', color: '#f43f5e' };
+                    case 'ewallet': return { label: 'E-Wallet', icon: '📱', bg: 'bg-emerald-500/20 text-emerald-400', color: '#10b981' };
                     case 'credit': return { label: 'Kartu Kredit', icon: '💳', bg: 'bg-rose-500/20 text-rose-400', color: '#f43f5e' };
                     default: return { label: 'Lainnya', icon: '💼', bg: 'bg-gray-500/20 text-gray-400', color: '#9ca3af' };
                 }

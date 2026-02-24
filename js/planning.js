@@ -197,7 +197,7 @@ const planningPage = {
         return `
             <!-- Decorative glow -->
             <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none"
-                style="background: ${isDone ? '#f43f5e' : pct >= 60 ? 'var(--theme-500, #f43f5e)' : '#f59e0b'}"></div>
+                style="background: ${isDone ? '#10b981' : pct >= 60 ? 'var(--theme-500, #10b981)' : '#f59e0b'}"></div>
 
             <!-- Top row: icon + name + actions -->
             <div class="flex items-start justify-between mb-4">

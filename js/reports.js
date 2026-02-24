@@ -3,11 +3,11 @@
 // ============================================
 
 function getThemeColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--theme-500').trim() || '#f43f5e';
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-500').trim() || '#10b981';
 }
 
 function getThemeColorRgb() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '244, 63, 94';
+    return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '16, 185, 129';
 }
 
 const reportsPage = {
