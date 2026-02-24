@@ -118,11 +118,8 @@ const app = {
             return;
         }
 
-        // Skip to auth if onboarding seen - show preloader briefly then auth
-        document.body.style.visibility = 'visible';
-        document.getElementById('auth-container').classList.remove('hidden');
-        this.showAuth();
-        return;
+        // Skip to app init if onboarding seen - show preloader briefly
+        await this.initAfterOnboarding();
     },
 
     async initAfterOnboarding() {
