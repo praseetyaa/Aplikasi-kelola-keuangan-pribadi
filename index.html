@@ -75,9 +75,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body
-    class="bg-dark-950 text-white font-sans antialiased transition-colors duration-200"
-    style="visibility: hidden;">
+<body class="bg-dark-950 text-white font-sans antialiased transition-colors duration-200" style="visibility: hidden;">
 
     <!-- Preloader -->
     <div id="app-preloader"
@@ -100,18 +98,22 @@
     </div>
 
     <!-- Onboarding Screen -->
-    <div id="onboarding-screen" class="hidden min-h-screen flex flex-col fixed inset-0 z-[9998] bg-dark-950 overflow-hidden">
-        <div class="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
-            <div id="onboarding-slides" class="w-full max-w-sm">
+    <div id="onboarding-screen"
+        class="hidden min-h-[100dvh] flex flex-col fixed inset-0 z-[9998] bg-dark-950 overflow-y-auto">
+        <div class="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center min-h-full">
+            <div id="onboarding-slides" class="w-full max-w-sm mb-auto mt-auto">
                 <!-- Slides will be injected by JS -->
             </div>
-        </div>
-        <div class="pb-8 px-6 w-full" style="padding-bottom: max(2rem, env(safe-area-inset-bottom));">
-            <div class="w-full max-w-sm mx-auto">
+
+            <!-- Navigation Footer -->
+            <div class="w-full max-w-sm mx-auto mt-8 shrink-0 pb-8"
+                style="padding-bottom: max(2rem, env(safe-area-inset-bottom));">
                 <div class="flex justify-center gap-2 mb-6" id="onboarding-dots"></div>
                 <div class="flex gap-3">
-                    <button onclick="onboarding.skip()" class="btn-secondary flex-1">Lewati</button>
-                    <button onclick="onboarding.next()" id="onboarding-next-btn" class="btn-primary flex-1">Lanjut</button>
+                    <button onclick="onboarding.skip()"
+                        class="btn-secondary flex-1 py-3 text-sm font-medium">Lewati</button>
+                    <button onclick="onboarding.next()" id="onboarding-next-btn"
+                        class="btn-primary flex-1 py-3 text-sm font-medium">Lanjut</button>
                 </div>
             </div>
         </div>
