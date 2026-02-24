@@ -200,7 +200,7 @@ const settingsPage = {
                         </span>
                     </button>
                 </div>
-            </form>
+                </form>
             </div>
 
             <!-- Account Section (separate forms) -->
