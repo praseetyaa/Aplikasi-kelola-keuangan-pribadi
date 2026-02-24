@@ -245,8 +245,6 @@ const settingsPage = {
                         </button>
                     </div>
                 </form>
-                    </div>
-                </form>
             </div>
 
             <!-- API & Integration Section -->
