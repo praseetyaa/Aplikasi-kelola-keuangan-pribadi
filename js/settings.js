@@ -193,7 +193,7 @@ const settingsPage = {
                 <!-- Save Button (Branding + Theme) -->
                 <div class="flex items-center justify-between py-2">
                     <p id="settings-status" class="text-sm text-dark-200/40"></p>
-                    <button type="submit" class="btn-primary px-8 py-3">
+                    <button type="submit" class="btn-primary w-full sm:w-auto px-8 py-3 text-sm whitespace-nowrap justify-center">
                         <span class="btn-text">💾 Simpan Tampilan</span>
                         <span class="btn-loading hidden">
                             <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
@@ -213,9 +213,9 @@ const settingsPage = {
                 <!-- Change Name -->
                 <form id="account-name-form" class="mb-6 pb-6 border-b border-white/5">
                     <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama</label>
-                    <div class="flex gap-3">
+                    <div class="flex flex-col sm:flex-row gap-3">
                         <input type="text" id="setting-account-name" class="input-field flex-1" placeholder="Nama kamu">
-                        <button type="submit" class="btn-primary px-5 text-sm whitespace-nowrap">
+                        <button type="submit" class="btn-primary w-full sm:w-auto px-5 text-sm whitespace-nowrap justify-center">
                             <span class="btn-text">Ubah Nama</span>
                             <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                         </button>
@@ -239,7 +239,7 @@ const settingsPage = {
                     </div>
                     <div id="password-error" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg p-3"></div>
                     <div class="flex justify-end">
-                        <button type="submit" class="btn-primary px-5 text-sm">
+                        <button type="submit" class="btn-primary w-full sm:w-auto px-5 text-sm whitespace-nowrap justify-center">
                             <span class="btn-text">🔒 Ubah Password</span>
                             <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                         </button>
@@ -303,8 +303,8 @@ const settingsPage = {
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-4 border-t border-white/5">
-                        <button type="button" id="btn-test-smtp" class="btn-secondary px-4 py-2 text-sm flex items-center gap-2">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
+                        <button type="button" id="btn-test-smtp" class="btn-secondary w-full sm:w-auto px-4 py-2 text-sm flex items-center justify-center gap-2">
                             <span class="btn-text flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                 Test SMTP
@@ -312,7 +312,7 @@ const settingsPage = {
                             <span class="btn-loading hidden"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                         </button>
 
-                        <button type="submit" class="btn-primary px-6 py-2">
+                        <button type="submit" class="btn-primary w-full sm:w-auto px-6 py-2 justify-center">
                             <span class="btn-text">💾 Simpan URL/API</span>
                             <span class="btn-loading hidden"><svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></span>
                         </button>

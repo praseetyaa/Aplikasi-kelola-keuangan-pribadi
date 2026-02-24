@@ -48,7 +48,7 @@ const onboarding = {
         const slide = this.slides[this.currentIndex];
         const dotsContainer = document.getElementById('onboarding-dots');
         const nextBtn = document.getElementById('onboarding-next-btn');
-        
+
         document.getElementById('onboarding-slides').innerHTML = `
             <div class="mb-8">
                 <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[#f43f5e]/20 to-[#f43f5e]/5 flex items-center justify-center text-6xl">
@@ -58,11 +58,11 @@ const onboarding = {
                 <p class="text-white/60 text-lg">${slide.desc}</p>
             </div>
         `;
-        
-        dotsContainer.innerHTML = this.slides.map((_, i) => 
+
+        dotsContainer.innerHTML = this.slides.map((_, i) =>
             `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'bg-[#f43f5e] w-6' : 'bg-white/20'}"></div>`
         ).join('');
-        
+
         nextBtn.textContent = this.currentIndex === this.slides.length - 1 ? 'Mulai' : 'Lanjut';
     },
 
@@ -82,7 +82,7 @@ const onboarding = {
     complete() {
         localStorage.setItem('onboarding_seen', 'true');
         document.getElementById('onboarding-screen').classList.add('hidden');
-        
+
         // Continue with app init
         app.initAfterOnboarding();
     },
@@ -99,15 +99,15 @@ const app = {
 
     async init() {
         if (typeof api === 'undefined') return;
-        
+
         // Apply default dark mode immediately
         document.documentElement.classList.add('dark');
-        
+
         // Hide preloader and auth initially
         document.getElementById('app-preloader').classList.add('hidden');
         document.getElementById('auth-container').classList.add('hidden');
         document.getElementById('onboarding-screen').classList.add('hidden');
-        
+
         // Check onboarding first (before any API calls)
         const seenOnboarding = localStorage.getItem('onboarding_seen');
         if (!seenOnboarding) {
@@ -117,7 +117,7 @@ const app = {
             onboarding.init();
             return;
         }
-        
+
         // Skip to auth if onboarding seen - show preloader briefly then auth
         document.body.style.visibility = 'visible';
         document.getElementById('auth-container').classList.remove('hidden');
@@ -134,7 +134,7 @@ const app = {
             preloader.style.opacity = '1';
         }
         document.body.style.visibility = 'visible';
-        
+
         try {
             const themeMode = localStorage.getItem('theme_mode');
             if (themeMode) this.applyThemeMode(themeMode);
@@ -157,40 +157,8 @@ const app = {
         } finally {
             this.hidePreloader();
         }
-        
-        setTimeout(() => {
-            document.body.style.visibility = 'visible';
-        }, 5000);
-    },
 
-    async initAfterOnboarding() {
-        // Show preloader again for app init
-        document.getElementById('app-preloader').style.display = 'flex';
-        document.getElementById('app-preloader').style.opacity = '1';
-        
-        try {
-            const themeMode = localStorage.getItem('theme_mode');
-            if (themeMode) this.applyThemeMode(themeMode);
-
-            await this.loadBranding();
-
-            const res = await api.getMe();
-            this.user = res.user;
-
-            if (this.user) {
-                this.showApp();
-            } else {
-                this.showAuth();
-            }
-            this.bindEvents();
-            this.initPWA();
-        } catch (err) {
-            this.showAuth();
-            this.bindEvents();
-        } finally {
-            this.hidePreloader();
-        }
-        
+        // Safety: ensure body is visible after 5 seconds
         setTimeout(() => {
             document.body.style.visibility = 'visible';
         }, 5000);
@@ -229,7 +197,7 @@ const app = {
 
     showInstallPrompt() {
         if (!this.deferredPrompt || localStorage.getItem('pwa_install_dismissed')) return;
-        
+
         const toast = document.createElement('div');
         toast.id = 'pwa-install-toast';
         toast.className = 'fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 glass-card rounded-2xl p-4 flex items-center gap-4 z-50 animate-fade-in';
@@ -272,14 +240,14 @@ const app = {
     hidePreloader() {
         const preloader = document.getElementById('app-preloader');
         const enablePreload = localStorage.getItem('enable_preload');
-        
+
         // Restore body visibility immediately if preloader is disabled
         if (enablePreload === 'false') {
             document.body.style.visibility = 'visible';
             if (preloader) preloader.style.display = 'none';
             return;
         }
-        
+
         // Otherwise show preloader then hide
         document.body.style.visibility = 'visible';
         if (preloader) {
@@ -325,7 +293,7 @@ const app = {
                 document.querySelectorAll('link[rel="apple-touch-icon"]').forEach(el => {
                     el.href = 'icon.php?size=192' + iconVersionParam;
                 });
-                
+
                 // Update manifest link if exists
                 let manifestLink = document.querySelector('link[rel="manifest"]');
                 if (manifestLink) {
@@ -508,11 +476,11 @@ const app = {
         const mobileAvatar = document.getElementById('mobile-user-avatar');
 
         if (this.user.avatar) {
-            sidebarAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
-            mobileAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
+            if (sidebarAvatar) sidebarAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
+            if (mobileAvatar) mobileAvatar.innerHTML = `<img src="${this.user.avatar}" class="w-full h-full object-cover rounded-full" alt="">`;
         } else {
-            sidebarAvatar.textContent = initial;
-            mobileAvatar.textContent = initial;
+            if (sidebarAvatar) sidebarAvatar.textContent = initial;
+            if (mobileAvatar) mobileAvatar.textContent = initial;
         }
 
         document.getElementById('sidebar-username').textContent = this.user.name;
@@ -766,7 +734,7 @@ const app = {
         });
 
         // Nav links
-        document.querySelectorAll('.nav-link').forEach(link => {
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const page = link.dataset.page;
@@ -774,36 +742,11 @@ const app = {
             });
         });
 
-        // Mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            this.toggleSidebar();
-        });
-
-        document.getElementById('sidebar-overlay').addEventListener('click', () => {
-            this.toggleSidebar(false);
-        });
-
         // Hash change
         window.addEventListener('hashchange', () => {
             const page = window.location.hash.slice(1) || 'dashboard';
             this.navigate(page);
         });
-    },
-
-    toggleSidebar(show) {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-
-        const isCurrentlyOpen = !sidebar.classList.contains('-translate-x-full');
-        const shouldShow = show !== undefined ? show : !isCurrentlyOpen;
-
-        if (shouldShow) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        } else {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
     },
 
     navigate(page) {
@@ -819,8 +762,24 @@ const app = {
             link.classList.toggle('active', link.dataset.page === page);
         });
 
-        // Close mobile sidebar
-        this.toggleSidebar(false);
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            const isActive = link.dataset.page === page;
+            if (link.dataset.page === 'transactions') {
+                if (isActive) {
+                    link.classList.add('ring-4', 'ring-primary-500/20');
+                } else {
+                    link.classList.remove('ring-4', 'ring-primary-500/20');
+                }
+            } else {
+                if (isActive) {
+                    link.classList.remove('text-dark-200/50');
+                    link.classList.add('text-primary-400');
+                } else {
+                    link.classList.add('text-dark-200/50');
+                    link.classList.remove('text-primary-400');
+                }
+            }
+        });
 
         // Render page
         const content = document.getElementById('page-content');

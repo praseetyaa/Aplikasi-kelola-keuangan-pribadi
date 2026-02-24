@@ -6,3 +6,4 @@
 [2026-02-20 16:49:24] To: debug@test.com | Type: reset | Code: 697791 | Sent: NO
 [2026-02-21 15:34:57] To: debug@test.com | Type: reset | Code: 921077 | Method: SMTP | Sent: NO
 [2026-02-21 15:41:05] To: test@example.com | Type: register | Code: 429422 | Method: SMTP | Sent: NO
+[2026-02-24 20:53:42] To: tester2@test.com | Type: register | Code: 496462 | Method: SMTP | Sent: NO

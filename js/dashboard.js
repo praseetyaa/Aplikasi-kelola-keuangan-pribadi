@@ -18,13 +18,10 @@ const dashboardPage = {
 
         container.innerHTML = `
         <div class="page-enter">
-            <!-- Dynamic Alerts -->
-            <div id="dash-alerts" class="mb-6 empty:hidden space-y-3"></div>
-
             <!-- Header -->
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Dashboard</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Home</h2>
                     <p class="text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
                 </div>
                 <button onclick="app.navigate('notifications')" class="p-2 rounded-xl hover:bg-white/5 transition-colors relative">
