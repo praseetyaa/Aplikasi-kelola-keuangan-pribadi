@@ -108,6 +108,10 @@ const app = {
         document.getElementById('auth-container').classList.add('hidden');
         document.getElementById('onboarding-screen').classList.add('hidden');
 
+        // Apply cached theme color before showing anything
+        const cachedColor = localStorage.getItem('theme_color');
+        if (cachedColor) this.applyThemeColor(cachedColor);
+
         // Check onboarding first (before any API calls)
         const seenOnboarding = localStorage.getItem('onboarding_seen');
         if (!seenOnboarding) {
@@ -333,6 +337,7 @@ const app = {
 
             // Apply theme color
             if (themeColor) {
+                localStorage.setItem('theme_color', themeColor);
                 this.applyThemeColor(themeColor);
             }
         } catch (e) {

@@ -571,6 +571,7 @@ const settingsPage = {
                 // Save theme/preload choices to localStorage immediately to avoid flickering on reload
                 localStorage.setItem('theme_mode', document.getElementById('setting-theme-mode').value);
                 localStorage.setItem('enable_preload', document.getElementById('setting-enable-preload').checked ? 'true' : 'false');
+                localStorage.setItem('theme_color', document.getElementById('setting-theme-hex').value.trim());
 
                 // Force theme update instantly without reload if possible
                 if (window.app && typeof window.app.applyThemeMode === 'function') {
