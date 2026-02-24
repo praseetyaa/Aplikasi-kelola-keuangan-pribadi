@@ -127,21 +127,21 @@ const settingsPage = {
                     <!-- Custom Color Picker -->
                     <div class="pt-4 border-t border-white/5">
                         <label class="block text-xs font-medium text-dark-200/50 mb-3 uppercase tracking-wider">Warna Kustom</label>
-                        <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
                             <!-- Color Picker Button -->
-                            <div class="flex-shrink-0">
+                            <div class="flex-shrink-0 flex items-center gap-3">
                                 <label for="setting-theme-picker" class="block w-14 h-14 rounded-xl cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors relative overflow-hidden" style="padding: 2px;">
                                     <input type="color" id="setting-theme-picker" value="#f43f5e" 
                                      onchange="document.getElementById('setting-theme-hex').value=this.value;document.getElementById('setting-theme-picker-bg').style.backgroundColor=this.value"
-                                     class="w-10 h-10 rounded-lg cursor-pointer border-0">
-                                     <div id="setting-theme-picker-bg" class="w-full h-full rounded-lg" style="background-color: #f43f5e;"></div>
-                                     <input type="text" id="setting-theme-hex" value="#f43f5e" maxlength="7"
-                                        class="input-field text-sm font-mono w-28 py-1.5 px-3" placeholder="#f43f5e"
-                                        oninput="settingsPage.onHexInput(this.value)">
-                                </div>
-                                <div id="theme-palette-preview" class="grid grid-cols-6 sm:flex sm:flex-wrap gap-1">
-                                    <!-- populated by JS -->
-                                </div>
+                                     class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
+                                    <div id="setting-theme-picker-bg" class="w-full h-full rounded-lg" style="background-color: #f43f5e;"></div>
+                                </label>
+                                <input type="text" id="setting-theme-hex" value="#f43f5e" maxlength="7"
+                                    class="input-field text-sm font-mono w-28 py-1.5 px-3" placeholder="#f43f5e"
+                                    oninput="settingsPage.onHexInput(this.value)">
+                            </div>
+                            <div id="theme-palette-preview" class="grid grid-cols-6 sm:flex sm:flex-wrap gap-1 flex-1">
+                                <!-- populated by JS -->
                             </div>
                         </div>
                     </div>
