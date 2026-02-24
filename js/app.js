@@ -103,31 +103,45 @@ const app = {
         // Apply default dark mode immediately
         document.documentElement.classList.add('dark');
 
-        // Hide preloader and auth initially
-        document.getElementById('app-preloader').classList.add('hidden');
+        // Show preloader initially
+        const preloader = document.getElementById('app-preloader');
+        if (preloader) {
+            preloader.classList.remove('hidden');
+            preloader.style.display = 'flex';
+            preloader.style.opacity = '1';
+        }
+        document.body.style.visibility = 'visible';
+
+        // Hide auth and onboarding initially
         document.getElementById('auth-container').classList.add('hidden');
         document.getElementById('onboarding-screen').classList.add('hidden');
 
-        // Apply cached theme color before showing anything
+        // Apply cached theme and color to avoid flicker before DB load
+        const themeMode = localStorage.getItem('theme_mode');
+        if (themeMode) this.applyThemeMode(themeMode);
+
         const cachedColor = localStorage.getItem('theme_color');
         if (cachedColor) this.applyThemeColor(cachedColor);
 
-        // Check onboarding first (before any API calls)
+        // Fetch overall app branding strictly before deciding what to show
+        await this.loadBranding();
+
+        // Check onboarding first (before any auth checks)
         const seenOnboarding = localStorage.getItem('onboarding_seen');
         if (!seenOnboarding) {
-            // Show onboarding - make body visible
-            document.body.style.visibility = 'visible';
+            // Hide preloader immediately since we will show onboarding
+            if (preloader) preloader.style.display = 'none';
             document.getElementById('onboarding-screen').classList.remove('hidden');
             onboarding.init();
             return;
         }
 
-        // Skip to app init if onboarding seen - show preloader briefly
+        // Skip to app init if onboarding seen
         await this.initAfterOnboarding();
     },
 
     async initAfterOnboarding() {
-        // Show preloader for app init
+        // Show preloader
         const preloader = document.getElementById('app-preloader');
         if (preloader) {
             preloader.classList.remove('hidden');
@@ -137,11 +151,7 @@ const app = {
         document.body.style.visibility = 'visible';
 
         try {
-            const themeMode = localStorage.getItem('theme_mode');
-            if (themeMode) this.applyThemeMode(themeMode);
-
-            await this.loadBranding();
-
+            // Branding is already loaded in init()
             const res = await api.getMe();
             this.user = res.user;
 
