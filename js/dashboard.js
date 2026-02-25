@@ -22,9 +22,9 @@ const dashboardPage = {
             <div class="flex items-center justify-between mb-8">
                 <div>
                     <h2 class="text-2xl lg:text-3xl font-bold text-white tracking-tight">
-                        ${this.generateGreeting()} <span class="bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent">${app.user ? app.user.name.split(' ')[0] : ''}</span> 👋
+                        Hi! <span class="bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent">${app.user ? app.user.name.split(' ')[0] : ''}</span>
                     </h2>
-                    <p class="text-dark-200/60 mt-2 font-medium">✨ Ini ringkasan keuanganmu bulan ini</p>
+                    <p class="text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
                 </div>
                 <button onclick="app.navigate('notifications')" class="p-2 rounded-xl hover:bg-white/5 transition-colors relative">
                     <svg class="w-6 h-6 text-dark-200/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,14 +130,6 @@ const dashboardPage = {
         </div>`;
 
         this.loadData(month);
-    },
-
-    generateGreeting() {
-        const hour = new Date().getHours();
-        if (hour >= 5 && hour < 12) return 'Selamat Pagi,';
-        if (hour >= 12 && hour < 15) return 'Selamat Siang,';
-        if (hour >= 15 && hour < 18) return 'Selamat Sore,';
-        return 'Selamat Malam,';
     },
 
     async loadData(month) {
