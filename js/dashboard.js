@@ -10,173 +10,191 @@ function getThemeColorRgb() {
     return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '16, 185, 129';
 }
 
+const AVAILABLE_SHORTCUTS = [
+    { id: 'categories', label: 'Kategori', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />` },
+    { id: 'reports', label: 'Laporan', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />` },
+    { id: 'settings', label: 'Pengaturan', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />` },
+    { id: 'wallets', label: 'Dompet', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />` },
+    { id: 'planning', label: 'Rencana', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />` },
+    { id: 'profile', label: 'Profil', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />` },
+    { id: 'transactions', label: 'Transaksi', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />` }
+];
+
 const dashboardPage = {
     charts: {},
 
     async render(container) {
         const month = getCurrentMonth();
 
+        // Load shortcuts logic
+        let savedShortcuts = [];
+        try {
+            const raw = localStorage.getItem('dashboard_shortcuts');
+            if (raw) savedShortcuts = JSON.parse(raw);
+        } catch (e) { }
+
+        if (!savedShortcuts.length) {
+            savedShortcuts = ['categories', 'reports', 'settings']; // Default
+        }
+
+        const renderedShortcutsHTML = savedShortcuts.map(id => {
+            const feat = AVAILABLE_SHORTCUTS.find(s => s.id === id);
+            if (!feat) return '';
+            return `
+                <button onclick="app.navigate('${feat.id}')" class="flex flex-col items-center gap-2 group outline-none">
+                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
+                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            ${feat.icon}
+                        </svg>
+                    </div>
+                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors truncate w-full text-center px-1">${feat.label}</span>
+                </button>
+            `;
+        }).join('');
+
         container.innerHTML = `
-        <div class="page-enter">
-            <!-- Header -->
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white tracking-tight">
-                        Hi! <span class="bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent">${app.user ? app.user.name.split(' ')[0] : ''}</span>
-                    </h2>
-                    <p class="text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
-                </div>
-                <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors relative">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    <span id="dash-notification-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
-                </button>
-            </div>
-
-            <!-- Summary Card -->
-            <div class="glass-card rounded-2xl p-5 sm:p-6 mb-8 relative overflow-hidden">
-                <!-- Decorative background elements -->
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div class="relative z-10 flex flex-col gap-6">
-                    <!-- Total Saldo (Highlighted) -->
-                    <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                            </div>
-                            <span class="text-sm text-dark-200/60 font-medium">Total Saldo</span>
-                        </div>
-                        <p id="dash-balance" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                            <span class="skeleton inline-block w-40 h-10 sm:h-12"></span>
-                        </p>
+            <div class="page-enter">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl lg:text-3xl font-bold text-white tracking-tight">
+                            Hi! <span class="bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent">${app.user ? app.user.name.split(' ')[0] : ''}</span>
+                        </h2>
+                        <p class="text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
                     </div>
+                    <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors relative">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span id="dash-notification-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
+                    </button>
+                </div>
 
-                    <div class="w-full h-px bg-white/5"></div>
-
-                    <!-- Income & Expense Row -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Income -->
-                        <div class="flex flex-col">
-                            <div class="flex items-center gap-2 mb-1.5">
-                                <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
-                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+                <!-- Summary Card -->
+                <div class="glass-card rounded-2xl p-5 sm:p-6 mb-8 relative overflow-hidden">
+                    <!-- Decorative background elements -->
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="relative z-10 flex flex-col gap-6">
+                        <!-- Total Saldo -->
+                        <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pemasukan</span>
+                                <span class="text-sm text-dark-200/60 font-medium">Total Saldo</span>
                             </div>
-                            <p id="dash-income" class="text-lg sm:text-xl font-bold text-green-400">
-                                <span class="skeleton inline-block w-24 h-6"></span>
+                            <p id="dash-balance" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                                <span class="skeleton inline-block w-40 h-10 sm:h-12"></span>
                             </p>
                         </div>
-                        <!-- Expense -->
-                        <div class="flex flex-col">
-                            <div class="flex items-center gap-2 mb-1.5">
-                                <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
-                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+
+                        <div class="w-full h-px bg-white/5"></div>
+
+                        <!-- Income & Expense Row -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Income -->
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+                                    </div>
+                                    <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pemasukan</span>
                                 </div>
-                                <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pengeluaran</span>
+                                <p id="dash-income" class="text-lg sm:text-xl font-bold text-green-400">
+                                    <span class="skeleton inline-block w-24 h-6"></span>
+                                </p>
                             </div>
-                            <p id="dash-expense" class="text-lg sm:text-xl font-bold text-red-400">
-                                <span class="skeleton inline-block w-24 h-6"></span>
-                            </p>
+                            <!-- Expense -->
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+                                    </div>
+                                    <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pengeluaran</span>
+                                </div>
+                                <p id="dash-expense" class="text-lg sm:text-xl font-bold text-red-400">
+                                    <span class="skeleton inline-block w-24 h-6"></span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Mobile Only Quick Menu -->
-            <div class="lg:hidden grid grid-cols-4 gap-3 mb-8">
-                <!-- Categories -->
-                <button onclick="app.navigate('categories')" class="flex flex-col items-center gap-2 group">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
-                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                    </div>
-                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Kategori</span>
-                </button>
-                
-                <!-- Reports -->
-                <button onclick="app.navigate('reports')" class="flex flex-col items-center gap-2 group">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
-                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                    </div>
-                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Laporan</span>
-                </button>
-                
-                <!-- Settings -->
-                <button onclick="app.navigate('settings')" class="flex flex-col items-center gap-2 group">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
-                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Pengaturan</span>
-                </button>
-            </div>
+                <!-- Mobile Only Quick Menu -->
+                <div class="lg:hidden grid grid-cols-4 gap-3 mb-8" id="quick-menu-grid">
+                    ${renderedShortcutsHTML}
+                    
+                    <!-- Edit Menu -->
+                    <button onclick="dashboardPage.editShortcuts()" class="flex flex-col items-center gap-2 group outline-none">
+                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 border-dashed flex items-center justify-center group-hover:bg-white/10 group-hover:border-white/20 transition-all">
+                            <svg class="w-5 h-5 text-dark-200/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-dark-200/50 group-hover:text-white transition-colors">Edit</span>
+                    </button>
+                </div>
 
-            <!-- Charts Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
-                <!-- Monthly Trend -->
-                <div class="lg:col-span-2 glass-card rounded-2xl p-4 sm:p-6">
-                    <h3 class="text-base font-semibold text-white mb-4">Tren Bulanan</h3>
-                    <div class="relative h-[240px] md:h-[280px]">
-                        <canvas id="dash-trend-chart"></canvas>
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
+                    <!-- Monthly Trend -->
+                    <div class="lg:col-span-2 glass-card rounded-2xl p-4 sm:p-6">
+                        <h3 class="text-base font-semibold text-white mb-4">Tren Bulanan</h3>
+                        <div class="relative h-[240px] md:h-[280px]">
+                            <canvas id="dash-trend-chart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Expense by Category -->
+                    <div class="glass-card rounded-2xl p-4 sm:p-6">
+                        <h3 class="text-base font-semibold text-white mb-4">Pengeluaran per Kategori</h3>
+                        <div id="dash-category-chart-container" class="relative flex items-center justify-center h-[240px] md:h-[280px]">
+                            <canvas id="dash-category-chart"></canvas>
+                        </div>
                     </div>
                 </div>
-                <!-- Expense by Category -->
-                <div class="glass-card rounded-2xl p-4 sm:p-6">
-                    <h3 class="text-base font-semibold text-white mb-4">Pengeluaran per Kategori</h3>
-                    <div id="dash-category-chart-container" class="relative flex items-center justify-center h-[240px] md:h-[280px]">
-                        <canvas id="dash-category-chart"></canvas>
+
+                <!-- Wallets & Planning Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
+                    <!-- Dompet Widget -->
+                    <div class="glass-card rounded-2xl p-4 sm:p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-semibold text-white">💳 Dompet</h3>
+                            <a href="#wallets" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Kelola →</a>
+                        </div>
+                        <div id="dash-wallets" class="space-y-2">
+                            <div class="skeleton w-full h-12 rounded-xl"></div>
+                            <div class="skeleton w-full h-12 rounded-xl"></div>
+                        </div>
+                    </div>
+                    <!-- Planning Widget -->
+                    <div class="glass-card rounded-2xl p-4 sm:p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-semibold text-white">🎯 Planning Aktif</h3>
+                            <a href="#planning" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
+                        </div>
+                        <div id="dash-planning" class="space-y-3">
+                            <div class="skeleton w-full h-14 rounded-xl"></div>
+                            <div class="skeleton w-full h-14 rounded-xl"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Wallets & Planning Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
-                <!-- Dompet Widget -->
-                <div class="glass-card rounded-2xl p-4 sm:p-6">
+                <!-- Recent Transactions -->
+                <div class="glass-card rounded-2xl p-4 sm:p-6 mb-0">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-semibold text-white">💳 Dompet</h3>
-                        <a href="#wallets" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Kelola →</a>
+                        <h3 class="text-base font-semibold text-white">Transaksi Terbaru</h3>
+                        <a href="#transactions" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
                     </div>
-                    <div id="dash-wallets" class="space-y-2">
-                        <div class="skeleton w-full h-12 rounded-xl"></div>
-                        <div class="skeleton w-full h-12 rounded-xl"></div>
-                    </div>
-                </div>
-                <!-- Planning Widget -->
-                <div class="glass-card rounded-2xl p-4 sm:p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-semibold text-white">🎯 Planning Aktif</h3>
-                        <a href="#planning" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
-                    </div>
-                    <div id="dash-planning" class="space-y-3">
-                        <div class="skeleton w-full h-14 rounded-xl"></div>
-                        <div class="skeleton w-full h-14 rounded-xl"></div>
+                    <div id="dash-recent-list" class="space-y-3">
+                        <div class="skeleton w-full h-16"></div>
+                        <div class="skeleton w-full h-16"></div>
+                        <div class="skeleton w-full h-16"></div>
                     </div>
                 </div>
             </div>
-
-            <!-- Recent Transactions -->
-            <div class="glass-card rounded-2xl p-4 sm:p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-semibold text-white">Transaksi Terbaru</h3>
-                    <a href="#transactions" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
-                </div>
-                <div id="dash-recent-list" class="space-y-3">
-                    <div class="skeleton w-full h-16"></div>
-                    <div class="skeleton w-full h-16"></div>
-                    <div class="skeleton w-full h-16"></div>
-                </div>
-            </div>
-        </div>`;
+        `;
 
         this.loadData(month);
     },
@@ -465,7 +483,7 @@ const dashboardPage = {
             const pct = Math.min(100, parseFloat(p.progress_pct) || 0);
             const color = pct >= 60 ? getThemeColor() : pct >= 30 ? '#f59e0b' : '#ef4444';
             const info = p.monthly_needed
-                ? `Nabung/bln: ${formatCurrency(p.monthly_needed)}`
+                ? `Nabung / bln: ${formatCurrency(p.monthly_needed)} `
                 : p.estimated_months
                     ? `~${p.estimated_months} bln lagi`
                     : `${formatCurrency(p.saved_amount)} / ${formatCurrency(p.target_amount)}`;
@@ -488,5 +506,81 @@ const dashboardPage = {
         if (plans.length > 3) {
             el.innerHTML += `<a href="#planning" class="block text-center text-xs text-primary-400 hover:text-primary-300 mt-2 pt-2 border-t border-white/5">+${plans.length - 3} goal lainnya →</a>`;
         }
+    },
+
+    editShortcuts() {
+        let savedShortcuts = [];
+        try {
+            const raw = localStorage.getItem('dashboard_shortcuts');
+            if (raw) savedShortcuts = JSON.parse(raw);
+        } catch (e) { }
+        if (!savedShortcuts.length) savedShortcuts = ['categories', 'reports', 'settings'];
+
+        const modalHtml = `
+            <div class="modal fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
+                <div class="fixed inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
+                <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative flex flex-col max-h-[90vh]">
+                     <div class="flex items-center justify-between mb-4 flex-shrink-0">
+                        <h3 class="text-lg font-semibold text-white">Sesuaikan Menu Cepat</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-dark-200/60 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    
+                    <p class="text-xs text-dark-200/60 mb-4 pb-4 border-b border-white/5 flex-shrink-0">Pilih fitur yang ingin ditampilkan pada menu cepat di beranda. Perubahan otomatis tersimpan pada perangkat Anda.</p>
+                    
+                    <div class="flex-1 overflow-y-auto space-y-2 mb-4 scrollbar-hide" id="shortcut-checkboxes">
+                        ${AVAILABLE_SHORTCUTS.map(feat => `
+                            <label class="flex items-center p-3 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors cursor-pointer group">
+                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-dark-200/70 group-hover:text-primary-400 mr-4">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        ${feat.icon}
+                                    </svg>
+                                </div>
+                                <span class="flex-1 text-sm font-medium text-white">${feat.label}</span>
+                                <div class="relative flex items-center">
+                                    <input type="checkbox" value="${feat.id}" class="peer sr-only shortcut-cb" ${savedShortcuts.includes(feat.id) ? 'checked' : ''}>
+                                    <div class="w-11 h-6 bg-dark-800 rounded-full peer peer-checked:bg-primary-500 transition-colors"></div>
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5 shadow-sm"></div>
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+
+                    <div class="flex gap-3 pt-4 border-t border-white/5 flex-shrink-0">
+                        <button type="button" onclick="closeModal(this)" class="btn-secondary flex-1 py-3">Batal</button>
+                        <button id="save-shortcuts-btn" class="btn-primary flex-1 py-3">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(modalHtml, 'text/html');
+        const modalEl = doc.body.firstChild;
+        document.body.appendChild(modalEl);
+
+        // Show modal animation
+        setTimeout(() => modalEl.classList.add('show'), 10);
+
+        // Save action
+        modalEl.querySelector('#save-shortcuts-btn').addEventListener('click', () => {
+            const checkboxes = modalEl.querySelectorAll('.shortcut-cb');
+            const newShortcuts = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            if (newShortcuts.length === 0) {
+                showToast('Pilih minimal 1 pintasan', 'error');
+                return;
+            }
+
+            localStorage.setItem('dashboard_shortcuts', JSON.stringify(newShortcuts));
+            closeModal(modalEl.querySelector('.bg-dark-950\\/80'));
+
+            // Re-render dashboard gracefully to apply
+            dashboardPage.render(document.getElementById('page-content'));
+            showToast('Pintasan berhasil diperbarui', 'success');
+        });
     }
 };

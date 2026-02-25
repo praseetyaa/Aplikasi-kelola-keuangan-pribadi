@@ -762,7 +762,7 @@ const app = {
     },
 
     navigate(page) {
-        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings', 'wallets', 'planning', 'notifications'].includes(page)) {
+        if (!['dashboard', 'transactions', 'categories', 'reports', 'settings', 'profile', 'wallets', 'planning', 'notifications'].includes(page)) {
             page = 'dashboard';
         }
 
@@ -805,6 +805,7 @@ const app = {
             case 'wallets': walletsPage.render(content); break;
             case 'planning': planningPage.render(content); break;
             case 'settings': settingsPage.render(content); break;
+            case 'profile': profilePage.render(content); break;
             case 'notifications': notificationsPage.render(content); break;
         }
     }
@@ -978,7 +979,15 @@ function showModal(title, bodyHTML, footerHTML = '') {
     document.body.appendChild(overlay);
 }
 
-function closeModal() {
+function closeModal(element) {
+    if (element instanceof Element) {
+        const customModal = element.closest('.modal');
+        if (customModal) {
+            customModal.classList.remove('show');
+            setTimeout(() => customModal.remove(), 300);
+            return;
+        }
+    }
     const modal = document.getElementById('app-modal');
     if (modal) modal.remove();
 }
