@@ -118,14 +118,6 @@ const dashboardPage = {
                     </div>
                     <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Pengaturan</span>
                 </button>
-                
-                <!-- Placeholder for future feature // Or could be Profile direct -->
-                <button onclick="app.navigate('settings')" class="flex flex-col items-center gap-2 group">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all overflow-hidden border-2 border-transparent">
-                        ${app.user && app.user.photo ? `<img src="${app.user.photo}" class="w-full h-full object-cover">` : `<div class="w-full h-full bg-primary-500/20 flex items-center justify-center text-primary-400 font-bold">${app.user ? app.user.name.charAt(0) : 'U'}</div>`}
-                    </div>
-                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Profil</span>
-                </button>
             </div>
 
             <!-- Charts Row -->
