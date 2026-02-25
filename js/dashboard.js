@@ -26,8 +26,8 @@ const dashboardPage = {
                     </h2>
                     <p class="text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
                 </div>
-                <button onclick="app.navigate('notifications')" class="p-2 rounded-xl hover:bg-white/5 transition-colors relative">
-                    <svg class="w-6 h-6 text-dark-200/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors relative">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     <span id="dash-notification-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
@@ -84,6 +84,48 @@ const dashboardPage = {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Mobile Only Quick Menu -->
+            <div class="lg:hidden grid grid-cols-4 gap-3 mb-8">
+                <!-- Categories -->
+                <button onclick="app.navigate('categories')" class="flex flex-col items-center gap-2 group">
+                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
+                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                    </div>
+                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Kategori</span>
+                </button>
+                
+                <!-- Reports -->
+                <button onclick="app.navigate('reports')" class="flex flex-col items-center gap-2 group">
+                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
+                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Laporan</span>
+                </button>
+                
+                <!-- Settings -->
+                <button onclick="app.navigate('settings')" class="flex flex-col items-center gap-2 group">
+                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
+                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Pengaturan</span>
+                </button>
+                
+                <!-- Placeholder for future feature // Or could be Profile direct -->
+                <button onclick="app.navigate('settings')" class="flex flex-col items-center gap-2 group">
+                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all overflow-hidden border-2 border-transparent">
+                        ${app.user && app.user.photo ? `<img src="${app.user.photo}" class="w-full h-full object-cover">` : `<div class="w-full h-full bg-primary-500/20 flex items-center justify-center text-primary-400 font-bold">${app.user ? app.user.name.charAt(0) : 'U'}</div>`}
+                    </div>
+                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors">Profil</span>
+                </button>
             </div>
 
             <!-- Charts Row -->
