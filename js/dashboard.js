@@ -34,40 +34,55 @@ const dashboardPage = {
                 </button>
             </div>
 
-            <!-- Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
-                <div class="summary-card card-balance">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            <!-- Summary Card -->
+            <div class="glass-card rounded-2xl p-5 sm:p-6 mb-8 relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col gap-6">
+                    <!-- Total Saldo (Highlighted) -->
+                    <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            </div>
+                            <span class="text-sm text-dark-200/60 font-medium">Total Saldo</span>
                         </div>
-                        <span class="text-sm text-dark-200/60 font-medium">Total Saldo</span>
+                        <p id="dash-balance" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                            <span class="skeleton inline-block w-40 h-10 sm:h-12"></span>
+                        </p>
                     </div>
-                    <p id="dash-balance" class="text-2xl lg:text-3xl font-bold text-white">
-                        <span class="skeleton inline-block w-40 h-8"></span>
-                    </p>
-                </div>
-                <div class="summary-card card-income">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+
+                    <div class="w-full h-px bg-white/5"></div>
+
+                    <!-- Income & Expense Row -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Income -->
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+                                </div>
+                                <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pemasukan</span>
+                            </div>
+                            <p id="dash-income" class="text-lg sm:text-xl font-bold text-green-400">
+                                <span class="skeleton inline-block w-24 h-6"></span>
+                            </p>
                         </div>
-                        <span class="text-sm text-dark-200/60 font-medium">Pemasukan</span>
-                    </div>
-                    <p id="dash-income" class="text-2xl lg:text-3xl font-bold text-green-400">
-                        <span class="skeleton inline-block w-36 h-8"></span>
-                    </p>
-                </div>
-                <div class="summary-card card-expense">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+                        <!-- Expense -->
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+                                </div>
+                                <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pengeluaran</span>
+                            </div>
+                            <p id="dash-expense" class="text-lg sm:text-xl font-bold text-red-400">
+                                <span class="skeleton inline-block w-24 h-6"></span>
+                            </p>
                         </div>
-                        <span class="text-sm text-dark-200/60 font-medium">Pengeluaran</span>
                     </div>
-                    <p id="dash-expense" class="text-2xl lg:text-3xl font-bold text-red-400">
-                        <span class="skeleton inline-block w-36 h-8"></span>
-                    </p>
                 </div>
             </div>
 
