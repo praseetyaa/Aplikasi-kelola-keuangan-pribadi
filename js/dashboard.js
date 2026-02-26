@@ -434,7 +434,7 @@ const dashboardPage = {
         if (!transactions || transactions.length === 0) {
             list.innerHTML = `
                 <div class="empty-state py-8">
-                    <svg class="w-12 h-12 text-dark-200/20 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <svg class="w-12 h-12 text-gray-300 dark:text-dark-200/20 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     <p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada transaksi</p>
                     <a href="#transactions" class="text-primary-400 text-sm mt-2 hover:text-primary-300">+ Tambah Transaksi</a>
                 </div>`;
@@ -475,7 +475,7 @@ const dashboardPage = {
             const isNeg = bal < 0;
             return `
             <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors hover:bg-black/5 dark:bg-white/5 cursor-pointer" onclick="app.navigate('wallets')">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(255,255,255,0.06)">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 bg-black/5 dark:bg-white/5">
                     ${typeIcon[w.type] || '💰'}
                 </div>
                 <div class="flex-1 min-w-0">
@@ -494,7 +494,7 @@ const dashboardPage = {
         if (!plans || plans.length === 0) {
             el.innerHTML = `<div class="empty-state py-4">
                 <p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada planning aktif</p>
-                <a href="#planning" class="text-[#10b981] text-sm mt-1 hover:opacity-80">+ Tambah Goal</a>
+                <a href="#planning" class="text-primary-400 text-sm mt-1 hover:text-primary-300">+ Tambah Goal</a>
             </div>`;
             return;
         }

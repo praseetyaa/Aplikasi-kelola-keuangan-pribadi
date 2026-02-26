@@ -46,7 +46,7 @@ const walletsPage = {
             if (this.wallets.length === 0) {
                 grid.parentElement.innerHTML += `
                     <div class="col-span-1 md:col-span-2 lg:col-span-3 empty-state py-12">
-                        <svg class="w-16 h-16 text-dark-200/15 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-16 h-16 text-gray-300 dark:text-dark-200/20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
                         <p class="text-gray-400 dark:text-dark-200/40 text-base font-medium mb-1">Belum ada dompet</p>

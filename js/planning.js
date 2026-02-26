@@ -202,8 +202,7 @@ const planningPage = {
             <!-- Top row: icon + name + actions -->
             <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
-                        style="background:rgba(255,255,255,0.06)">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 bg-black/5 dark:bg-white/5">
                         ${p.icon || '🎯'}
                     </div>
                     <div>
@@ -320,7 +319,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             </div>
 
             <!-- Kalkulator real-time -->
-            <div id="plan-calc-box" class="hidden rounded-xl p-4 space-y-2" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
+            <div id="plan-calc-box" class="hidden rounded-xl p-4 space-y-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
                 <p class="text-xs font-semibold text-gray-500 dark:text-dark-200/60 uppercase tracking-wide">📊 Kalkulator</p>
                 <div id="plan-calc-content" class="space-y-1.5 text-sm"></div>
             </div>
@@ -449,7 +448,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
 
         const body = `
             <div class="space-y-4">
-                <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
+                <div class="rounded-xl p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
                     <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Target</p>
                     <p class="text-xl font-bold text-dark-950 dark:text-white">${formatCurrency(plan.target_amount)}</p>
                     <p class="text-sm text-gray-500 dark:text-dark-200/60 mt-1 mb-1">Sudah Terkumpul: <span class="text-dark-950 dark:text-white">${formatCurrency(plan.saved_amount)}</span></p>
