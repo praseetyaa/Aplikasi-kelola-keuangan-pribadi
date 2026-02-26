@@ -26,8 +26,8 @@ const transactionsPage = {
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Transaksi</h2>
-                    <p class="text-dark-200/50 mt-1">Kelola pemasukan dan pengeluaranmu</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Transaksi</h2>
+                    <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola pemasukan dan pengeluaranmu</p>
                 </div>
                 <button onclick="transactionsPage.showAddModal()" class="btn-primary">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -39,7 +39,7 @@ const transactionsPage = {
             <div class="glass-card rounded-2xl p-3 sm:p-4 mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div class="relative">
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-200/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-dark-200/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="tx-search" placeholder="Cari transaksi..." class="input-field w-full pl-10" oninput="transactionsPage.handleSearch(this.value)">
                     </div>
                     <select id="tx-filter-type" class="select-field" onchange="transactionsPage.handleFilter('type', this.value)">
@@ -73,7 +73,7 @@ const transactionsPage = {
             <!-- Summary bar -->
             <div id="tx-summary" class="glass-card rounded-2xl p-4 mt-6 hidden">
                 <div class="flex flex-wrap items-center justify-between gap-3 text-sm">
-                    <span id="tx-summary-count" class="text-dark-200/50"></span>
+                    <span id="tx-summary-count" class="text-gray-400 dark:text-dark-200/50"></span>
                     <div class="flex gap-4">
                         <span id="tx-summary-income" class="text-green-400 font-medium"></span>
                         <span id="tx-summary-expense" class="text-red-400 font-medium"></span>
@@ -145,7 +145,7 @@ const transactionsPage = {
                     list.innerHTML = `
                         <div class="empty-state py-12">
                             <svg class="w-16 h-16 text-dark-200/15 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                            <p class="text-dark-200/40 text-base font-medium mb-1">Belum ada transaksi</p>
+                            <p class="text-gray-400 dark:text-dark-200/40 text-base font-medium mb-1">Belum ada transaksi</p>
                             <p class="text-dark-200/30 text-sm mb-4">Mulai catat keuanganmu sekarang</p>
                             <button onclick="transactionsPage.showAddModal()" class="btn-primary">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -171,13 +171,13 @@ const transactionsPage = {
                     </div>
                     <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
                         <div class="min-w-0">
-                            <p class="text-sm font-medium text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
+                            <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
                             <div class="flex items-center gap-2 mt-0.5">
                                 <span class="badge ${tx.type === 'income' ? 'badge-income' : 'badge-expense'}">${tx.type === 'income' ? 'Masuk' : 'Keluar'}</span>
-                                <span class="text-xs text-dark-200/40 truncate">${tx.category_name || '-'} · ${tx.wallet_name || 'Tunai'} · ${formatDate(tx.date)}</span>
+                                <span class="text-xs text-gray-400 dark:text-dark-200/40 truncate">${tx.category_name || '-'} · ${tx.wallet_name || 'Tunai'} · ${formatDate(tx.date)}</span>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-1 sm:mt-0 pt-2 sm:pt-0 border-t border-white/5 sm:border-none">
+                        <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-1 sm:mt-0 pt-2 sm:pt-0 border-t border-black/5 dark:border-white/5 sm:border-none">
                             <span class="text-sm font-semibold ${tx.type === 'income' ? 'text-green-400' : 'text-red-400'} flex-shrink-0">
                                 ${tx.type === 'income' ? '+' : '-'}${formatCurrency(tx.amount)}
                             </span>
@@ -249,7 +249,7 @@ const transactionsPage = {
         const body = `
             <form id="tx-form" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Tipe</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Tipe</label>
                     <div class="pill-group w-full">
                         <button type="button" class="pill-btn flex-1 ${selectedType === 'income' ? 'active' : ''}" data-type="income"
                             onclick="transactionsPage.switchModalType('income')">
@@ -263,31 +263,31 @@ const transactionsPage = {
                     <input type="hidden" id="tx-type" value="${selectedType}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Jumlah (Rp)</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Jumlah (Rp)</label>
                     <input type="text" id="tx-amount" class="input-field w-full" placeholder="0" required
                         inputmode="numeric" autocomplete="off"
                         oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.')"
                         value="${tx?.amount ? formatInputNumber(tx.amount) : ''}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Kategori</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Kategori</label>
                     <select id="tx-category" class="select-field w-full" required>
                         <option value="">Pilih kategori</option>
                         ${getCategoryOptions(selectedType)}
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Dompet (Sumber/Tujuan)</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Dompet (Sumber/Tujuan)</label>
                     <select id="tx-wallet" class="select-field w-full">
                         ${getWalletOptions()}
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Deskripsi</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Deskripsi</label>
                     <input type="text" id="tx-desc" class="input-field w-full" placeholder="Keterangan transaksi" value="${tx?.description || ''}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Tanggal</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Tanggal</label>
                     <input type="date" id="tx-date" class="input-field w-full" required value="${tx?.date || new Date().toISOString().split('T')[0]}">
                 </div>
                 <div class="flex gap-3 pt-2">
@@ -356,8 +356,8 @@ const transactionsPage = {
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-white text-lg font-medium mb-2">Hapus Transaksi?</p>
-                <p class="text-dark-200/60 text-sm">${tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} ${formatCurrency(tx.amount)} pada ${formatDate(tx.date)} akan dihapus.</p>
+                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Transaksi?</p>
+                <p class="text-gray-500 dark:text-dark-200/60 text-sm">${tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} ${formatCurrency(tx.amount)} pada ${formatDate(tx.date)} akan dihapus.</p>
             </div>
             <div class="flex gap-3 mt-6">
                 <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>

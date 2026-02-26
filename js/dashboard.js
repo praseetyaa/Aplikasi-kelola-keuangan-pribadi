@@ -42,12 +42,12 @@ const dashboardPage = {
             if (!feat) return '';
             return `
                 <button onclick="app.navigate('${feat.id}')" class="flex flex-col items-center gap-2 group outline-none">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
-                        <svg class="w-5 h-5 text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             ${feat.icon}
                         </svg>
                     </div>
-                    <span class="text-xs font-medium text-dark-200/70 group-hover:text-white transition-colors truncate w-full text-center px-1">${feat.label}</span>
+                    <span class="text-xs font-medium text-gray-600 dark:text-dark-200/70 group-hover:text-dark-950 dark:text-dark-950 dark:text-white transition-colors truncate w-full text-center px-1">${feat.label}</span>
                 </button>
             `;
         }).join('');
@@ -57,16 +57,16 @@ const dashboardPage = {
                 <!-- Header -->
                 <div class="flex items-center justify-between mb-8">
                     <div>
-                        <h2 class="text-2xl lg:text-3xl font-bold text-white tracking-tight">
+                        <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white tracking-tight">
                             Hi! <span class="bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent">${app.user ? app.user.name.split(' ')[0] : ''}</span>
                         </h2>
-                        <p class="text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
+                        <p class="text-gray-400 dark:text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
                     </div>
-                    <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors relative">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-black/10 dark:border-white/10 transition-colors relative">
+                        <svg class="w-6 h-6 text-dark-950 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span id="dash-notification-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
+                        <span id="dash-notification-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-dark-950 dark:text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
                     </button>
                 </div>
 
@@ -83,9 +83,9 @@ const dashboardPage = {
                                 <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                                 </div>
-                                <span class="text-sm text-dark-200/60 font-medium">Total Saldo</span>
+                                <span class="text-sm text-gray-500 dark:text-dark-200/60 font-medium">Total Saldo</span>
                             </div>
-                            <p id="dash-balance" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                            <p id="dash-balance" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark-950 dark:text-white tracking-tight">
                                 <span class="skeleton inline-block w-40 h-10 sm:h-12"></span>
                             </p>
                         </div>
@@ -100,7 +100,7 @@ const dashboardPage = {
                                     <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
                                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
                                     </div>
-                                    <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pemasukan</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-dark-200/60 font-medium">Pemasukan</span>
                                 </div>
                                 <p id="dash-income" class="text-lg sm:text-xl font-bold text-green-400">
                                     <span class="skeleton inline-block w-24 h-6"></span>
@@ -112,7 +112,7 @@ const dashboardPage = {
                                     <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
                                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
                                     </div>
-                                    <span class="text-xs sm:text-sm text-dark-200/60 font-medium">Pengeluaran</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-dark-200/60 font-medium">Pengeluaran</span>
                                 </div>
                                 <p id="dash-expense" class="text-lg sm:text-xl font-bold text-red-400">
                                     <span class="skeleton inline-block w-24 h-6"></span>
@@ -128,12 +128,12 @@ const dashboardPage = {
                     
                     <!-- Edit Menu -->
                     <button onclick="dashboardPage.editShortcuts()" class="flex flex-col items-center gap-2 group outline-none">
-                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 border-dashed flex items-center justify-center group-hover:bg-white/10 group-hover:border-white/20 transition-all">
-                            <svg class="w-5 h-5 text-dark-200/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-black/5 dark:border-white/5 border-dashed flex items-center justify-center group-hover:bg-white/10 group-hover:border-black/20 dark:border-white/20 transition-all">
+                            <svg class="w-5 h-5 text-gray-400 dark:text-dark-200/50 group-hover:text-dark-950 dark:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
                         </div>
-                        <span class="text-xs font-medium text-dark-200/50 group-hover:text-white transition-colors">Edit</span>
+                        <span class="text-xs font-medium text-gray-400 dark:text-dark-200/50 group-hover:text-dark-950 dark:text-white transition-colors">Edit</span>
                     </button>
                 </div>
 
@@ -141,14 +141,14 @@ const dashboardPage = {
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
                     <!-- Monthly Trend -->
                     <div class="lg:col-span-2 glass-card rounded-2xl p-4 sm:p-6">
-                        <h3 class="text-base font-semibold text-white mb-4">Tren Bulanan</h3>
+                        <h3 class="text-base font-semibold text-dark-950 dark:text-white mb-4">Tren Bulanan</h3>
                         <div class="relative h-[240px] md:h-[280px]">
                             <canvas id="dash-trend-chart"></canvas>
                         </div>
                     </div>
                     <!-- Expense by Category -->
                     <div class="glass-card rounded-2xl p-4 sm:p-6">
-                        <h3 class="text-base font-semibold text-white mb-4">Pengeluaran per Kategori</h3>
+                        <h3 class="text-base font-semibold text-dark-950 dark:text-white mb-4">Pengeluaran per Kategori</h3>
                         <div id="dash-category-chart-container" class="relative flex items-center justify-center h-[240px] md:h-[280px]">
                             <canvas id="dash-category-chart"></canvas>
                         </div>
@@ -160,7 +160,7 @@ const dashboardPage = {
                     <!-- Dompet Widget -->
                     <div class="glass-card rounded-2xl p-4 sm:p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-base font-semibold text-white">💳 Dompet</h3>
+                            <h3 class="text-base font-semibold text-dark-950 dark:text-white">💳 Dompet</h3>
                             <a href="#wallets" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Kelola →</a>
                         </div>
                         <div id="dash-wallets" class="space-y-2">
@@ -171,7 +171,7 @@ const dashboardPage = {
                     <!-- Planning Widget -->
                     <div class="glass-card rounded-2xl p-4 sm:p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-base font-semibold text-white">🎯 Planning Aktif</h3>
+                            <h3 class="text-base font-semibold text-dark-950 dark:text-white">🎯 Planning Aktif</h3>
                             <a href="#planning" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
                         </div>
                         <div id="dash-planning" class="space-y-3">
@@ -184,7 +184,7 @@ const dashboardPage = {
                 <!-- Recent Transactions -->
                 <div class="glass-card rounded-2xl p-4 sm:p-6 mb-0">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-semibold text-white">Transaksi Terbaru</h3>
+                        <h3 class="text-base font-semibold text-dark-950 dark:text-white">Transaksi Terbaru</h3>
                         <a href="#transactions" class="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">Lihat Semua →</a>
                     </div>
                     <div id="dash-recent-list" class="space-y-3">
@@ -260,7 +260,7 @@ const dashboardPage = {
                 </div>
                 <div>
                     <h4 class="text-amber-500 font-bold mb-1">Update Tabungan: ${p.name}</h4>
-                    <p class="text-white/70 text-sm">Kamu belum menabung <strong>${formatCurrency(p.monthly_saving)}</strong> untuk target ini di bulan berjalan. Ayo tetap konsisten!</p>
+                    <p class="text-dark-950 dark:text-dark-950 dark:text-white/70 text-sm">Kamu belum menabung <strong>${formatCurrency(p.monthly_saving)}</strong> untuk target ini di bulan berjalan. Ayo tetap konsisten!</p>
                 </div>
             </div>
         `).join('');
@@ -363,7 +363,7 @@ const dashboardPage = {
         if (!categories || categories.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <p class="text-dark-200/40 text-sm">Belum ada data pengeluaran</p>
+                    <p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada data pengeluaran</p>
                 </div>`;
             return;
         }
@@ -414,7 +414,7 @@ const dashboardPage = {
             list.innerHTML = `
                 <div class="empty-state py-8">
                     <svg class="w-12 h-12 text-dark-200/20 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                    <p class="text-dark-200/40 text-sm">Belum ada transaksi</p>
+                    <p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada transaksi</p>
                     <a href="#transactions" class="text-primary-400 text-sm mt-2 hover:text-primary-300">+ Tambah Transaksi</a>
                 </div>`;
             return;
@@ -426,8 +426,8 @@ const dashboardPage = {
                     ${tx.category_icon || '💰'}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
-                    <p class="text-xs text-dark-200/40">${tx.category_name || '-'} · ${formatDate(tx.date)}</p>
+                    <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/40">${tx.category_name || '-'} · ${formatDate(tx.date)}</p>
                 </div>
                 <span class="text-sm font-semibold ${tx.type === 'income' ? 'text-green-400' : 'text-red-400'} flex-shrink-0">
                     ${tx.type === 'income' ? '+' : '-'}${formatCurrency(tx.amount)}
@@ -442,7 +442,7 @@ const dashboardPage = {
 
         if (!wallets || wallets.length === 0) {
             el.innerHTML = `<div class="empty-state py-4">
-                <p class="text-dark-200/40 text-sm">Belum ada dompet</p>
+                <p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada dompet</p>
                 <a href="#wallets" class="text-primary-400 text-sm mt-1 hover:text-primary-300">+ Tambah Dompet</a>
             </div>`;
             return;
@@ -458,8 +458,8 @@ const dashboardPage = {
                     ${typeIcon[w.type] || '💰'}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-white truncate">${w.name}</p>
-                    <p class="text-xs text-dark-200/40 capitalize">${w.type}</p>
+                    <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${w.name}</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/40 capitalize">${w.type}</p>
                 </div>
                 <span class="text-sm font-semibold flex-shrink-0 ${isNeg ? 'text-red-400' : 'text-emerald-400'}">${formatCurrency(bal)}</span>
             </div>`;
@@ -472,7 +472,7 @@ const dashboardPage = {
 
         if (!plans || plans.length === 0) {
             el.innerHTML = `<div class="empty-state py-4">
-                <p class="text-dark-200/40 text-sm">Belum ada planning aktif</p>
+                <p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada planning aktif</p>
                 <a href="#planning" class="text-[#10b981] text-sm mt-1 hover:opacity-80">+ Tambah Goal</a>
             </div>`;
             return;
@@ -492,8 +492,8 @@ const dashboardPage = {
                 <div class="flex items-center gap-2.5 mb-1.5">
                     <span class="text-lg leading-none">${p.icon || '🎯'}</span>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-white truncate">${p.name}</p>
-                        <p class="text-xs text-dark-200/40">${info}</p>
+                        <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${p.name}</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40">${info}</p>
                     </div>
                     <span class="text-xs font-semibold flex-shrink-0" style="color:${color}">${pct}%</span>
                 </div>
@@ -504,7 +504,7 @@ const dashboardPage = {
         }).join('');
 
         if (plans.length > 3) {
-            el.innerHTML += `<a href="#planning" class="block text-center text-xs text-primary-400 hover:text-primary-300 mt-2 pt-2 border-t border-white/5">+${plans.length - 3} goal lainnya →</a>`;
+            el.innerHTML += `<a href="#planning" class="block text-center text-xs text-primary-400 hover:text-primary-300 mt-2 pt-2 border-t border-black/5 dark:border-white/5">+${plans.length - 3} goal lainnya →</a>`;
         }
     },
 
@@ -518,26 +518,26 @@ const dashboardPage = {
 
         const modalHtml = `
             <div class="modal fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-                <div class="fixed inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
+                <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative flex flex-col max-h-[90vh]">
                      <div class="flex items-center justify-between mb-4 flex-shrink-0">
-                        <h3 class="text-lg font-semibold text-white">Sesuaikan Menu Cepat</h3>
-                        <button onclick="closeModal(this)" class="p-2 text-dark-200/60 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <h3 class="text-lg font-semibold text-dark-950 dark:text-dark-950 dark:text-white">Sesuaikan Menu Cepat</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-white/5 rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
                     
-                    <p class="text-xs text-dark-200/60 mb-4 pb-4 border-b border-white/5 flex-shrink-0">Pilih fitur yang ingin ditampilkan pada menu cepat di beranda. Perubahan otomatis tersimpan pada perangkat Anda.</p>
+                    <p class="text-xs text-gray-500 dark:text-dark-200/60 mb-4 pb-4 border-b border-black/5 dark:border-white/5 flex-shrink-0">Pilih fitur yang ingin ditampilkan pada menu cepat di beranda. Perubahan otomatis tersimpan pada perangkat Anda.</p>
                     
                     <div class="flex-1 overflow-y-auto space-y-2 mb-4 scrollbar-hide" id="shortcut-checkboxes">
                         ${AVAILABLE_SHORTCUTS.map(feat => `
-                            <label class="flex items-center p-3 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors cursor-pointer group">
-                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-dark-200/70 group-hover:text-primary-400 mr-4">
+                            <label class="flex items-center p-3 rounded-xl hover:bg-white/5 border border-transparent hover:border-black/10 dark:border-white/10 transition-colors cursor-pointer group">
+                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-600 dark:text-dark-200/70 group-hover:text-primary-400 mr-4">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         ${feat.icon}
                                     </svg>
                                 </div>
-                                <span class="flex-1 text-sm font-medium text-white">${feat.label}</span>
+                                <span class="flex-1 text-sm font-medium text-dark-950 dark:text-white">${feat.label}</span>
                                 <div class="relative flex items-center">
                                     <input type="checkbox" value="${feat.id}" class="peer sr-only shortcut-cb" ${savedShortcuts.includes(feat.id) ? 'checked' : ''}>
                                     <div class="w-11 h-6 bg-dark-800 rounded-full peer peer-checked:bg-primary-500 transition-colors"></div>
@@ -547,7 +547,7 @@ const dashboardPage = {
                         `).join('')}
                     </div>
 
-                    <div class="flex gap-3 pt-4 border-t border-white/5 flex-shrink-0">
+                    <div class="flex gap-3 pt-4 border-t border-black/5 dark:border-white/5 flex-shrink-0">
                         <button type="button" onclick="closeModal(this)" class="btn-secondary flex-1 py-3">Batal</button>
                         <button id="save-shortcuts-btn" class="btn-primary flex-1 py-3">Simpan</button>
                     </div>
@@ -576,7 +576,7 @@ const dashboardPage = {
             }
 
             localStorage.setItem('dashboard_shortcuts', JSON.stringify(newShortcuts));
-            closeModal(modalEl.querySelector('.bg-dark-950\\/80'));
+            closeModal(modalEl.querySelector('.bg-gray-50 dark:bg-dark-950\\/80'));
 
             // Re-render dashboard gracefully to apply
             dashboardPage.render(document.getElementById('page-content'));

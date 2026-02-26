@@ -10,8 +10,8 @@ const profilePage = {
             <!-- Header -->
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Profil</h2>
-                    <p class="text-dark-200/50 mt-1">Kelola akun dan pengaturan</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Profil</h2>
+                    <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola akun dan pengaturan</p>
                 </div>
             </div>
 
@@ -27,10 +27,10 @@ const profilePage = {
                     </div>
                     
                     <div class="flex-1 text-center sm:text-left pt-2">
-                        <h3 class="text-2xl font-bold text-white mb-1" id="profile-name">
+                        <h3 class="text-2xl font-bold text-dark-950 dark:text-white mb-1" id="profile-name">
                             ${app.user ? app.user.name : 'Memuat...'}
                         </h3>
-                        <p class="text-dark-200/60 font-medium flex items-center justify-center sm:justify-start gap-2" id="profile-email">
+                        <p class="text-gray-500 dark:text-dark-200/60 font-medium flex items-center justify-center sm:justify-start gap-2" id="profile-email">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             ${app.user ? app.user.email : 'Memuat...'}
                         </p>
@@ -49,8 +49,8 @@ const profilePage = {
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-white font-semibold mb-1">Edit Profil</h4>
-                        <p class="text-sm text-dark-200/60 transition-colors line-clamp-2">Ubah nama pengguna atau informasi identitas diri.</p>
+                        <h4 class="text-dark-950 dark:text-white font-semibold mb-1">Edit Profil</h4>
+                        <p class="text-sm text-gray-500 dark:text-dark-200/60 transition-colors line-clamp-2">Ubah nama pengguna atau informasi identitas diri.</p>
                     </div>
                 </button>
 
@@ -62,8 +62,8 @@ const profilePage = {
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-white font-semibold mb-1">Ubah Password</h4>
-                        <p class="text-sm text-dark-200/60 transition-colors line-clamp-2">Amankan akun dengan memperbarui kata sandi secara berkala.</p>
+                        <h4 class="text-dark-950 dark:text-white font-semibold mb-1">Ubah Password</h4>
+                        <p class="text-sm text-gray-500 dark:text-dark-200/60 transition-colors line-clamp-2">Amankan akun dengan memperbarui kata sandi secara berkala.</p>
                     </div>
                 </button>
 
@@ -76,21 +76,21 @@ const profilePage = {
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-white font-semibold mb-1">Pengaturan Aplikasi</h4>
-                        <p class="text-sm text-dark-200/60 transition-colors line-clamp-2">Sesuaikan tema, integrasi API, pembaruan, dan notifikasi.</p>
+                        <h4 class="text-dark-950 dark:text-white font-semibold mb-1">Pengaturan Aplikasi</h4>
+                        <p class="text-sm text-gray-500 dark:text-dark-200/60 transition-colors line-clamp-2">Sesuaikan tema, integrasi API, pembaruan, dan notifikasi.</p>
                     </div>
                 </button>
 
                 <!-- Logout -->
                 <button onclick="profilePage.confirmLogout()" class="glass-card rounded-2xl p-5 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all text-left flex items-start gap-4 group">
-                    <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 group-hover:scale-110 group-hover:bg-red-500 group-hover:text-white shadow-lg shadow-transparent group-hover:shadow-red-500/30 transition-all flex-shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 group-hover:scale-110 group-hover:bg-red-500 group-hover:text-dark-950 dark:text-white shadow-lg shadow-transparent group-hover:shadow-red-500/30 transition-all flex-shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-white font-semibold mb-1 group-hover:text-red-400 transition-colors">Keluar</h4>
-                        <p class="text-sm text-dark-200/60 group-hover:text-red-400/70 transition-colors line-clamp-2">Akhiri sesi dan keluar dari aplikasi secara aman.</p>
+                        <h4 class="text-dark-950 dark:text-white font-semibold mb-1 group-hover:text-red-400 transition-colors">Keluar</h4>
+                        <p class="text-sm text-gray-500 dark:text-dark-200/60 group-hover:text-red-400/70 transition-colors line-clamp-2">Akhiri sesi dan keluar dari aplikasi secara aman.</p>
                     </div>
                 </button>
 
@@ -109,21 +109,21 @@ const profilePage = {
     editProfile() {
         const modalHtml = `
             <div class="modal fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-                <div class="fixed inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
+                <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative">
                      <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-white">Edit Profil</h3>
-                        <button onclick="closeModal(this)" class="p-2 text-dark-200/60 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <h3 class="text-lg font-semibold text-dark-950 dark:text-dark-950 dark:text-white">Edit Profil</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-white/5 rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
                     <form id="profile-form" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Lengkap</label>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Nama Lengkap</label>
                             <input type="text" id="prof-name" class="input-field w-full" value="${app.user ? app.user.name : ''}" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Email (Tidak bisa diubah)</label>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Email (Tidak bisa diubah)</label>
                             <input type="email" class="input-field w-full opacity-60 bg-dark-800" value="${app.user ? app.user.email : ''}" disabled>
                         </div>
                         <div class="flex gap-3 pt-2">
@@ -156,7 +156,7 @@ const profilePage = {
                 document.getElementById('sidebar-username').textContent = res.user.name;
 
                 showToast('Profil berhasil diperbarui', 'success');
-                closeModal(modalEl.querySelector('.bg-dark-950\\/80'));
+                closeModal(modalEl.querySelector('.bg-gray-50 dark:bg-dark-950\\/80'));
             } catch (err) {
                 showToast(err.message, 'error');
             } finally {
@@ -168,25 +168,25 @@ const profilePage = {
     editSecurity() {
         const modalHtml = `
             <div class="modal fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-                <div class="fixed inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
+                <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative">
                      <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-white">Ubah Password</h3>
-                        <button onclick="closeModal(this)" class="p-2 text-dark-200/60 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <h3 class="text-lg font-semibold text-dark-950 dark:text-dark-950 dark:text-white">Ubah Password</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-white/5 rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
                     <form id="password-form" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Password Lama</label>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Password Lama</label>
                             <input type="password" id="prof-old-pass" class="input-field w-full" placeholder="••••••••" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Password Baru</label>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Password Baru</label>
                             <input type="password" id="prof-new-pass" class="input-field w-full" placeholder="Minimal 6 karakter" minlength="6" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Konfirmasi Password Baru</label>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Konfirmasi Password Baru</label>
                             <input type="password" id="prof-conf-pass" class="input-field w-full" placeholder="Ulangi password baru" minlength="6" required>
                         </div>
                         <div class="flex gap-3 pt-2">
@@ -221,7 +221,7 @@ const profilePage = {
             try {
                 await api.updatePassword(oldPass, newPass);
                 showToast('Password berhasil diperbarui', 'success');
-                closeModal(modalEl.querySelector('.bg-dark-950\\/80'));
+                closeModal(modalEl.querySelector('.bg-gray-50 dark:bg-dark-950\\/80'));
             } catch (err) {
                 showToast(err.message, 'error');
             } finally {
@@ -233,17 +233,17 @@ const profilePage = {
     confirmLogout() {
         const modalHtml = `
             <div class="modal fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-                <div class="fixed inset-0 bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
+                <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-sm rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative text-center">
                      <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 text-red-500">
                          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                      </div>
-                     <h3 class="text-xl font-bold text-white mb-2">Keluar Aplikasi</h3>
-                     <p class="text-dark-200/60 mb-6 text-sm">Sesi Anda saat ini akan dihentikan. Anda harus masuk kembali untuk melihat data.</p>
+                     <h3 class="text-xl font-bold text-dark-950 dark:text-dark-950 dark:text-white mb-2">Keluar Aplikasi</h3>
+                     <p class="text-gray-500 dark:text-dark-200/60 mb-6 text-sm">Sesi Anda saat ini akan dihentikan. Anda harus masuk kembali untuk melihat data.</p>
                      
                      <div class="flex gap-3">
                          <button onclick="closeModal(this)" class="btn-secondary flex-1 py-3 text-sm">Batal</button>
-                         <button onclick="app.logout(); closeModal(this)" class="flex-1 py-3 text-sm bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-colors">Keluar Sekarang</button>
+                         <button onclick="app.logout(); closeModal(this)" class="flex-1 py-3 text-sm bg-red-500 hover:bg-red-600 text-dark-950 dark:text-white font-medium rounded-xl transition-colors">Keluar Sekarang</button>
                      </div>
                 </div>
             </div>

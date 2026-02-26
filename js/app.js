@@ -480,6 +480,16 @@ const app = {
         this.navigate(window.location.hash.slice(1) || 'dashboard');
     },
 
+    async logout() {
+        try {
+            await api.logout();
+            this.showAuth();
+            showToast('Berhasil keluar', 'info');
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    },
+
     updateUserUI() {
         if (!this.user) return;
         const initial = this.user.name?.charAt(0)?.toUpperCase() || '?';
@@ -735,14 +745,8 @@ const app = {
         });
 
         // Logout
-        document.getElementById('logout-btn').addEventListener('click', async () => {
-            try {
-                await api.logout();
-                this.showAuth();
-                showToast('Berhasil keluar', 'info');
-            } catch (err) {
-                showToast(err.message, 'error');
-            }
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            this.logout();
         });
 
         // Nav links

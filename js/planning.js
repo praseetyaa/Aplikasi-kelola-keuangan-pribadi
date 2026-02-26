@@ -13,8 +13,8 @@ const planningPage = {
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Planning & Wishlist</h2>
-                    <p class="text-dark-200/50 mt-1">Rencanakan tabunganmu menuju impian</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Planning & Wishlist</h2>
+                    <p class="text-gray-400 dark:text-dark-200/50 mt-1">Rencanakan tabunganmu menuju impian</p>
                 </div>
                 <button onclick="planningPage.showAddModal()" class="btn-primary">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -80,16 +80,16 @@ const planningPage = {
         if (!el) return;
         el.innerHTML = `
             <div class="glass-card rounded-2xl p-4">
-                <p class="text-xs text-dark-200/50 mb-1">Goal Aktif</p>
-                <p class="text-2xl font-bold text-white">${active.length}</p>
+                <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-1">Goal Aktif</p>
+                <p class="text-2xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">${active.length}</p>
             </div>
             <div class="glass-card rounded-2xl p-4">
-                <p class="text-xs text-dark-200/50 mb-1">Total Terkumpul</p>
+                <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-1">Total Terkumpul</p>
                 <p class="text-xl font-bold text-primary-400">${formatCurrency(totalSaved)}</p>
-                <p class="text-xs text-dark-200/40 mt-0.5">dari ${formatCurrency(totalTarget)}</p>
+                <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-0.5">dari ${formatCurrency(totalTarget)}</p>
             </div>
             <div class="glass-card rounded-2xl p-4 hidden sm:block">
-                <p class="text-xs text-dark-200/50 mb-1">Selesai</p>
+                <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-1">Selesai</p>
                 <p class="text-2xl font-bold text-emerald-400">${completed.length}</p>
             </div>`;
     },
@@ -106,7 +106,7 @@ const planningPage = {
             grid.innerHTML = `
                 <div class="col-span-1 md:col-span-2 xl:col-span-3 empty-state py-16">
                     <div class="text-6xl mb-4">🎯</div>
-                    <p class="text-dark-200/40 text-base font-medium mb-1">Belum ada goal di sini</p>
+                    <p class="text-gray-400 dark:text-dark-200/40 text-base font-medium mb-1">Belum ada goal di sini</p>
                     <p class="text-dark-200/30 text-sm mb-4">Yuk mulai rencanakan impianmu!</p>
                     <button onclick="planningPage.showAddModal()" class="btn-primary">+ Tambah Goal</button>
                 </div>`;
@@ -140,7 +140,7 @@ const planningPage = {
             const now = new Date();
             const days = Math.ceil((dl - now) / 86400000);
             const dlStr = dl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            const urgency = days < 0 ? 'text-red-400' : days < 30 ? 'text-amber-400' : 'text-dark-200/50';
+            const urgency = days < 0 ? 'text-red-400' : days < 30 ? 'text-amber-400' : 'text-gray-400 dark:text-dark-200/50';
             const tag = days < 0 ? '⚠️ Terlewat' : days === 0 ? '🔔 Hari ini' : `${days} hari lagi`;
             deadlineHtml = `<span class="text-xs ${urgency}">📅 ${dlStr} · ${tag}</span>`;
         }
@@ -149,15 +149,15 @@ const planningPage = {
         let monthlyHtml = '';
         if (isActive && remain > 0) {
             if (p.monthly_needed) {
-                monthlyHtml = `<div class="flex items-center gap-1.5 text-xs text-dark-200/60">
+                monthlyHtml = `<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-dark-200/60">
                     <span>🎯</span><span>Nabung/bln: <span class="text-primary-400 font-semibold">${formatCurrency(p.monthly_needed)}</span></span>
                 </div>`;
             } else if (p.monthly_saving > 0 && p.estimated_months) {
-                monthlyHtml = `<div class="flex items-center gap-1.5 text-xs text-dark-200/60">
+                monthlyHtml = `<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-dark-200/60">
                     <span>⏳</span><span>Estimasi selesai: <span class="text-primary-400 font-semibold">${p.estimated_months} bulan</span></span>
                 </div>`;
             } else if (p.monthly_saving > 0) {
-                monthlyHtml = `<div class="flex items-center gap-1.5 text-xs text-dark-200/60">
+                monthlyHtml = `<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-dark-200/60">
                     <span>💰</span><span>Target/bln: <span class="font-semibold">${formatCurrency(p.monthly_saving)}</span></span>
                 </div>`;
             }
@@ -207,7 +207,7 @@ const planningPage = {
                         ${p.icon || '🎯'}
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-white leading-tight">${p.name}</h3>
+                        <h3 class="text-base font-semibold text-dark-950 dark:text-dark-950 dark:text-white leading-tight">${p.name}</h3>
                         ${statusBadge}
                     </div>
                 </div>
@@ -219,12 +219,12 @@ const planningPage = {
             <!--Amount -->
             <div class="flex justify-between items-baseline mb-2">
                 <div>
-                    <p class="text-xs text-dark-200/50 mb-0.5">Terkumpul</p>
-                    <p class="text-lg font-bold text-white">${formatCurrency(saved)}</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-0.5">Terkumpul</p>
+                    <p class="text-lg font-bold text-dark-950 dark:text-white">${formatCurrency(saved)}</p>
                 </div>
                 <div class="text-right">
-                    <p class="text-xs text-dark-200/50 mb-0.5">Target</p>
-                    <p class="text-base font-semibold text-dark-200/80">${formatCurrency(target)}</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-0.5">Target</p>
+                    <p class="text-base font-semibold text-gray-700 dark:text-dark-200/80">${formatCurrency(target)}</p>
                 </div>
             </div>
 
@@ -233,15 +233,15 @@ const planningPage = {
                 <div class="${pctColor} h-2.5 rounded-full transition-all duration-500" style="width:${pct}%"></div>
             </div>
             <div class="flex justify-between items-center mb-3">
-                <span class="text-xs text-dark-200/40">${pct}%</span>
-                ${remain > 0 ? `<span class="text-xs text-dark-200/40">Kurang ${formatCurrency(remain)}</span>` : `<span class="text-xs text-emerald-400">🎉 Target tercapai!</span>`}
+                <span class="text-xs text-gray-400 dark:text-dark-200/40">${pct}%</span>
+                ${remain > 0 ? `<span class="text-xs text-gray-400 dark:text-dark-200/40">Kurang ${formatCurrency(remain)}</span>` : `<span class="text-xs text-emerald-400">🎉 Target tercapai!</span>`}
             </div>
 
             <!-- Info bawah -->
-            <div class="mt-auto space-y-1.5 pt-2 border-t border-white/5">
+            <div class="mt-auto space-y-1.5 pt-2 border-t border-black/5 dark:border-white/5">
         ${deadlineHtml ? `<div>${deadlineHtml}</div>` : ''}
         ${monthlyHtml}
-        ${p.notes ? `<p class="text-xs text-dark-200/40 truncate" title="${p.notes}">📝 ${p.notes}</p>` : ''}
+        ${p.notes ? `<p class="text-xs text-gray-400 dark:text-dark-200/40 truncate" title="${p.notes}">📝 ${p.notes}</p>` : ''}
     </div>`;
     },
 
@@ -272,20 +272,20 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
 
             <!-- Icon picker -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-2">Ikon</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-2">Ikon</label>
                 <div class="flex flex-wrap gap-1.5">${iconPicker}</div>
             </div>
 
             <!-- Nama -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Tujuan</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Nama Tujuan</label>
                 <input type="text" id="plan-name" class="input-field w-full" placeholder="Cth: Beli iPhone 17" required
                     value="${plan?.name || ''}">
             </div>
 
             <!-- Target -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Harga (Rp)</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Target Harga (Rp)</label>
                 <input type="text" id="plan-target" class="input-field w-full" placeholder="0" required
                     inputmode="numeric" autocomplete="off"
                     oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
@@ -294,7 +294,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
 
             <!-- Terkumpul -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Sudah Terkumpul (Rp)</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Sudah Terkumpul (Rp)</label>
                 <input type="text" id="plan-saved" class="input-field w-full" placeholder="0"
                     inputmode="numeric" autocomplete="off"
                     oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
@@ -303,16 +303,16 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
 
             <!-- Deadline -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Deadline (Opsional)</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Deadline (Opsional)</label>
                 <input type="date" id="plan-deadline" class="input-field w-full"
                     min="${new Date().toISOString().split('T')[0]}"
                     value="${plan?.deadline || ''}">
-                    <p class="text-xs text-dark-200/40 mt-1">Kosongkan jika tidak ada target waktu</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-1">Kosongkan jika tidak ada target waktu</p>
             </div>
 
             <!-- Target nabung/bulan -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Target Nabung/Bulan (Rp) <span class="text-dark-200/40 font-normal">– opsional</span></label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Target Nabung/Bulan (Rp) <span class="text-gray-400 dark:text-dark-200/40 font-normal">– opsional</span></label>
                 <input type="text" id="plan-monthly" class="input-field w-full" placeholder="0"
                     inputmode="numeric" autocomplete="off"
                     oninput="this.value=formatInputNumber(this.value);planningPage._recalc()"
@@ -321,13 +321,13 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
 
             <!-- Kalkulator real-time -->
             <div id="plan-calc-box" class="hidden rounded-xl p-4 space-y-2" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
-                <p class="text-xs font-semibold text-dark-200/60 uppercase tracking-wide">📊 Kalkulator</p>
+                <p class="text-xs font-semibold text-gray-500 dark:text-dark-200/60 uppercase tracking-wide">📊 Kalkulator</p>
                 <div id="plan-calc-content" class="space-y-1.5 text-sm"></div>
             </div>
 
             <!-- Notes -->
             <div>
-                <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Catatan (Opsional)</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Catatan (Opsional)</label>
                 <input type="text" id="plan-notes" class="input-field w-full" placeholder="Keterangan tambahan"
                     value="${plan?.notes || ''}">
             </div>
@@ -408,8 +408,8 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const pct = Math.min(100, Math.round((saved / target) * 100));
         let rows = [];
 
-        rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Progress</span><span class="font-semibold text-white">${pct}%</span></div>`);
-        rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-white">${formatCurrency(remain)}</span></div>`);
+        rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Progress</span><span class="font-semibold text-dark-950 dark:text-dark-950 dark:text-white">${pct}%</span></div>`);
+        rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-dark-950 dark:text-dark-950 dark:text-white">${formatCurrency(remain)}</span></div>`);
 
         if (dlVal) {
             const now = new Date();
@@ -417,9 +417,9 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             const days = Math.ceil((dl - now) / 86400000);
             const months = Math.max(1, Math.ceil(days / 30));
             const perMonth = remain > 0 ? Math.ceil(remain / months) : 0;
-            rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-white">${months} bulan (${days} hari)</span></div>`);
+            rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-dark-950 dark:text-dark-950 dark:text-white">${months} bulan (${days} hari)</span></div>`);
             if (remain > 0) {
-                rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div>`);
+                rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div>`);
             } else {
                 rows.push(`<div class="text-emerald-400 font-semibold text-center">🎉 Target sudah tercapai!</div>`);
             }
@@ -428,7 +428,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             const finDate = new Date();
             finDate.setMonth(finDate.getMonth() + estMonths);
             const finStr = finDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-            rows.push(`<div class="flex justify-between"><span class="text-dark-200/50">Estimasi selesai</span><span class="font-bold text-primary-400">${estMonths} bulan (${finStr})</span></div>`);
+            rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Estimasi selesai</span><span class="font-bold text-primary-400">${estMonths} bulan (${finStr})</span></div>`);
         } else if (monthly > 0 && remain <= 0) {
             rows.push(`<div class="text-emerald-400 font-semibold text-center">🎉 Target sudah tercapai!</div>`);
         }
@@ -450,19 +450,19 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const body = `
             <div class="space-y-4">
                 <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
-                    <p class="text-sm text-dark-200/60 mb-1">Target</p>
-                    <p class="text-xl font-bold text-white">${formatCurrency(plan.target_amount)}</p>
-                    <p class="text-sm text-dark-200/60 mt-1 mb-1">Sudah Terkumpul: <span class="text-white">${formatCurrency(plan.saved_amount)}</span></p>
+                    <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Target</p>
+                    <p class="text-xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">${formatCurrency(plan.target_amount)}</p>
+                    <p class="text-sm text-gray-500 dark:text-dark-200/60 mt-1 mb-1">Sudah Terkumpul: <span class="text-dark-950 dark:text-white">${formatCurrency(plan.saved_amount)}</span></p>
                     <div class="w-full bg-white/5 rounded-full h-1.5 mt-2">
                         <div class="bg-primary-500 h-1.5 rounded-full" style="width:${Math.min(100, plan.progress_pct)}%"></div>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Bulan Pembayaran</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Bulan Pembayaran</label>
                     <input type="month" id="update-saved-month" class="input-field w-full" value="${currentMonth}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nominal Tambahan (Rp)</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Nominal Tambahan (Rp)</label>
                     <input type="text" id="update-saved-val" class="input-field w-full" placeholder="0"
                         inputmode="numeric" autocomplete="off"
                         oninput="this.value=formatInputNumber(this.value)"
@@ -506,13 +506,13 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             let historyHtml = '<div class="space-y-3 max-h-96 overflow-y-auto pr-1">';
 
             if (history.length === 0) {
-                historyHtml += `<div class="text-center py-6 text-dark-200/50 text-sm"> Belum ada riwayat pembayaran</div>`;
+                historyHtml += `<div class="text-center py-6 text-gray-400 dark:text-dark-200/50 text-sm"> Belum ada riwayat pembayaran</div>`;
             } else {
                 historyHtml += history.map(h => `
-                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-black/5 dark:border-white/5">
                         <div>
-                            <p class="text-sm font-medium text-white">${new Date(h.month + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
-                            <p class="text-xs text-dark-200/50">${formatDate(h.created_at)} · ${h.type === 'deposit' ? 'Pemasukan' : 'Perubahan'}</p>
+                            <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white">${new Date(h.month + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
+                            <p class="text-xs text-gray-400 dark:text-dark-200/50">${formatDate(h.created_at)} · ${h.type === 'deposit' ? 'Pemasukan' : 'Perubahan'}</p>
                         </div>
                         <span class="text-sm font-bold text-emerald-400">+${formatCurrency(h.amount)}</span>
                     </div>
@@ -535,8 +535,8 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🎉</div>
-                <p class="text-white text-lg font-medium mb-2">Selesaikan Goal?</p>
-                <p class="text-dark-200/60 text-sm">"${plan.name}" akan ditandai sebagai selesai.</p>
+                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Selesaikan Goal?</p>
+                <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${plan.name}" akan ditandai sebagai selesai.</p>
             </div>
             <div class="flex gap-3 mt-6">
                 <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
@@ -563,8 +563,8 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-white text-lg font-medium mb-2">Hapus Goal?</p>
-                <p class="text-dark-200/60 text-sm">"${plan.name}" akan dihapus permanen.</p>
+                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Goal?</p>
+                <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${plan.name}" akan dihapus permanen.</p>
             </div>
             <div class="flex gap-3 mt-6">
                 <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>

@@ -25,10 +25,10 @@ const settingsPage = {
     async render(container) {
         const presetGrid = this.presets.map(p => `
             <button type="button" 
-                class="theme-preset-btn group relative flex flex-col items-center gap-1.5 p-3 rounded-xl border border-white/5 hover:border-white/15 transition-all duration-200 hover:scale-105"
+                class="theme-preset-btn group relative flex flex-col items-center gap-1.5 p-3 rounded-xl border border-black/5 dark:border-white/5 hover:border-white/15 transition-all duration-200 hover:scale-105"
                 data-color="${p.color}" onclick="settingsPage.selectPreset('${p.color}')">
                 <div class="w-10 h-10 rounded-lg shadow-lg transition-transform" style="background: ${p.color}"></div>
-                <span class="text-[10px] font-medium text-dark-200/50 group-hover:text-white/70 transition-colors">${p.name}</span>
+                <span class="text-[10px] font-medium text-gray-400 dark:text-dark-200/50 group-hover:text-dark-950 dark:text-dark-950 dark:text-white/70 transition-colors">${p.name}</span>
                 <div class="theme-check hidden absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-md">
                     <svg class="w-3 h-3 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                 </div>
@@ -39,8 +39,8 @@ const settingsPage = {
         <div class="page-enter">
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 ">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Pengaturan</h2>
-                    <p id="settings-subtitle" class="text-dark-200/50 mt-1">Kustomisasi tampilan aplikasi</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Pengaturan</h2>
+                    <p id="settings-subtitle" class="text-gray-400 dark:text-dark-200/50 mt-1">Kustomisasi tampilan aplikasi</p>
                 </div>
                 
                 <div class="relative w-full md:w-64">
@@ -49,7 +49,7 @@ const settingsPage = {
                         <option value="api">🔌 Integrasi & API</option>
                         <option value="pembaruan">🔄 Pembaruan Sistem</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-dark-200/50">
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 dark:text-dark-200/50">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                 </div>
@@ -59,41 +59,41 @@ const settingsPage = {
                 <form id="settings-form" class="space-y-6 ">
                 <!-- Branding Section -->
                 <div class="glass-card rounded-2xl p-6 lg:p-8">
-                    <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                    <h3 class="text-lg font-semibold text-dark-950 dark:text-white mb-5 flex items-center gap-2">
                         <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
                         Branding
                     </h3>
                     
                     <!-- App Name -->
                     <div class="mb-5">
-                        <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Aplikasi</label>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Nama Aplikasi</label>
                         <input type="text" id="setting-app-name" class="input-field w-full" placeholder="DuitKu">
-                        <p class="text-xs text-dark-200/40 mt-1">Nama di header, sidebar, dan halaman login</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-1">Nama di header, sidebar, dan halaman login</p>
                     </div>
 
                     <!-- Tagline -->
                     <div class="mb-5">
-                        <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Tagline</label>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Tagline</label>
                         <input type="text" id="setting-app-tagline" class="input-field w-full" placeholder="Keuangan Pribadi">
-                        <p class="text-xs text-dark-200/40 mt-1">Teks pendek di bawah nama aplikasi</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-1">Teks pendek di bawah nama aplikasi</p>
                     </div>
 
                     <!-- Logo -->
                     <div>
-                        <label class="block text-sm font-medium text-dark-200/70 mb-2">Logo Aplikasi</label>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-2">Logo Aplikasi</label>
                         <div id="logo-preview-area" class="mb-3">
-                            <div id="logo-current" class="hidden flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div id="logo-current" class="hidden flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-black/10 dark:border-white/10">
                                 <img id="logo-preview-img" src="" class="w-14 h-14 rounded-xl object-cover" alt="Logo">
                                 <div class="flex-1">
-                                    <p class="text-sm text-white">Logo saat ini</p>
+                                    <p class="text-sm text-dark-950 dark:text-white">Logo saat ini</p>
                                     <button type="button" onclick="settingsPage.removeLogo()" class="text-xs text-red-400 hover:text-red-300 mt-1 transition-colors">Hapus logo</button>
                                 </div>
                             </div>
                         </div>
                         <label class="cursor-pointer block">
-                            <div class="border-2 border-dashed border-white/10 hover:border-white/20 rounded-xl p-5 text-center transition-colors">
+                            <div class="border-2 border-dashed border-black/10 dark:border-white/10 hover:border-black/20 dark:border-white/20 rounded-xl p-5 text-center transition-colors">
                                 <svg class="w-7 h-7 mx-auto text-dark-200/30 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                <p class="text-xs text-dark-200/50">Upload — PNG, JPG, SVG, WebP (Maks 2MB)</p>
+                                <p class="text-xs text-gray-400 dark:text-dark-200/50">Upload — PNG, JPG, SVG, WebP (Maks 2MB)</p>
                             </div>
                             <input type="file" id="setting-logo-file" accept="image/*" class="hidden" onchange="settingsPage.previewLogo(this)">
                         </label>
@@ -101,7 +101,7 @@ const settingsPage = {
                             <img id="logo-new-img" src="" class="w-14 h-14 rounded-xl object-cover" alt="Preview">
                             <div class="flex-1">
                                 <p class="text-sm text-emerald-400">Logo baru</p>
-                                <button type="button" onclick="settingsPage.cancelNewLogo()" class="text-xs text-dark-200/40 hover:text-white mt-1 transition-colors">Batalkan</button>
+                                <button type="button" onclick="settingsPage.cancelNewLogo()" class="text-xs text-gray-400 dark:text-dark-200/40 hover:text-dark-950 dark:text-white mt-1 transition-colors">Batalkan</button>
                             </div>
                         </div>
                     </div>
@@ -109,27 +109,27 @@ const settingsPage = {
 
                 <!-- Theme Color Section -->
                 <div class="glass-card rounded-2xl p-6 lg:p-8">
-                    <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                    <h3 class="text-lg font-semibold text-dark-950 dark:text-white mb-2 flex items-center gap-2">
                         <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
                         Tema Warna
                     </h3>
-                    <p class="text-xs text-dark-200/40 mb-5">Pilih warna aksen untuk tombol, navigasi, dan elemen interaktif</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-5">Pilih warna aksen untuk tombol, navigasi, dan elemen interaktif</p>
 
                     <!-- Preset Palettes -->
                     <div class="mb-5">
-                        <label class="block text-xs font-medium text-dark-200/50 mb-3 uppercase tracking-wider">Palet Warna</label>
+                        <label class="block text-xs font-medium text-gray-400 dark:text-dark-200/50 mb-3 uppercase tracking-wider">Palet Warna</label>
                         <div class="grid grid-cols-4 sm:grid-cols-6 gap-2.5">
                             ${presetGrid}
                         </div>
                     </div>
 
                     <!-- Custom Color Picker -->
-                    <div class="pt-4 border-t border-white/5">
-                        <label class="block text-xs font-medium text-dark-200/50 mb-3 uppercase tracking-wider">Warna Kustom</label>
+                    <div class="pt-4 border-t border-black/5 dark:border-white/5">
+                        <label class="block text-xs font-medium text-gray-400 dark:text-dark-200/50 mb-3 uppercase tracking-wider">Warna Kustom</label>
                         <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
                             <!-- Color Picker Button -->
                             <div class="flex-shrink-0 flex items-center gap-3">
-                                <label for="setting-theme-picker" class="block w-14 h-14 rounded-xl cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors relative overflow-hidden" style="padding: 2px;">
+                                <label for="setting-theme-picker" class="block w-14 h-14 rounded-xl cursor-pointer border-2 border-black/10 dark:border-white/10 hover:border-black/20 dark:border-white/20 transition-colors relative overflow-hidden" style="padding: 2px;">
                                     <input type="color" id="setting-theme-picker" value="#10b981" 
                                      onchange="document.getElementById('setting-theme-hex').value=this.value;document.getElementById('setting-theme-picker-bg').style.backgroundColor=this.value"
                                      class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
@@ -146,11 +146,11 @@ const settingsPage = {
                     </div>
 
                     <!-- Preloader and Theme Mode -->
-                    <div class="space-y-4 pb-6 mt-6 border-t border-white/5 pt-6">
+                    <div class="space-y-4 pb-6 mt-6 border-t border-black/5 dark:border-white/5 pt-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Theme Mode -->
                             <div>
-                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5 flex items-center gap-2">
+                                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5 flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                                     Mode Tema
                                 </label>
@@ -159,12 +159,12 @@ const settingsPage = {
                                     <option value="dark">Mode Gelap</option>
                                     <option value="light">Mode Terang</option>
                                 </select>
-                                <p class="text-[10px] sm:text-xs text-dark-200/50 mt-1">Ubah tampilan aplikasi menjadi terang atau gelap.</p>
+                                <p class="text-[10px] sm:text-xs text-gray-400 dark:text-dark-200/50 mt-1">Ubah tampilan aplikasi menjadi terang atau gelap.</p>
                             </div>
 
                             <!-- Preloader Toggle -->
                             <div>
-                                <label class="block text-sm font-medium text-dark-200/70 mb-1.5 flex items-center gap-2">
+                                <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5 flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                                     Animasi Loading (Preloader)
                                 </label>
@@ -173,16 +173,16 @@ const settingsPage = {
                                         <input type="checkbox" id="setting-enable-preload" class="sr-only peer" checked>
                                         <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
                                     </label>
-                                    <span class="text-sm font-medium text-dark-200/70 select-none">Aktif</span>
+                                    <span class="text-sm font-medium text-gray-600 dark:text-dark-200/70 select-none">Aktif</span>
                                 </div>
-                                <p class="text-[10px] sm:text-xs text-dark-200/50 mt-1.5">Tampilkan logo saat aplikasi pertama kali dimuat.</p>
+                                <p class="text-[10px] sm:text-xs text-gray-400 dark:text-dark-200/50 mt-1.5">Tampilkan logo saat aplikasi pertama kali dimuat.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Reset theme -->
-                    <div class="mt-4 pt-3 border-t border-white/5">
-                        <button type="button" onclick="settingsPage.resetTheme()" class="text-xs text-dark-200/40 hover:text-white transition-colors flex items-center gap-1.5">
+                    <div class="mt-4 pt-3 border-t border-black/5 dark:border-white/5">
+                        <button type="button" onclick="settingsPage.resetTheme()" class="text-xs text-gray-400 dark:text-dark-200/40 hover:text-dark-950 dark:text-white transition-colors flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                             Reset ke warna default (Emerald)
                         </button>
@@ -191,7 +191,7 @@ const settingsPage = {
 
                 <!-- Save Button (Branding + Theme) -->
                 <div class="flex items-center justify-between py-2">
-                    <p id="settings-status" class="text-sm text-dark-200/40"></p>
+                    <p id="settings-status" class="text-sm text-gray-400 dark:text-dark-200/40"></p>
                     <button type="submit" class="btn-primary w-full sm:w-auto px-8 py-3 text-sm whitespace-nowrap justify-center">
                         <span class="btn-text">💾 Simpan Tampilan</span>
                         <span class="btn-loading hidden">
@@ -206,59 +206,59 @@ const settingsPage = {
 
             <!-- API & Integration Section -->
             <div id="section-api" class="settings-section hidden glass-card rounded-2xl p-6 lg:p-8 ">
-                <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                <h3 class="text-lg font-semibold text-dark-950 dark:text-white mb-5 flex items-center gap-2">
                     <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     Integrasi & API
                 </h3>
 
                 <form id="api-settings-form" class="space-y-6">
                     <!-- Google Sign-In -->
-                    <div class="space-y-4 pb-6 border-b border-white/5">
+                    <div class="space-y-4 pb-6 border-b border-black/5 dark:border-white/5">
                         <div>
-                            <label class="block text-sm font-medium text-dark-200/70 mb-1.5 flex items-center gap-2">
+                            <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5 flex items-center gap-2">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                                 Google Client ID
                             </label>
                             <input type="text" id="setting-google-client-id" class="input-field w-full font-mono text-sm" placeholder="xxxxxxxxxx.apps.googleusercontent.com">
-                            <p class="text-xs text-dark-200/50 mt-1.5">Dibutuhkan untuk mengaktifkan fitur Login dengan Google.</p>
+                            <p class="text-xs text-gray-400 dark:text-dark-200/50 mt-1.5">Dibutuhkan untuk mengaktifkan fitur Login dengan Google.</p>
                         </div>
                     </div>
 
                     <!-- SMTP Email -->
                     <div class="space-y-4">
-                        <h4 class="text-sm font-medium text-dark-200/70 flex items-center gap-2 mb-3">
+                        <h4 class="text-sm font-medium text-gray-600 dark:text-dark-200/70 flex items-center gap-2 mb-3">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             Server SMTP Email
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Host SMTP</label>
+                                <label class="block text-xs text-gray-400 dark:text-dark-200/50 mb-1">Host SMTP</label>
                                 <input type="text" id="setting-smtp-host" class="input-field w-full" placeholder="smtp.gmail.com">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Port</label>
+                                <label class="block text-xs text-gray-400 dark:text-dark-200/50 mb-1">Port</label>
                                 <input type="number" id="setting-smtp-port" class="input-field w-full" placeholder="587">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Username/Email</label>
+                                <label class="block text-xs text-gray-400 dark:text-dark-200/50 mb-1">Username/Email</label>
                                 <input type="text" id="setting-smtp-user" class="input-field w-full" placeholder="email@domain.com">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Password/App Password</label>
+                                <label class="block text-xs text-gray-400 dark:text-dark-200/50 mb-1">Password/App Password</label>
                                 <input type="password" id="setting-smtp-pass" class="input-field w-full" placeholder="••••••••">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Email Pengirim <span class="text-[10px]">(opsional)</span></label>
+                                <label class="block text-xs text-gray-400 dark:text-dark-200/50 mb-1">Email Pengirim <span class="text-[10px]">(opsional)</span></label>
                                 <input type="email" id="setting-smtp-from-email" class="input-field w-full" placeholder="noreply@domain.com">
                             </div>
                             <div>
-                                <label class="block text-xs text-dark-200/50 mb-1">Nama Pengirim <span class="text-[10px]">(opsional)</span></label>
+                                <label class="block text-xs text-gray-400 dark:text-dark-200/50 mb-1">Nama Pengirim <span class="text-[10px]">(opsional)</span></label>
                                 <input type="text" id="setting-smtp-from-name" class="input-field w-full" placeholder="DuitKu">
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-black/5 dark:border-white/5">
                         <button type="button" id="btn-test-smtp" class="btn-secondary w-full sm:w-auto px-4 py-2 text-sm flex items-center justify-center gap-2">
                             <span class="btn-text flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
@@ -280,7 +280,7 @@ const settingsPage = {
 
                 <!-- Versi Saat Ini -->
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <h3 class="text-lg font-semibold text-dark-950 dark:text-white mb-4 flex items-center gap-2">
                         <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
                         Informasi Versi
                     </h3>
@@ -294,11 +294,11 @@ const settingsPage = {
                 <div class="glass-card rounded-2xl p-6">
                     <div class="flex items-start justify-between gap-4 mb-4">
                         <div>
-                            <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <h3 class="text-lg font-semibold text-dark-950 dark:text-white flex items-center gap-2">
                                 <svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                                 Cek Pembaruan
                             </h3>
-                            <p class="text-xs text-dark-200/40 mt-1">Cek versi terbaru dari GitHub</p>
+                            <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-1">Cek versi terbaru dari GitHub</p>
                         </div>
                         <button id="btn-check-update" onclick="settingsPage.checkUpdate()" class="btn-secondary px-4 py-2 text-sm flex-shrink-0 flex items-center gap-2">
                             <span class="btn-text flex items-center gap-2">
@@ -317,7 +317,7 @@ const settingsPage = {
 
                 <!-- Log Migrasi DB -->
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-base font-semibold text-white mb-3 flex items-center gap-2">
+                    <h3 class="text-base font-semibold text-dark-950 dark:text-white mb-3 flex items-center gap-2">
                         <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8-4s8 1.79 8 4"/></svg>
                         Riwayat Migrasi Database
                     </h3>
@@ -438,7 +438,7 @@ const settingsPage = {
         const container = document.getElementById('theme-palette-preview');
         if (!container) return;
         container.innerHTML = palette.map((c, i) => `
-            <div class="h-6 sm:h-8 w-full sm:flex-1 rounded border border-white/5 sm:border-none flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-white/50 min-w-[30px]" 
+            <div class="h-6 sm:h-8 w-full sm:flex-1 rounded border border-black/5 dark:border-white/5 sm:border-none flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-dark-950 dark:text-dark-950 dark:text-white/50 min-w-[30px]" 
                 style="background: ${c}; color: ${this.getContrastColor(c)}" title="${c}">
                 ${i === 5 ? 'Base' : ''}
             </div>
@@ -658,19 +658,19 @@ const settingsPage = {
             versionEl.innerHTML = `
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-white/5 rounded-xl p-3">
-                        <p class="text-xs text-dark-200/40 mb-0.5">Versi Aplikasi</p>
-                        <p class="text-lg font-bold text-white font-mono">v${data.version}</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Versi Aplikasi</p>
+                        <p class="text-lg font-bold text-dark-950 dark:text-dark-950 dark:text-white font-mono">v${data.version}</p>
                     </div>
                     <div class="bg-white/5 rounded-xl p-3">
-                        <p class="text-xs text-dark-200/40 mb-0.5">Versi Database</p>
-                        <p class="text-lg font-bold text-white font-mono">v${data.db_version}</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Versi Database</p>
+                        <p class="text-lg font-bold text-dark-950 dark:text-white font-mono">v${data.db_version}</p>
                     </div>
                     <div class="bg-white/5 rounded-xl p-3">
-                        <p class="text-xs text-dark-200/40 mb-0.5">Tanggal Rilis</p>
-                        <p class="text-sm font-medium text-white">${data.release_date || '-'}</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Tanggal Rilis</p>
+                        <p class="text-sm font-medium text-dark-950 dark:text-white">${data.release_date || '-'}</p>
                     </div>
                     <div class="bg-white/5 rounded-xl p-3">
-                        <p class="text-xs text-dark-200/40 mb-0.5">Repository</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Repository</p>
                         <a href="https://github.com/${data.github_repo}" target="_blank" 
                            class="text-sm font-medium text-primary-400 hover:text-primary-300 truncate block">${data.github_repo || '-'}</a>
                     </div>
@@ -685,13 +685,13 @@ const settingsPage = {
                 migLog.innerHTML = data.migrations.map(m => `
                     <div class="flex items-center gap-2 text-xs">
                         <span class="text-emerald-400">✓</span>
-                        <span class="font-mono text-white/60">v${m.version}</span>
-                        <span class="text-dark-200/40">${m.name}</span>
+                        <span class="font-mono text-dark-950 dark:text-dark-950 dark:text-white/60">v${m.version}</span>
+                        <span class="text-gray-400 dark:text-dark-200/40">${m.name}</span>
                         <span class="ml-auto text-dark-200/30">${m.applied_at?.split(' ')[0] || ''}</span>
                     </div>
                 `).join('');
             } else {
-                migLog.innerHTML = '<p class="text-xs text-dark-200/40">Belum ada riwayat migrasi</p>';
+                migLog.innerHTML = '<p class="text-xs text-gray-400 dark:text-dark-200/40">Belum ada riwayat migrasi</p>';
             }
         } catch (err) {
             versionEl.innerHTML = `<p class="text-red-400 text-sm">${err.message}</p>`;
@@ -725,13 +725,13 @@ const settingsPage = {
                         <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <div>
                             <p class="text-sm font-semibold text-emerald-400">Aplikasi sudah versi terbaru ✨</p>
-                            <p class="text-xs text-dark-200/40 mt-0.5">v${data.current_version} adalah yang terbaru</p>
+                            <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-0.5">v${data.current_version} adalah yang terbaru</p>
                         </div>
                     </div>`;
             } else {
                 // Parse changelog markdown sederhana
                 const changelog = (data.release_body || '')
-                    .replace(/##\s/g, '<br><strong class="text-white">')
+                    .replace(/##\s/g, '<br><strong class="text-dark-950 dark:text-dark-950 dark:text-white">')
                     .replace(/\n- /g, '<br>• ')
                     .replace(/\n/g, '<br>');
 
@@ -740,14 +740,14 @@ const settingsPage = {
                         <div class="flex items-center gap-3 p-4 rounded-xl bg-primary-500/10 border border-primary-500/30">
                             <svg class="w-5 h-5 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
                             <div class="flex-1">
-                                <p class="text-sm font-semibold text-white">Pembaruan tersedia: <span class="text-primary-400">v${data.latest_version}</span></p>
-                                <p class="text-xs text-dark-200/40">${data.release_name || ''} · ${data.published_at?.split('T')[0] || ''}</p>
+                                <p class="text-sm font-semibold text-dark-950 dark:text-white">Pembaruan tersedia: <span class="text-primary-400">v${data.latest_version}</span></p>
+                                <p class="text-xs text-gray-400 dark:text-dark-200/40">${data.release_name || ''} · ${data.published_at?.split('T')[0] || ''}</p>
                             </div>
                         </div>
 
                         ${data.release_body ? `<div class="bg-white/5 rounded-xl p-4">
-                            <p class="text-xs font-semibold text-dark-200/50 uppercase tracking-wider mb-2">Changelog</p>
-                            <div class="text-sm text-dark-200/70 leading-relaxed">${changelog}</div>
+                            <p class="text-xs font-semibold text-gray-400 dark:text-dark-200/50 uppercase tracking-wider mb-2">Changelog</p>
+                            <div class="text-sm text-gray-600 dark:text-dark-200/70 leading-relaxed">${changelog}</div>
                         </div>` : ''}
 
                         <div class="flex items-center gap-3">

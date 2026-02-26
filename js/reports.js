@@ -22,8 +22,8 @@ const reportsPage = {
         <div class="page-enter">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Laporan</h2>
-                    <p class="text-dark-200/50 mt-1">Analisis keuangan tahunan</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Laporan</h2>
+                    <p class="text-gray-400 dark:text-dark-200/50 mt-1">Analisis keuangan tahunan</p>
                 </div>
                 <select id="report-year" class="select-field" onchange="reportsPage.changeYear(this.value)">
                     ${years.map(y => `<option value="${y}" ${y === this.currentYear ? 'selected' : ''}>${y}</option>`).join('')}
@@ -33,33 +33,33 @@ const reportsPage = {
             <!-- Year Summary -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
                 <div class="summary-card card-income">
-                    <p class="text-sm text-dark-200/60 mb-1">Total Pemasukan</p>
+                    <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Total Pemasukan</p>
                     <p id="rpt-income" class="text-2xl font-bold text-green-400"><span class="skeleton inline-block w-32 h-7"></span></p>
                 </div>
                 <div class="summary-card card-expense">
-                    <p class="text-sm text-dark-200/60 mb-1">Total Pengeluaran</p>
+                    <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Total Pengeluaran</p>
                     <p id="rpt-expense" class="text-2xl font-bold text-red-400"><span class="skeleton inline-block w-32 h-7"></span></p>
                 </div>
                 <div class="summary-card card-balance">
-                    <p class="text-sm text-dark-200/60 mb-1">Selisih</p>
-                    <p id="rpt-balance" class="text-2xl font-bold text-white"><span class="skeleton inline-block w-32 h-7"></span></p>
+                    <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Selisih</p>
+                    <p id="rpt-balance" class="text-2xl font-bold text-dark-950 dark:text-dark-950 dark:text-white"><span class="skeleton inline-block w-32 h-7"></span></p>
                 </div>
             </div>
 
             <!-- Monthly Chart -->
             <div class="glass-card rounded-2xl p-6 mb-8">
-                <h3 class="text-base font-semibold text-white mb-4">Pemasukan vs Pengeluaran Bulanan</h3>
+                <h3 class="text-base font-semibold text-dark-950 dark:text-white mb-4">Pemasukan vs Pengeluaran Bulanan</h3>
                 <div style="height:300px"><canvas id="rpt-monthly-chart"></canvas></div>
             </div>
 
             <!-- Category Breakdown -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-base font-semibold text-white mb-4">Pemasukan per Kategori</h3>
+                    <h3 class="text-base font-semibold text-dark-950 dark:text-white mb-4">Pemasukan per Kategori</h3>
                     <div id="rpt-income-cat" style="height:260px"><canvas id="rpt-income-chart"></canvas></div>
                 </div>
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-base font-semibold text-white mb-4">Pengeluaran per Kategori</h3>
+                    <h3 class="text-base font-semibold text-dark-950 dark:text-white mb-4">Pengeluaran per Kategori</h3>
                     <div id="rpt-expense-cat" style="height:260px"><canvas id="rpt-expense-chart"></canvas></div>
                 </div>
             </div>
@@ -148,7 +148,7 @@ const reportsPage = {
         if (!ctx) return;
 
         if (!categories || categories.length === 0) {
-            document.getElementById(containerId).innerHTML = '<div class="empty-state h-full"><p class="text-dark-200/40 text-sm">Belum ada data</p></div>';
+            document.getElementById(containerId).innerHTML = '<div class="empty-state h-full"><p class="text-gray-400 dark:text-dark-200/40 text-sm">Belum ada data</p></div>';
             return;
         }
 

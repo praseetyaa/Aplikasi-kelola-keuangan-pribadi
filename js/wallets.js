@@ -11,8 +11,8 @@ const walletsPage = {
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Dompet</h2>
-                    <p class="text-dark-200/50 mt-1">Kelola rekening perbankan, e-wallet, dan kartu kreditmu</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Dompet</h2>
+                    <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola rekening perbankan, e-wallet, dan kartu kreditmu</p>
                 </div>
                 <button onclick="walletsPage.showAddModal()" class="btn-primary">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -22,8 +22,8 @@ const walletsPage = {
 
             <!-- Total Balance -->
             <div class="glass-card rounded-2xl p-6 mb-8 text-center sm:text-left bg-gradient-to-br from-primary-500/10 to-transparent border border-primary-500/20">
-                <p class="text-dark-200/60 text-sm font-medium mb-1">Total Saldo Keseluruhan</p>
-                <h3 id="wallets-total-balance" class="text-3xl sm:text-4xl font-bold text-white">Rp 0</h3>
+                <p class="text-gray-500 dark:text-dark-200/60 text-sm font-medium mb-1">Total Saldo Keseluruhan</p>
+                <h3 id="wallets-total-balance" class="text-3xl sm:text-4xl font-bold text-dark-950 dark:text-white">Rp 0</h3>
             </div>
 
             <!-- Wallets Grid -->
@@ -49,7 +49,7 @@ const walletsPage = {
                         <svg class="w-16 h-16 text-dark-200/15 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
-                        <p class="text-dark-200/40 text-base font-medium mb-1">Belum ada dompet</p>
+                        <p class="text-gray-400 dark:text-dark-200/40 text-base font-medium mb-1">Belum ada dompet</p>
                         <p class="text-dark-200/30 text-sm mb-4">Mulai tambahkan rekening atau e-walletmu</p>
                     </div>`;
                 grid.remove();
@@ -95,22 +95,22 @@ const walletsPage = {
                                 ${typeInfo.icon}
                             </div>
                             <div>
-                                <h3 class="text-base font-semibold text-white leading-tight">${wallet.name}</h3>
-                                <span class="text-xs font-medium text-dark-200/50">${typeInfo.label}</span>
+                                <h3 class="text-base font-semibold text-dark-950 dark:text-dark-950 dark:text-white leading-tight">${wallet.name}</h3>
+                                <span class="text-xs font-medium text-gray-400 dark:text-dark-200/50">${typeInfo.label}</span>
                             </div>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button onclick="walletsPage.showEditModal(${wallet.id})" class="p-1.5 rounded-lg hover:bg-white/10 text-dark-200/40 hover:text-white transition-colors">
+                            <button onclick="walletsPage.showEditModal(${wallet.id})" class="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 dark:text-dark-200/40 hover:text-dark-950 dark:text-white transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </button>
-                            <button onclick="walletsPage.deleteWallet(${wallet.id})" class="p-1.5 rounded-lg hover:bg-red-500/10 text-dark-200/40 hover:text-red-400 transition-colors">
+                            <button onclick="walletsPage.deleteWallet(${wallet.id})" class="p-1.5 rounded-lg hover:bg-red-500/10 text-gray-400 dark:text-dark-200/40 hover:text-red-400 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                             </button>
                         </div>
                     </div>
                     <div class="mt-auto pt-2">
-                        <p class="text-xs text-dark-200/50 mb-1">Saldo Saat Ini</p>
-                        <p class="text-xl font-bold ${balance < 0 ? 'text-red-400' : 'text-white'}">${formatCurrency(balance)}</p>
+                        <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-1">Saldo Saat Ini</p>
+                        <p class="text-xl font-bold ${balance < 0 ? 'text-red-400' : 'text-dark-950 dark:text-white'}">${formatCurrency(balance)}</p>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -119,7 +119,7 @@ const walletsPage = {
             const totalBalanceEl = document.getElementById('wallets-total-balance');
             if (totalBalanceEl) {
                 totalBalanceEl.textContent = formatCurrency(totalBalance);
-                totalBalanceEl.className = `text-3xl sm:text-4xl font-bold ${totalBalance < 0 ? 'text-red-400' : 'text-white'}`;
+                totalBalanceEl.className = `text-3xl sm:text-4xl font-bold ${totalBalance < 0 ? 'text-red-400' : 'text-dark-950 dark:text-white'}`;
             }
 
         } catch (err) {
@@ -144,11 +144,11 @@ const walletsPage = {
         const body = `
             <form id="wallet-form" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama Dompet</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Nama Dompet</label>
                     <input type="text" id="wallet-name" class="input-field w-full" placeholder="Cth: BCA, Gopay, Mandiri" required value="${wallet?.name || ''}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Tipe Dompet</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Tipe Dompet</label>
                     <select id="wallet-type" class="select-field w-full" required>
                         <option value="bank" ${wallet?.type === 'bank' ? 'selected' : ''}>🏦 Perbankan (Bank)</option>
                         <option value="ewallet" ${wallet?.type === 'ewallet' ? 'selected' : ''}>📱 E-Wallet (Gopay, OVO, dll)</option>
@@ -156,12 +156,12 @@ const walletsPage = {
                     </select>
                 </div>
                 <div id="wallet-balance-container">
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Saldo Awal (Rp)</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Saldo Awal (Rp)</label>
                     <input type="text" id="wallet-starting-balance" class="input-field w-full" placeholder="0"
                         inputmode="numeric" autocomplete="off"
                         oninput="this.value=this.value.replace(/\\D/g,'').replace(/\\B(?=(\\d{3})+(?!\\d))/g,'.')"
                         value="${wallet?.starting_balance ? formatInputNumber(wallet.starting_balance) : ''}">
-                    <p class="text-xs text-dark-200/40 mt-1">Saldo saat ini akan dihitung otomatis dari riwayat transaksi.</p>
+                    <p class="text-xs text-gray-400 dark:text-dark-200/40 mt-1">Saldo saat ini akan dihitung otomatis dari riwayat transaksi.</p>
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
@@ -230,8 +230,8 @@ const walletsPage = {
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-white text-lg font-medium mb-2">Hapus Dompet?</p>
-                <p class="text-dark-200/60 text-sm">"${wallet.name}" akan dihapus. Transaksi yang terhubung akan kehilangan referensi dompet (tapi tidak terhapus).</p>
+                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Dompet?</p>
+                <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${wallet.name}" akan dihapus. Transaksi yang terhubung akan kehilangan referensi dompet (tapi tidak terhapus).</p>
             </div>
             <div class="flex gap-3 mt-6">
                 <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>

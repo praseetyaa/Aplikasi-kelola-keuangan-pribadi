@@ -11,8 +11,8 @@ const categoriesPage = {
         <div class="page-enter">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white">Kategori</h2>
-                    <p class="text-dark-200/50 mt-1">Kelola kategori pemasukan &amp; pengeluaran</p>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Kategori</h2>
+                    <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola kategori pemasukan &amp; pengeluaran</p>
                 </div>
                 <button onclick="categoriesPage.showAddModal()" class="btn-primary w-full sm:w-auto justify-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -20,8 +20,8 @@ const categoriesPage = {
                 </button>
             </div>
             <div class="flex w-full gap-2 mb-6 bg-white/5 p-1 rounded-xl">
-                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 text-white shadow-sm" onclick="categoriesPage.switchTab('expense')">Pengeluaran</button>
-                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors text-white/50 hover:text-white" onclick="categoriesPage.switchTab('income')">Pemasukan</button>
+                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 text-dark-950 dark:text-white shadow-sm" onclick="categoriesPage.switchTab('expense')">Pengeluaran</button>
+                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors text-dark-950 dark:text-white/50 hover:text-white" onclick="categoriesPage.switchTab('income')">Pemasukan</button>
             </div>
             <div id="cat-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <div class="skeleton w-full h-20"></div>
@@ -57,14 +57,14 @@ const categoriesPage = {
         if (!grid) return;
         const filtered = this.categories.filter(c => c.type === this.activeTab);
         if (filtered.length === 0) {
-            grid.innerHTML = `<div class="col-span-full empty-state py-12"><p class="text-dark-200/40">Belum ada kategori</p></div>`;
+            grid.innerHTML = `<div class="col-span-full empty-state py-12"><p class="text-gray-400 dark:text-dark-200/40">Belum ada kategori</p></div>`;
             return;
         }
         grid.innerHTML = filtered.map(cat => `
             <div class="glass-card rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 group transition-all" style="background: linear-gradient(145deg, ${cat.color}15 0%, rgba(255,255,255,0.02) 100%); border-color: ${cat.color}30;">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg sm:text-xl flex-shrink-0" style="background:${cat.color}20">${cat.icon}</div>
                 <div class="flex-1 min-w-0">
-                    <p class="font-medium text-white truncate text-sm sm:text-base">${cat.name}</p>
+                    <p class="font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate text-sm sm:text-base">${cat.name}</p>
                     <span class="badge ${cat.type === 'income' ? 'badge-income' : 'badge-expense'} mt-1 hidden sm:inline-block">${cat.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</span>
                 </div>
                 <div class="flex items-center gap-1">
@@ -92,11 +92,11 @@ const categoriesPage = {
         const body = `
             <form id="cat-form" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Nama</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Nama</label>
                     <input type="text" id="cat-name" class="input-field w-full" required value="${cat?.name || ''}">
                 </div>
                 ${!isEdit ? `<div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-1.5">Tipe</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-1.5">Tipe</label>
                     <div class="pill-group w-full">
                         <button type="button" class="pill-btn flex-1 active" data-type="expense" onclick="categoriesPage.switchModalType('expense')">Pengeluaran</button>
                         <button type="button" class="pill-btn flex-1" data-type="income" onclick="categoriesPage.switchModalType('income')">Pemasukan</button>
@@ -104,14 +104,14 @@ const categoriesPage = {
                     <input type="hidden" id="cat-type" value="expense">
                 </div>` : ''}
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-2">Icon</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-2">Icon</label>
                     <div class="flex flex-wrap gap-2" id="cat-icon-picker">
                         ${emojis.map(e => `<button type="button" class="w-10 h-10 rounded-lg flex items-center justify-center text-lg hover:bg-white/10 ${cat?.icon === e ? 'ring-2 ring-primary-500 bg-white/10' : 'bg-white/5'}" onclick="categoriesPage.selectIcon(this,'${e}')">${e}</button>`).join('')}
                     </div>
                     <input type="hidden" id="cat-icon" value="${cat?.icon || '💰'}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-dark-200/70 mb-2">Warna</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-2">Warna</label>
                     <div class="flex flex-wrap gap-2" id="cat-color-picker">
                         ${colors.map(c => `<button type="button" class="w-8 h-8 rounded-lg hover:scale-110 transition-transform ${cat?.color === c ? 'ring-2 ring-white ring-offset-2 ring-offset-dark-800' : ''}" style="background:${c}" onclick="categoriesPage.selectColor(this,'${c}')"></button>`).join('')}
                     </div>
@@ -160,8 +160,8 @@ const categoriesPage = {
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-white text-lg font-medium mb-2">Hapus Kategori?</p>
-                <p class="text-dark-200/60 text-sm">"${cat.name}" akan dihapus permanen.</p>
+                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Kategori?</p>
+                <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${cat.name}" akan dihapus permanen.</p>
             </div>
             <div class="flex gap-3 mt-6">
                 <button onclick="closeModal()" class="btn-secondary flex-1">Batal</button>
