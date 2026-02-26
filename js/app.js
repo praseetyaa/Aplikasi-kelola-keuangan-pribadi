@@ -54,13 +54,13 @@ const onboarding = {
                 <div class="w-28 h-28 mx-auto mb-6 rounded-3xl bg-gradient-to-br flex items-center justify-center text-6xl" style="--tw-gradient-from: rgba(var(--theme-rgb, 16, 185, 129), 0.2); --tw-gradient-to: rgba(var(--theme-rgb, 16, 185, 129), 0.05); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);">
                     ${slide.icon}
                 </div>
-                <h2 class="text-2xl font-bold text-white mb-3">${slide.title}</h2>
-                <p class="text-white/60 text-lg">${slide.desc}</p>
+                <h2 class="text-2xl font-bold text-dark-950 dark:text-white mb-3">${slide.title}</h2>
+                <p class="text-gray-500 dark:text-white/60 text-lg">${slide.desc}</p>
             </div>
         `;
 
         dotsContainer.innerHTML = this.slides.map((_, i) =>
-            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'w-6' : 'bg-white/20'}" style="${i === this.currentIndex ? 'background-color: var(--theme-500, #10b981)' : ''}"></div>`
+            `<div class="w-2 h-2 rounded-full transition-all ${i === this.currentIndex ? 'w-6' : 'bg-black/20 dark:bg-white/20'}" style="${i === this.currentIndex ? 'background-color: var(--theme-500, #10b981)' : ''}"></div>`
         ).join('');
 
         nextBtn.textContent = this.currentIndex === this.slides.length - 1 ? 'Mulai' : 'Lanjut';
