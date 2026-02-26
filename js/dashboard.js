@@ -10,6 +10,23 @@ function getThemeColorRgb() {
     return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '16, 185, 129';
 }
 
+function isDarkMode() {
+    return document.documentElement.classList.contains('dark');
+}
+
+function getChartColors() {
+    const isDark = isDarkMode();
+    return {
+        text: isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.5)',
+        textBright: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.7)',
+        gridLines: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+        tooltipBg: isDark ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+        tooltipText: isDark ? '#fff' : '#1e293b',
+        tooltipMuted: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(30, 41, 59, 0.8)',
+        tooltipBorder: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+    };
+}
+
 const AVAILABLE_SHORTCUTS = [
     { id: 'categories', label: 'Kategori', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />` },
     { id: 'reports', label: 'Laporan', icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />` },
@@ -289,6 +306,8 @@ const dashboardPage = {
             expenseData.push(found ? parseFloat(found.expense) : 0);
         }
 
+        const colors = getChartColors();
+
         this.charts.trend = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -306,7 +325,7 @@ const dashboardPage = {
                     {
                         label: 'Pengeluaran',
                         data: expenseData,
-                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                        backgroundColor: isDarkMode() ? 'rgba(239, 68, 68, 0.5)' : 'rgba(239, 68, 68, 0.7)',
                         borderColor: '#ef4444',
                         borderWidth: 1,
                         borderRadius: 6,
@@ -320,13 +339,13 @@ const dashboardPage = {
                 plugins: {
                     legend: {
                         position: 'top',
-                        labels: { color: 'rgba(255,255,255,0.6)', padding: 16, usePointStyle: true, pointStyleWidth: 8, font: { size: 12 } }
+                        labels: { color: colors.textBright, padding: 16, usePointStyle: true, pointStyleWidth: 8, font: { size: 12 } }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                        titleColor: '#fff',
-                        bodyColor: 'rgba(255,255,255,0.8)',
-                        borderColor: 'rgba(255,255,255,0.1)',
+                        backgroundColor: colors.tooltipBg,
+                        titleColor: colors.tooltipText,
+                        bodyColor: colors.tooltipMuted,
+                        borderColor: colors.tooltipBorder,
                         borderWidth: 1,
                         cornerRadius: 10,
                         padding: 12,
@@ -338,12 +357,12 @@ const dashboardPage = {
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 12 } }
+                        ticks: { color: colors.text, font: { size: 12 } }
                     },
                     y: {
-                        grid: { color: 'rgba(255,255,255,0.04)' },
+                        grid: { color: colors.gridLines },
                         ticks: {
-                            color: 'rgba(255,255,255,0.4)',
+                            color: colors.text,
                             font: { size: 11 },
                             callback: (v) => v >= 1000000 ? (v / 1000000).toFixed(1) + 'jt' : v >= 1000 ? (v / 1000).toFixed(0) + 'rb' : v
                         }
@@ -368,6 +387,8 @@ const dashboardPage = {
             return;
         }
 
+        const colors = getChartColors();
+
         this.charts.category = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -387,13 +408,13 @@ const dashboardPage = {
                 plugins: {
                     legend: {
                         position: 'bottom',
-                        labels: { color: 'rgba(255,255,255,0.6)', padding: 12, usePointStyle: true, pointStyleWidth: 8, font: { size: 11 } }
+                        labels: { color: colors.textBright, padding: 12, usePointStyle: true, pointStyleWidth: 8, font: { size: 11 } }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                        titleColor: '#fff',
-                        bodyColor: 'rgba(255,255,255,0.8)',
-                        borderColor: 'rgba(255,255,255,0.1)',
+                        backgroundColor: colors.tooltipBg,
+                        titleColor: colors.tooltipText,
+                        bodyColor: colors.tooltipMuted,
+                        borderColor: colors.tooltipBorder,
                         borderWidth: 1,
                         cornerRadius: 10,
                         padding: 12,
