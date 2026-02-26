@@ -22,7 +22,7 @@ const reportsPage = {
         <div class="page-enter">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Laporan</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Laporan</h2>
                     <p class="text-gray-400 dark:text-dark-200/50 mt-1">Analisis keuangan tahunan</p>
                 </div>
                 <select id="report-year" class="select-field" onchange="reportsPage.changeYear(this.value)">
@@ -42,7 +42,7 @@ const reportsPage = {
                 </div>
                 <div class="summary-card card-balance">
                     <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Selisih</p>
-                    <p id="rpt-balance" class="text-2xl font-bold text-dark-950 dark:text-dark-950 dark:text-white"><span class="skeleton inline-block w-32 h-7"></span></p>
+                    <p id="rpt-balance" class="text-2xl font-bold text-dark-950 dark:text-white"><span class="skeleton inline-block w-32 h-7"></span></p>
                 </div>
             </div>
 

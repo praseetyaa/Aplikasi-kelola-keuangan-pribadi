@@ -11,7 +11,7 @@ const categoriesPage = {
         <div class="page-enter">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Kategori</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Kategori</h2>
                     <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola kategori pemasukan &amp; pengeluaran</p>
                 </div>
                 <button onclick="categoriesPage.showAddModal()" class="btn-primary w-full sm:w-auto justify-center">
@@ -19,8 +19,8 @@ const categoriesPage = {
                     <span>Tambah Kategori</span>
                 </button>
             </div>
-            <div class="flex w-full gap-2 mb-6 bg-white/5 p-1 rounded-xl">
-                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 text-dark-950 dark:text-white shadow-sm" onclick="categoriesPage.switchTab('expense')">Pengeluaran</button>
+            <div class="flex w-full gap-2 mb-6 bg-black/5 dark:bg-white/5 p-1 rounded-xl">
+                <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors bg-black/10 dark:bg-white/10 text-dark-950 dark:text-white shadow-sm" onclick="categoriesPage.switchTab('expense')">Pengeluaran</button>
                 <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-medium transition-colors text-dark-950 dark:text-white/50 hover:text-white" onclick="categoriesPage.switchTab('income')">Pemasukan</button>
             </div>
             <div id="cat-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -42,10 +42,10 @@ const categoriesPage = {
         this.activeTab = tab;
         document.querySelectorAll('.tab-btn').forEach((btn, i) => {
             if ((tab === 'expense' && i === 0) || (tab === 'income' && i === 1)) {
-                btn.classList.add('bg-white/10', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-black/10 dark:bg-white/10', 'text-white', 'shadow-sm');
                 btn.classList.remove('text-white/50', 'hover:text-white');
             } else {
-                btn.classList.remove('bg-white/10', 'text-white', 'shadow-sm');
+                btn.classList.remove('bg-black/10 dark:bg-white/10', 'text-white', 'shadow-sm');
                 btn.classList.add('text-white/50', 'hover:text-white');
             }
         });
@@ -64,7 +64,7 @@ const categoriesPage = {
             <div class="glass-card rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 group transition-all" style="background: linear-gradient(145deg, ${cat.color}15 0%, rgba(255,255,255,0.02) 100%); border-color: ${cat.color}30;">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg sm:text-xl flex-shrink-0" style="background:${cat.color}20">${cat.icon}</div>
                 <div class="flex-1 min-w-0">
-                    <p class="font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate text-sm sm:text-base">${cat.name}</p>
+                    <p class="font-medium text-dark-950 dark:text-white truncate text-sm sm:text-base">${cat.name}</p>
                     <span class="badge ${cat.type === 'income' ? 'badge-income' : 'badge-expense'} mt-1 hidden sm:inline-block">${cat.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</span>
                 </div>
                 <div class="flex items-center gap-1">
@@ -106,7 +106,7 @@ const categoriesPage = {
                 <div>
                     <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-2">Icon</label>
                     <div class="flex flex-wrap gap-2" id="cat-icon-picker">
-                        ${emojis.map(e => `<button type="button" class="w-10 h-10 rounded-lg flex items-center justify-center text-lg hover:bg-white/10 ${cat?.icon === e ? 'ring-2 ring-primary-500 bg-white/10' : 'bg-white/5'}" onclick="categoriesPage.selectIcon(this,'${e}')">${e}</button>`).join('')}
+                        ${emojis.map(e => `<button type="button" class="w-10 h-10 rounded-lg flex items-center justify-center text-lg hover:bg-black/10 dark:bg-white/10 ${cat?.icon === e ? 'ring-2 ring-primary-500 bg-black/10 dark:bg-white/10' : 'bg-black/5 dark:bg-white/5'}" onclick="categoriesPage.selectIcon(this,'${e}')">${e}</button>`).join('')}
                     </div>
                     <input type="hidden" id="cat-icon" value="${cat?.icon || '💰'}">
                 </div>
@@ -144,8 +144,8 @@ const categoriesPage = {
         document.getElementById('cat-type').value = type;
     },
     selectIcon(btn, icon) {
-        document.querySelectorAll('#cat-icon-picker button').forEach(b => { b.classList.remove('ring-2', 'ring-primary-500', 'bg-white/10'); b.classList.add('bg-white/5'); });
-        btn.classList.add('ring-2', 'ring-primary-500', 'bg-white/10'); btn.classList.remove('bg-white/5');
+        document.querySelectorAll('#cat-icon-picker button').forEach(b => { b.classList.remove('ring-2', 'ring-primary-500', 'bg-black/10 dark:bg-white/10'); b.classList.add('bg-black/5 dark:bg-white/5'); });
+        btn.classList.add('ring-2', 'ring-primary-500', 'bg-black/10 dark:bg-white/10'); btn.classList.remove('bg-black/5 dark:bg-white/5');
         document.getElementById('cat-icon').value = icon;
     },
     selectColor(btn, color) {
@@ -160,7 +160,7 @@ const categoriesPage = {
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Kategori?</p>
+                <p class="text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Kategori?</p>
                 <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${cat.name}" akan dihapus permanen.</p>
             </div>
             <div class="flex gap-3 mt-6">

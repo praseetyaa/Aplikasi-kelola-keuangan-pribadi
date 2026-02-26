@@ -42,12 +42,12 @@ const dashboardPage = {
             if (!feat) return '';
             return `
                 <button onclick="app.navigate('${feat.id}')" class="flex flex-col items-center gap-2 group outline-none">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-all">
                         <svg class="w-5 h-5 text-gray-600 dark:text-dark-200/70 group-hover:text-primary-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             ${feat.icon}
                         </svg>
                     </div>
-                    <span class="text-xs font-medium text-gray-600 dark:text-dark-200/70 group-hover:text-dark-950 dark:text-dark-950 dark:text-white transition-colors truncate w-full text-center px-1">${feat.label}</span>
+                    <span class="text-xs font-medium text-gray-600 dark:text-dark-200/70 group-hover:text-dark-950 dark:text-white transition-colors truncate w-full text-center px-1">${feat.label}</span>
                 </button>
             `;
         }).join('');
@@ -57,12 +57,12 @@ const dashboardPage = {
                 <!-- Header -->
                 <div class="flex items-center justify-between mb-8">
                     <div>
-                        <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white tracking-tight">
+                        <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white tracking-tight">
                             Hi! <span class="bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent">${app.user ? app.user.name.split(' ')[0] : ''}</span>
                         </h2>
                         <p class="text-gray-400 dark:text-dark-200/50 mt-1">Ringkasan keuangan bulan ini</p>
                     </div>
-                    <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-black/10 dark:border-white/10 transition-colors relative">
+                    <button onclick="app.navigate('notifications')" class="p-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 border border-black/10 dark:border-white/10 transition-colors relative">
                         <svg class="w-6 h-6 text-dark-950 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
@@ -90,7 +90,7 @@ const dashboardPage = {
                             </p>
                         </div>
 
-                        <div class="w-full h-px bg-white/5"></div>
+                        <div class="w-full h-px bg-black/5 dark:bg-white/5"></div>
 
                         <!-- Income & Expense Row -->
                         <div class="grid grid-cols-2 gap-4">
@@ -128,7 +128,7 @@ const dashboardPage = {
                     
                     <!-- Edit Menu -->
                     <button onclick="dashboardPage.editShortcuts()" class="flex flex-col items-center gap-2 group outline-none">
-                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-black/5 dark:border-white/5 border-dashed flex items-center justify-center group-hover:bg-white/10 group-hover:border-black/20 dark:border-white/20 transition-all">
+                        <div class="w-12 h-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 border-dashed flex items-center justify-center group-hover:bg-black/10 dark:bg-white/10 group-hover:border-black/20 dark:border-white/20 transition-all">
                             <svg class="w-5 h-5 text-gray-400 dark:text-dark-200/50 group-hover:text-dark-950 dark:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
@@ -260,7 +260,7 @@ const dashboardPage = {
                 </div>
                 <div>
                     <h4 class="text-amber-500 font-bold mb-1">Update Tabungan: ${p.name}</h4>
-                    <p class="text-dark-950 dark:text-dark-950 dark:text-white/70 text-sm">Kamu belum menabung <strong>${formatCurrency(p.monthly_saving)}</strong> untuk target ini di bulan berjalan. Ayo tetap konsisten!</p>
+                    <p class="text-dark-950 dark:text-white/70 text-sm">Kamu belum menabung <strong>${formatCurrency(p.monthly_saving)}</strong> untuk target ini di bulan berjalan. Ayo tetap konsisten!</p>
                 </div>
             </div>
         `).join('');
@@ -426,7 +426,7 @@ const dashboardPage = {
                     ${tx.category_icon || '💰'}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
+                    <p class="text-sm font-medium text-dark-950 dark:text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
                     <p class="text-xs text-gray-400 dark:text-dark-200/40">${tx.category_name || '-'} · ${formatDate(tx.date)}</p>
                 </div>
                 <span class="text-sm font-semibold ${tx.type === 'income' ? 'text-green-400' : 'text-red-400'} flex-shrink-0">
@@ -453,12 +453,12 @@ const dashboardPage = {
             const bal = parseFloat(w.balance ?? w.starting_balance ?? 0);
             const isNeg = bal < 0;
             return `
-            <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors hover:bg-white/5 cursor-pointer" onclick="app.navigate('wallets')">
+            <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors hover:bg-black/5 dark:bg-white/5 cursor-pointer" onclick="app.navigate('wallets')">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(255,255,255,0.06)">
                     ${typeIcon[w.type] || '💰'}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${w.name}</p>
+                    <p class="text-sm font-medium text-dark-950 dark:text-white truncate">${w.name}</p>
                     <p class="text-xs text-gray-400 dark:text-dark-200/40 capitalize">${w.type}</p>
                 </div>
                 <span class="text-sm font-semibold flex-shrink-0 ${isNeg ? 'text-red-400' : 'text-emerald-400'}">${formatCurrency(bal)}</span>
@@ -492,12 +492,12 @@ const dashboardPage = {
                 <div class="flex items-center gap-2.5 mb-1.5">
                     <span class="text-lg leading-none">${p.icon || '🎯'}</span>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${p.name}</p>
+                        <p class="text-sm font-medium text-dark-950 dark:text-white truncate">${p.name}</p>
                         <p class="text-xs text-gray-400 dark:text-dark-200/40">${info}</p>
                     </div>
                     <span class="text-xs font-semibold flex-shrink-0" style="color:${color}">${pct}%</span>
                 </div>
-                <div class="w-full bg-white/5 rounded-full h-1.5">
+                <div class="w-full bg-black/5 dark:bg-white/5 rounded-full h-1.5">
                     <div class="h-1.5 rounded-full transition-all" style="width:${pct}%;background:${color}"></div>
                 </div>
             </div>`;
@@ -521,8 +521,8 @@ const dashboardPage = {
                 <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative flex flex-col max-h-[90vh]">
                      <div class="flex items-center justify-between mb-4 flex-shrink-0">
-                        <h3 class="text-lg font-semibold text-dark-950 dark:text-dark-950 dark:text-white">Sesuaikan Menu Cepat</h3>
-                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <h3 class="text-lg font-semibold text-dark-950 dark:text-white">Sesuaikan Menu Cepat</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-black/5 dark:bg-white/5 rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
@@ -531,8 +531,8 @@ const dashboardPage = {
                     
                     <div class="flex-1 overflow-y-auto space-y-2 mb-4 scrollbar-hide" id="shortcut-checkboxes">
                         ${AVAILABLE_SHORTCUTS.map(feat => `
-                            <label class="flex items-center p-3 rounded-xl hover:bg-white/5 border border-transparent hover:border-black/10 dark:border-white/10 transition-colors cursor-pointer group">
-                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-600 dark:text-dark-200/70 group-hover:text-primary-400 mr-4">
+                            <label class="flex items-center p-3 rounded-xl hover:bg-black/5 dark:bg-white/5 border border-transparent hover:border-black/10 dark:border-white/10 transition-colors cursor-pointer group">
+                                <div class="w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-gray-600 dark:text-dark-200/70 group-hover:text-primary-400 mr-4">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         ${feat.icon}
                                     </svg>

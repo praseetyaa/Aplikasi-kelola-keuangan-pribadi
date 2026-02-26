@@ -25,10 +25,10 @@ const settingsPage = {
     async render(container) {
         const presetGrid = this.presets.map(p => `
             <button type="button" 
-                class="theme-preset-btn group relative flex flex-col items-center gap-1.5 p-3 rounded-xl border border-black/5 dark:border-white/5 hover:border-white/15 transition-all duration-200 hover:scale-105"
+                class="theme-preset-btn group relative flex flex-col items-center gap-1.5 p-3 rounded-xl border border-black/5 dark:border-white/5 hover:border-black/15 dark:border-white/15 transition-all duration-200 hover:scale-105"
                 data-color="${p.color}" onclick="settingsPage.selectPreset('${p.color}')">
                 <div class="w-10 h-10 rounded-lg shadow-lg transition-transform" style="background: ${p.color}"></div>
-                <span class="text-[10px] font-medium text-gray-400 dark:text-dark-200/50 group-hover:text-dark-950 dark:text-dark-950 dark:text-white/70 transition-colors">${p.name}</span>
+                <span class="text-[10px] font-medium text-gray-400 dark:text-dark-200/50 group-hover:text-dark-950 dark:text-white/70 transition-colors">${p.name}</span>
                 <div class="theme-check hidden absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-md">
                     <svg class="w-3 h-3 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                 </div>
@@ -39,7 +39,7 @@ const settingsPage = {
         <div class="page-enter">
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 ">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Pengaturan</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Pengaturan</h2>
                     <p id="settings-subtitle" class="text-gray-400 dark:text-dark-200/50 mt-1">Kustomisasi tampilan aplikasi</p>
                 </div>
                 
@@ -82,7 +82,7 @@ const settingsPage = {
                     <div>
                         <label class="block text-sm font-medium text-gray-600 dark:text-dark-200/70 mb-2">Logo Aplikasi</label>
                         <div id="logo-preview-area" class="mb-3">
-                            <div id="logo-current" class="hidden flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-black/10 dark:border-white/10">
+                            <div id="logo-current" class="hidden flex items-center gap-4 p-4 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
                                 <img id="logo-preview-img" src="" class="w-14 h-14 rounded-xl object-cover" alt="Logo">
                                 <div class="flex-1">
                                     <p class="text-sm text-dark-950 dark:text-white">Logo saat ini</p>
@@ -171,7 +171,7 @@ const settingsPage = {
                                 <div class="flex items-center gap-3 mt-2">
                                     <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" id="setting-enable-preload" class="sr-only peer" checked>
-                                        <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
+                                        <div class="w-11 h-6 bg-black/10 dark:bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
                                     </label>
                                     <span class="text-sm font-medium text-gray-600 dark:text-dark-200/70 select-none">Aktif</span>
                                 </div>
@@ -409,7 +409,7 @@ const settingsPage = {
             const check = btn.querySelector('.theme-check');
             const isActive = btn.dataset.color === activeColor;
             btn.classList.toggle('border-white/30', isActive);
-            btn.classList.toggle('bg-white/5', isActive);
+            btn.classList.toggle('bg-black/5 dark:bg-white/5', isActive);
             if (check) check.classList.toggle('hidden', !isActive);
         });
     },
@@ -438,7 +438,7 @@ const settingsPage = {
         const container = document.getElementById('theme-palette-preview');
         if (!container) return;
         container.innerHTML = palette.map((c, i) => `
-            <div class="h-6 sm:h-8 w-full sm:flex-1 rounded border border-black/5 dark:border-white/5 sm:border-none flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-dark-950 dark:text-dark-950 dark:text-white/50 min-w-[30px]" 
+            <div class="h-6 sm:h-8 w-full sm:flex-1 rounded border border-black/5 dark:border-white/5 sm:border-none flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-dark-950 dark:text-white/50 min-w-[30px]" 
                 style="background: ${c}; color: ${this.getContrastColor(c)}" title="${c}">
                 ${i === 5 ? 'Base' : ''}
             </div>
@@ -657,19 +657,19 @@ const settingsPage = {
 
             versionEl.innerHTML = `
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white/5 rounded-xl p-3">
+                    <div class="bg-black/5 dark:bg-white/5 rounded-xl p-3">
                         <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Versi Aplikasi</p>
-                        <p class="text-lg font-bold text-dark-950 dark:text-dark-950 dark:text-white font-mono">v${data.version}</p>
+                        <p class="text-lg font-bold text-dark-950 dark:text-white font-mono">v${data.version}</p>
                     </div>
-                    <div class="bg-white/5 rounded-xl p-3">
+                    <div class="bg-black/5 dark:bg-white/5 rounded-xl p-3">
                         <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Versi Database</p>
                         <p class="text-lg font-bold text-dark-950 dark:text-white font-mono">v${data.db_version}</p>
                     </div>
-                    <div class="bg-white/5 rounded-xl p-3">
+                    <div class="bg-black/5 dark:bg-white/5 rounded-xl p-3">
                         <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Tanggal Rilis</p>
                         <p class="text-sm font-medium text-dark-950 dark:text-white">${data.release_date || '-'}</p>
                     </div>
-                    <div class="bg-white/5 rounded-xl p-3">
+                    <div class="bg-black/5 dark:bg-white/5 rounded-xl p-3">
                         <p class="text-xs text-gray-400 dark:text-dark-200/40 mb-0.5">Repository</p>
                         <a href="https://github.com/${data.github_repo}" target="_blank" 
                            class="text-sm font-medium text-primary-400 hover:text-primary-300 truncate block">${data.github_repo || '-'}</a>
@@ -685,7 +685,7 @@ const settingsPage = {
                 migLog.innerHTML = data.migrations.map(m => `
                     <div class="flex items-center gap-2 text-xs">
                         <span class="text-emerald-400">✓</span>
-                        <span class="font-mono text-dark-950 dark:text-dark-950 dark:text-white/60">v${m.version}</span>
+                        <span class="font-mono text-dark-950 dark:text-white/60">v${m.version}</span>
                         <span class="text-gray-400 dark:text-dark-200/40">${m.name}</span>
                         <span class="ml-auto text-dark-200/30">${m.applied_at?.split(' ')[0] || ''}</span>
                     </div>
@@ -731,7 +731,7 @@ const settingsPage = {
             } else {
                 // Parse changelog markdown sederhana
                 const changelog = (data.release_body || '')
-                    .replace(/##\s/g, '<br><strong class="text-dark-950 dark:text-dark-950 dark:text-white">')
+                    .replace(/##\s/g, '<br><strong class="text-dark-950 dark:text-white">')
                     .replace(/\n- /g, '<br>• ')
                     .replace(/\n/g, '<br>');
 
@@ -745,7 +745,7 @@ const settingsPage = {
                             </div>
                         </div>
 
-                        ${data.release_body ? `<div class="bg-white/5 rounded-xl p-4">
+                        ${data.release_body ? `<div class="bg-black/5 dark:bg-white/5 rounded-xl p-4">
                             <p class="text-xs font-semibold text-gray-400 dark:text-dark-200/50 uppercase tracking-wider mb-2">Changelog</p>
                             <div class="text-sm text-gray-600 dark:text-dark-200/70 leading-relaxed">${changelog}</div>
                         </div>` : ''}

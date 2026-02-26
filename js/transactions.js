@@ -26,7 +26,7 @@ const transactionsPage = {
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Transaksi</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Transaksi</h2>
                     <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola pemasukan dan pengeluaranmu</p>
                 </div>
                 <button onclick="transactionsPage.showAddModal()" class="btn-primary">
@@ -171,7 +171,7 @@ const transactionsPage = {
                     </div>
                     <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
                         <div class="min-w-0">
-                            <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
+                            <p class="text-sm font-medium text-dark-950 dark:text-white truncate">${tx.description || tx.category_name || 'Transaksi'}</p>
                             <div class="flex items-center gap-2 mt-0.5">
                                 <span class="badge ${tx.type === 'income' ? 'badge-income' : 'badge-expense'}">${tx.type === 'income' ? 'Masuk' : 'Keluar'}</span>
                                 <span class="text-xs text-gray-400 dark:text-dark-200/40 truncate">${tx.category_name || '-'} · ${tx.wallet_name || 'Tunai'} · ${formatDate(tx.date)}</span>
@@ -356,7 +356,7 @@ const transactionsPage = {
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Transaksi?</p>
+                <p class="text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Transaksi?</p>
                 <p class="text-gray-500 dark:text-dark-200/60 text-sm">${tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} ${formatCurrency(tx.amount)} pada ${formatDate(tx.date)} akan dihapus.</p>
             </div>
             <div class="flex gap-3 mt-6">

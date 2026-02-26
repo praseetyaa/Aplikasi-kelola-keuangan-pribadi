@@ -13,7 +13,7 @@ const planningPage = {
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Planning & Wishlist</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Planning & Wishlist</h2>
                     <p class="text-gray-400 dark:text-dark-200/50 mt-1">Rencanakan tabunganmu menuju impian</p>
                 </div>
                 <button onclick="planningPage.showAddModal()" class="btn-primary">
@@ -81,7 +81,7 @@ const planningPage = {
         el.innerHTML = `
             <div class="glass-card rounded-2xl p-4">
                 <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-1">Goal Aktif</p>
-                <p class="text-2xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">${active.length}</p>
+                <p class="text-2xl font-bold text-dark-950 dark:text-white">${active.length}</p>
             </div>
             <div class="glass-card rounded-2xl p-4">
                 <p class="text-xs text-gray-400 dark:text-dark-200/50 mb-1">Total Terkumpul</p>
@@ -207,7 +207,7 @@ const planningPage = {
                         ${p.icon || '🎯'}
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-dark-950 dark:text-dark-950 dark:text-white leading-tight">${p.name}</h3>
+                        <h3 class="text-base font-semibold text-dark-950 dark:text-white leading-tight">${p.name}</h3>
                         ${statusBadge}
                     </div>
                 </div>
@@ -229,7 +229,7 @@ const planningPage = {
             </div>
 
             <!-- Progress bar -->
-            <div class="w-full bg-white/5 rounded-full h-2.5 mb-1.5">
+            <div class="w-full bg-black/5 dark:bg-white/5 rounded-full h-2.5 mb-1.5">
                 <div class="${pctColor} h-2.5 rounded-full transition-all duration-500" style="width:${pct}%"></div>
             </div>
             <div class="flex justify-between items-center mb-3">
@@ -262,7 +262,7 @@ const planningPage = {
 
         const iconPicker = icons.map(ic => `
             <button type="button" onclick="planningPage._pickIcon(this,'${ic}')"
-class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl transition-all hover:bg-white/10 ${plan?.icon === ic ? 'bg-white/15 ring-1 ring-primary-500/60' : ''}">
+class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl transition-all hover:bg-black/10 dark:bg-white/10 ${plan?.icon === ic ? 'bg-white/15 ring-1 ring-primary-500/60' : ''}">
     ${ic}
             </button>`).join('');
 
@@ -408,8 +408,8 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const pct = Math.min(100, Math.round((saved / target) * 100));
         let rows = [];
 
-        rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Progress</span><span class="font-semibold text-dark-950 dark:text-dark-950 dark:text-white">${pct}%</span></div>`);
-        rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-dark-950 dark:text-dark-950 dark:text-white">${formatCurrency(remain)}</span></div>`);
+        rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Progress</span><span class="font-semibold text-dark-950 dark:text-white">${pct}%</span></div>`);
+        rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Sisa dibutuhkan</span><span class="font-semibold text-dark-950 dark:text-white">${formatCurrency(remain)}</span></div>`);
 
         if (dlVal) {
             const now = new Date();
@@ -417,7 +417,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             const days = Math.ceil((dl - now) / 86400000);
             const months = Math.max(1, Math.ceil(days / 30));
             const perMonth = remain > 0 ? Math.ceil(remain / months) : 0;
-            rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-dark-950 dark:text-dark-950 dark:text-white">${months} bulan (${days} hari)</span></div>`);
+            rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Waktu tersisa</span><span class="font-semibold text-dark-950 dark:text-white">${months} bulan (${days} hari)</span></div>`);
             if (remain > 0) {
                 rows.push(`<div class="flex justify-between"><span class="text-gray-400 dark:text-dark-200/50">Nabung/bulan agar tepat waktu</span><span class="font-bold text-primary-400">${formatCurrency(perMonth)}</span></div>`);
             } else {
@@ -451,9 +451,9 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
             <div class="space-y-4">
                 <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)">
                     <p class="text-sm text-gray-500 dark:text-dark-200/60 mb-1">Target</p>
-                    <p class="text-xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">${formatCurrency(plan.target_amount)}</p>
+                    <p class="text-xl font-bold text-dark-950 dark:text-white">${formatCurrency(plan.target_amount)}</p>
                     <p class="text-sm text-gray-500 dark:text-dark-200/60 mt-1 mb-1">Sudah Terkumpul: <span class="text-dark-950 dark:text-white">${formatCurrency(plan.saved_amount)}</span></p>
-                    <div class="w-full bg-white/5 rounded-full h-1.5 mt-2">
+                    <div class="w-full bg-black/5 dark:bg-white/5 rounded-full h-1.5 mt-2">
                         <div class="bg-primary-500 h-1.5 rounded-full" style="width:${Math.min(100, plan.progress_pct)}%"></div>
                     </div>
                 </div>
@@ -509,9 +509,9 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
                 historyHtml += `<div class="text-center py-6 text-gray-400 dark:text-dark-200/50 text-sm"> Belum ada riwayat pembayaran</div>`;
             } else {
                 historyHtml += history.map(h => `
-                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-black/5 dark:border-white/5">
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
                         <div>
-                            <p class="text-sm font-medium text-dark-950 dark:text-dark-950 dark:text-white">${new Date(h.month + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
+                            <p class="text-sm font-medium text-dark-950 dark:text-white">${new Date(h.month + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
                             <p class="text-xs text-gray-400 dark:text-dark-200/50">${formatDate(h.created_at)} · ${h.type === 'deposit' ? 'Pemasukan' : 'Perubahan'}</p>
                         </div>
                         <span class="text-sm font-bold text-emerald-400">+${formatCurrency(h.amount)}</span>
@@ -535,7 +535,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🎉</div>
-                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Selesaikan Goal?</p>
+                <p class="text-dark-950 dark:text-white text-lg font-medium mb-2">Selesaikan Goal?</p>
                 <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${plan.name}" akan ditandai sebagai selesai.</p>
             </div>
             <div class="flex gap-3 mt-6">
@@ -563,7 +563,7 @@ class="plan-icon-btn w-9 h-9 rounded-xl flex items-center justify-center text-xl
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Goal?</p>
+                <p class="text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Goal?</p>
                 <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${plan.name}" akan dihapus permanen.</p>
             </div>
             <div class="flex gap-3 mt-6">

@@ -10,7 +10,7 @@ const profilePage = {
             <!-- Header -->
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Profil</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Profil</h2>
                     <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola akun dan pengaturan</p>
                 </div>
             </div>
@@ -42,7 +42,7 @@ const profilePage = {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <!-- Kelola Akun -->
-                <button onclick="profilePage.editProfile()" class="glass-card rounded-2xl p-5 hover:bg-white/5 transition-all text-left flex items-start gap-4 group">
+                <button onclick="profilePage.editProfile()" class="glass-card rounded-2xl p-5 hover:bg-black/5 dark:bg-white/5 transition-all text-left flex items-start gap-4 group">
                     <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform flex-shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -55,7 +55,7 @@ const profilePage = {
                 </button>
 
                 <!-- Keamanan -->
-                <button onclick="profilePage.editSecurity()" class="glass-card rounded-2xl p-5 hover:bg-white/5 transition-all text-left flex items-start gap-4 group">
+                <button onclick="profilePage.editSecurity()" class="glass-card rounded-2xl p-5 hover:bg-black/5 dark:bg-white/5 transition-all text-left flex items-start gap-4 group">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform flex-shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -68,7 +68,7 @@ const profilePage = {
                 </button>
 
                 <!-- Pengaturan -->
-                <button onclick="app.navigate('settings')" class="glass-card rounded-2xl p-5 hover:bg-white/5 transition-all text-left flex items-start gap-4 group">
+                <button onclick="app.navigate('settings')" class="glass-card rounded-2xl p-5 hover:bg-black/5 dark:bg-white/5 transition-all text-left flex items-start gap-4 group">
                     <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform flex-shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -112,8 +112,8 @@ const profilePage = {
                 <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative">
                      <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-dark-950 dark:text-dark-950 dark:text-white">Edit Profil</h3>
-                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <h3 class="text-lg font-semibold text-dark-950 dark:text-white">Edit Profil</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-black/5 dark:bg-white/5 rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
@@ -171,8 +171,8 @@ const profilePage = {
                 <div class="fixed inset-0 bg-gray-50 dark:bg-dark-950/80 backdrop-blur-sm transition-opacity" onclick="closeModal(this)"></div>
                 <div class="glass-card w-full max-w-md rounded-3xl z-10 p-6 transform transition-all shadow-2xl relative">
                      <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-dark-950 dark:text-dark-950 dark:text-white">Ubah Password</h3>
-                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <h3 class="text-lg font-semibold text-dark-950 dark:text-white">Ubah Password</h3>
+                        <button onclick="closeModal(this)" class="p-2 text-gray-500 dark:text-dark-200/60 hover:text-dark-950 dark:text-white hover:bg-black/5 dark:bg-white/5 rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
@@ -238,7 +238,7 @@ const profilePage = {
                      <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 text-red-500">
                          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                      </div>
-                     <h3 class="text-xl font-bold text-dark-950 dark:text-dark-950 dark:text-white mb-2">Keluar Aplikasi</h3>
+                     <h3 class="text-xl font-bold text-dark-950 dark:text-white mb-2">Keluar Aplikasi</h3>
                      <p class="text-gray-500 dark:text-dark-200/60 mb-6 text-sm">Sesi Anda saat ini akan dihentikan. Anda harus masuk kembali untuk melihat data.</p>
                      
                      <div class="flex gap-3">

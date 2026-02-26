@@ -11,7 +11,7 @@ const walletsPage = {
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-dark-950 dark:text-white">Dompet</h2>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-dark-950 dark:text-white">Dompet</h2>
                     <p class="text-gray-400 dark:text-dark-200/50 mt-1">Kelola rekening perbankan, e-wallet, dan kartu kreditmu</p>
                 </div>
                 <button onclick="walletsPage.showAddModal()" class="btn-primary">
@@ -95,12 +95,12 @@ const walletsPage = {
                                 ${typeInfo.icon}
                             </div>
                             <div>
-                                <h3 class="text-base font-semibold text-dark-950 dark:text-dark-950 dark:text-white leading-tight">${wallet.name}</h3>
+                                <h3 class="text-base font-semibold text-dark-950 dark:text-white leading-tight">${wallet.name}</h3>
                                 <span class="text-xs font-medium text-gray-400 dark:text-dark-200/50">${typeInfo.label}</span>
                             </div>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button onclick="walletsPage.showEditModal(${wallet.id})" class="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 dark:text-dark-200/40 hover:text-dark-950 dark:text-white transition-colors">
+                            <button onclick="walletsPage.showEditModal(${wallet.id})" class="p-1.5 rounded-lg hover:bg-black/10 dark:bg-white/10 text-gray-400 dark:text-dark-200/40 hover:text-dark-950 dark:text-white transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </button>
                             <button onclick="walletsPage.deleteWallet(${wallet.id})" class="p-1.5 rounded-lg hover:bg-red-500/10 text-gray-400 dark:text-dark-200/40 hover:text-red-400 transition-colors">
@@ -230,7 +230,7 @@ const walletsPage = {
         const body = `
             <div class="text-center py-2">
                 <div class="text-5xl mb-4">🗑️</div>
-                <p class="text-dark-950 dark:text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Dompet?</p>
+                <p class="text-dark-950 dark:text-white text-lg font-medium mb-2">Hapus Dompet?</p>
                 <p class="text-gray-500 dark:text-dark-200/60 text-sm">"${wallet.name}" akan dihapus. Transaksi yang terhubung akan kehilangan referensi dompet (tapi tidak terhapus).</p>
             </div>
             <div class="flex gap-3 mt-6">
