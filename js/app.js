@@ -935,7 +935,7 @@ function showToast(message, type = 'info') {
 
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    toast.innerHTML = `${icons[type] || icons.info}<span class="text-white/90">${message}</span>`;
+    toast.innerHTML = `${icons[type] || icons.info}<span class="text-dark-950 dark:text-white/90">${message}</span>`;
     container.appendChild(toast);
 
     setTimeout(() => {
@@ -970,7 +970,7 @@ function showModal(title, bodyHTML, footerHTML = '') {
     overlay.innerHTML = `
         <div class="modal-content">
             <div class="flex items-center justify-between p-6 pb-0">
-                <h3 class="text-lg font-semibold text-white">${title}</h3>
+                <h3 class="text-lg font-semibold text-dark-950 dark:text-white">${title}</h3>
                 <button onclick="closeModal()" class="btn-icon">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
