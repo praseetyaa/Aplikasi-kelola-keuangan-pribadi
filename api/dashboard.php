@@ -54,6 +54,8 @@ jsonResponse([
     'month' => $month, 
     'total_income' => $totalIncome, 
     'total_expense' => $totalExpense, 
+    'all_income' => (float)$totals['ti'],
+    'all_expense' => (float)$totals['te'],
     'balance' => $balance, 
     'monthly_trend' => $monthlyTrend, 
     'expense_by_category' => $expenseByCategory, 

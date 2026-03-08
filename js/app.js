@@ -820,12 +820,13 @@ const app = {
 // ============================================
 
 function formatCurrency(amount) {
+    const num = parseFloat(amount);
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-    }).format(amount);
+    }).format(isNaN(num) ? 0 : num);
 }
 
 /**

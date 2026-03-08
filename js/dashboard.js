@@ -93,7 +93,7 @@ const dashboardPage = {
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
                     <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl pointer-events-none"></div>
                     
-                    <div class="relative z-10 flex flex-col gap-6">
+                    <div class="relative z-10 flex flex-col gap-5">
                         <!-- Total Saldo -->
                         <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
                             <div class="flex items-center gap-2 mb-2">
@@ -109,31 +109,34 @@ const dashboardPage = {
 
                         <div class="w-full h-px bg-black/5 dark:bg-white/5"></div>
 
-                        <!-- Income & Expense Row -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <!-- Income -->
-                            <div class="flex flex-col">
-                                <div class="flex items-center gap-2 mb-1.5">
-                                    <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
-                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+                        <!-- Monthly Income & Expense -->
+                        <div>
+                            <p class="text-xs text-gray-400 dark:text-dark-200/40 font-medium mb-3 uppercase tracking-wider" id="dash-month-label">Bulan Ini</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Monthly Income -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2 mb-1.5">
+                                        <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+                                        </div>
+                                        <span class="text-xs sm:text-sm text-gray-500 dark:text-dark-200/60 font-medium">Pemasukan</span>
                                     </div>
-                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-dark-200/60 font-medium">Pemasukan</span>
+                                    <p id="dash-income" class="text-lg sm:text-xl font-bold text-green-400">
+                                        <span class="skeleton inline-block w-24 h-6"></span>
+                                    </p>
                                 </div>
-                                <p id="dash-income" class="text-lg sm:text-xl font-bold text-green-400">
-                                    <span class="skeleton inline-block w-24 h-6"></span>
-                                </p>
-                            </div>
-                            <!-- Expense -->
-                            <div class="flex flex-col">
-                                <div class="flex items-center gap-2 mb-1.5">
-                                    <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
-                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+                                <!-- Monthly Expense -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2 mb-1.5">
+                                        <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+                                        </div>
+                                        <span class="text-xs sm:text-sm text-gray-500 dark:text-dark-200/60 font-medium">Pengeluaran</span>
                                     </div>
-                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-dark-200/60 font-medium">Pengeluaran</span>
+                                    <p id="dash-expense" class="text-lg sm:text-xl font-bold text-red-400">
+                                        <span class="skeleton inline-block w-24 h-6"></span>
+                                    </p>
                                 </div>
-                                <p id="dash-expense" class="text-lg sm:text-xl font-bold text-red-400">
-                                    <span class="skeleton inline-block w-24 h-6"></span>
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -225,10 +228,30 @@ const dashboardPage = {
                 api.getPlanning('active').catch(() => [])
             ]);
 
-            // Summary cards
-            document.getElementById('dash-balance').textContent = formatCurrency(data.balance);
-            document.getElementById('dash-income').textContent = formatCurrency(data.total_income);
-            document.getElementById('dash-expense').textContent = formatCurrency(data.total_expense);
+            // Summary cards — monthly totals
+            const balance = parseFloat(data.balance) || 0;
+            const monthlyIncome = parseFloat(data.total_income) || 0;
+            const monthlyExpense = parseFloat(data.total_expense) || 0;
+
+            // All-time totals
+            const allIncome = parseFloat(data.all_income) || 0;
+            const allExpense = parseFloat(data.all_expense) || 0;
+
+            const balanceEl = document.getElementById('dash-balance');
+            const incomeEl = document.getElementById('dash-income');
+            const expenseEl = document.getElementById('dash-expense');
+            const allIncomeEl = document.getElementById('dash-all-income');
+            const allExpenseEl = document.getElementById('dash-all-expense');
+            const monthLabel = document.getElementById('dash-month-label');
+
+            if (balanceEl) balanceEl.textContent = formatCurrency(balance);
+            if (incomeEl) incomeEl.textContent = formatCurrency(monthlyIncome);
+            if (expenseEl) expenseEl.textContent = formatCurrency(monthlyExpense);
+            if (allIncomeEl) allIncomeEl.textContent = formatCurrency(allIncome);
+            if (allExpenseEl) allExpenseEl.textContent = formatCurrency(allExpense);
+            if (monthLabel && data.month) {
+                monthLabel.textContent = formatMonthYear(data.month);
+            }
 
             // Charts
             this.renderTrendChart(data.monthly_trend);
@@ -245,6 +268,12 @@ const dashboardPage = {
             // Update notification badges
             this.updateNotificationBadge(data.planning_alerts);
         } catch (err) {
+            // Clear skeleton loaders even on error so the UI doesn't look stuck
+            ['dash-balance', 'dash-income', 'dash-expense', 'dash-all-income', 'dash-all-expense'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.querySelector('.skeleton')) el.textContent = formatCurrency(0);
+            });
+
             showToast(err.message, 'error');
         }
     },
