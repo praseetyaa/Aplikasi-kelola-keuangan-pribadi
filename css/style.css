@@ -2,6 +2,80 @@
    DuitKu - Custom Styles
    ============================================ */
 
+/* Core utilities for Tailwind CDN FOUC prevention */
+.hidden {
+    display: none !important;
+}
+
+/* Critical Preloader CSS */
+#app-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    transition: opacity 0.5s;
+}
+
+html.dark #app-preloader {
+    background-color: #020617;
+}
+
+#app-preloader .relative {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 1rem;
+}
+
+#app-preloader .absolute {
+    position: absolute;
+    inset: 0;
+}
+
+#app-preloader .border-4 {
+    border-width: 4px;
+    border-style: solid;
+}
+
+#app-preloader .rounded-full {
+    border-radius: 9999px;
+}
+
+#app-preloader .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#app-preloader svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#app-preloader .animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+    50% {
+        opacity: .5;
+    }
+}
+
+#app-preloader .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* Theme Color Variables - Default Rose */
 :root {
     --theme-50: #fff1f2;
@@ -15,7 +89,7 @@
     --theme-800: #9f1239;
     --theme-900: #881337;
     --theme-950: #4c0519;
-    
+
     --theme-rgb: 244, 63, 94;
 }
 
